@@ -24,6 +24,9 @@ dist/
 nbdist/
 .nb-gradle/
 
+
+### angular-cli生成分
+
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
@@ -66,3 +69,8 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+### 手動追加
+
+# 静的ページはビルド時に生成するためリポジトリ管理外
+src/main/java/resources/static/*
