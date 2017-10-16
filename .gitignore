@@ -73,4 +73,4 @@ Thumbs.db
 ### 手動追加
 
 # 静的ページはビルド時に生成するためリポジトリ管理外
-src/main/java/resources/static/*
+src/main/resources/static/*
