@@ -4,3 +4,19 @@
 body {
     background-color: #f3f3f3;
 }
+
+header {
+    position: fixed;
+    width: 100%;
+}
+header .menu-btn {
+    float: left;
+}
+header .user-btn {
+    float: right;
+}
+
+.contents {
+    margin: 0 auto;
+    max-width: 940px;
+}
