@@ -1,18 +1,9 @@
-<mat-toolbar color="primary">
-  <button mat-button (click)="toggleMenu()">
-    <mat-icon>home</mat-icon>
+<header>
+  <button mat-button class="menu-btn">
+    <mat-icon>menu</mat-icon>
   </button>
-  <button mat-button>Menu</button>
-</mat-toolbar>
 
-<mat-sidenav-container>
-  <mat-sidenav>
-    <div>
-      <button mat-button>項目辞書</button>
-      <button mat-button>テーブル定義</button>
-    </div>
-  </mat-sidenav>
-  <div>
-    hello world!
-  </div>
-</mat-sidenav-container>
+  <button mat-fab class="user-btn">
+    <mat-icon>person</mat-icon>
+  </button>
+</header>
