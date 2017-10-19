@@ -3,17 +3,28 @@
 
 body {
     background-color: #f3f3f3;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI","Noto Sans Japanese","ヒラギノ角ゴ ProN W3", Meiryo, sans-serif;
 }
 
 header {
     position: fixed;
     width: 100%;
 }
+header .left {
+    position: fixed;
+    left: 15px;
+    top: 15px;
+}
+header .home-btn {
+    display: block;
+}
 header .menu-btn {
-    float: left;
+    display: block;
 }
 header .user-btn {
-    float: right;
+    position: fixed;
+    right: 15px;
+    top: 15px;
 }
 
 .contents {
