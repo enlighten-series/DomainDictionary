@@ -1,3 +1,48 @@
-<p>
-  domain-list works!
-</p>
+<h2>
+  項目一覧
+</h2>
+
+<mat-card>
+  
+  <div class="filter-area">
+    <mat-grid-list cols="2" rowHeight="70px">
+      <mat-grid-tile colspan="1" rowspan="1">
+        <mat-form-field>
+          <input matInput [(ngModel)]="filterName" placeholder="項目名でフィルタ">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="1">
+        <mat-form-field>
+          <input matInput [(ngModel)]="filterDescription" placeholder="説明でフィルタ">
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
+  <mat-table #table [dataSource]="domainSource$">
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>項目名</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="type">
+      <mat-header-cell *matHeaderCellDef>データ型</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.type}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="length">
+      <mat-header-cell *matHeaderCellDef>桁数</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.length}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="format">
+      <mat-header-cell *matHeaderCellDef>フォーマット</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.format}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef>説明</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.description}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+</mat-card>
