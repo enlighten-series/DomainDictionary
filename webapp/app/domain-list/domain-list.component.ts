@@ -3,6 +3,8 @@ import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
+import { Domain } from '../models/domain';
+
 @Component({
   selector: 'app-domain-list',
   templateUrl: './domain-list.component.html',
@@ -27,32 +29,26 @@ export class DomainListComponent implements OnInit {
 
 }
 
-const data = [
-  {
-    name: '契約番号',
-    type: '半角英数',
-    length: '10',
-    format: '9-999-99999',
-    description: '顧客ごとに自動的に付与され…',
-  },
-  {
-    name: '顧客正式名称',
-    type: '全角文字列',
-    length: '50',
-    format: 'ー',
-    description: 'ー',
-  },
+const data: Domain[] = [
+  new Domain(
+    '契約番号',
+    '半角英数',
+    10,
+    '9-999-99999',
+    '顧客ごとに自動的に付与され…',
+  ),
+  new Domain(
+    '顧客正式名称',
+    '全角文字列',
+    50,
+    'ー',
+    'ー',
+  ),
 ];
 
-/**
- * Data source to provide what data should be rendered in the table. The observable provided
- * in connect should emit exactly the data that should be rendered by the table. If the data is
- * altered, the observable should emit that new set of data on the stream. In our case here,
- * we return a stream that contains only one set of data that doesn't change.
- */
+
 export class ExampleDataSource extends DataSource<any> {
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
-  connect(): Observable<any[]> {
+  connect(): Observable<Domain[]> {
     return Observable.of(data);
   }
 
