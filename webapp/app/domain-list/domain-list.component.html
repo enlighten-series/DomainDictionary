@@ -8,12 +8,12 @@
     <mat-grid-list cols="2" rowHeight="70px">
       <mat-grid-tile colspan="1" rowspan="1">
         <mat-form-field>
-          <input matInput [(ngModel)]="filterName" placeholder="項目名でフィルタ">
+          <input matInput #filterName placeholder="項目名でフィルタ">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile colspan="1" rowspan="1">
         <mat-form-field>
-          <input matInput [(ngModel)]="filterDescription" placeholder="説明でフィルタ">
+          <input matInput #filterDescription placeholder="説明でフィルタ">
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>

@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 import { Domain } from '../models/domain';
 
@@ -12,8 +17,13 @@ import { Domain } from '../models/domain';
 })
 export class DomainListComponent implements OnInit {
 
+  @ViewChild('filterName') filterName;
+  @ViewChild('filterDescription') filterDescription;
+  private filterNameSubscription: Subscription;
+  private filterDescriptionSubscription: Subscription;
+
   public displayedColumns: string[];
-  public domainSource$ = new ExampleDataSource();
+  public domainSource: ExampleDataSource;
 
   constructor() { }
 
@@ -25,6 +35,27 @@ export class DomainListComponent implements OnInit {
       'format',
       'description',
     ];
+
+    this.domainSource = new ExampleDataSource();
+
+    // フィルタ変更ストリーム
+    this.filterNameSubscription = Observable.fromEvent(this.filterName.nativeElement, 'keyup')
+      .debounceTime(150)
+      .distinctUntilChanged()
+      .subscribe(() => {
+        console.log('filter name:' + this.filterName.nativeElement.value);
+      });
+    this.filterDescriptionSubscription = Observable.fromEvent(this.filterDescription.nativeElement, 'keyup')
+      .debounceTime(150)
+      .distinctUntilChanged()
+      .subscribe(() => {
+        console.log('filter description:' + this.filterDescription.nativeElement.value);
+      });
+  }
+
+  ngOnDestroy() {
+    this.filterNameSubscription.unsubscribe();
+    this.filterDescriptionSubscription.unsubscribe();
   }
 
 }
