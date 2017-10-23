@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -25,7 +26,9 @@ export class DomainListComponent implements OnInit {
   public displayedColumns: string[];
   public domainSource: ExampleDataSource;
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.displayedColumns = [
@@ -34,6 +37,7 @@ export class DomainListComponent implements OnInit {
       'length',
       'format',
       'description',
+      'edit',
     ];
 
     this.domainSource = new ExampleDataSource();
@@ -52,6 +56,14 @@ export class DomainListComponent implements OnInit {
         console.log('filter description:' + this.filterDescription.nativeElement.value);
       });
   }
+  
+  create() {
+    this.router.navigate(['/create']);
+  }
+
+  edit(id) {
+    this.router.navigate(['/detail', id]);
+  }
 
   ngOnDestroy() {
     this.filterNameSubscription.unsubscribe();
@@ -62,6 +74,7 @@ export class DomainListComponent implements OnInit {
 
 const data: Domain[] = [
   new Domain(
+    1,
     '契約番号',
     '半角英数',
     10,
@@ -69,6 +82,7 @@ const data: Domain[] = [
     '顧客ごとに自動的に付与され…',
   ),
   new Domain(
+    2,
     '顧客正式名称',
     '全角文字列',
     50,
@@ -77,8 +91,31 @@ const data: Domain[] = [
   ),
 ];
 
+export class ExampleDatabase {
+  dataChange: BehaviorSubject<Domain[]> = new BehaviorSubject<Domain[]>([]);
+  /*
+  data: Domain[] = [
+    new Domain(
+      '契約番号',
+      '半角英数',
+      10,
+      '9-999-99999',
+      '顧客ごとに自動的に付与され…',
+    ),
+    new Domain(
+      '顧客正式名称',
+      '全角文字列',
+      50,
+      'ー',
+      'ー',
+    ),
+  ];
+  */
+  constructor() {
+  }
+}
 
-export class ExampleDataSource extends DataSource<any> {
+export class ExampleDataSource extends DataSource<Domain> {
   connect(): Observable<Domain[]> {
     return Observable.of(data);
   }

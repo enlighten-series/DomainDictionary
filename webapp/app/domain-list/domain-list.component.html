@@ -3,6 +3,10 @@
 </h2>
 
 <mat-card>
+
+    <button mat-fab color="primary" (click)="create()">
+      <mat-icon>add</mat-icon>
+    </button>
   
   <div class="filter-area">
     <mat-grid-list cols="2" rowHeight="70px">
@@ -39,6 +43,10 @@
     <ng-container matColumnDef="description">
       <mat-header-cell *matHeaderCellDef>説明</mat-header-cell>
       <mat-cell *matCellDef="let row">{{row.description}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="edit">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row"><button mat-button class="menu-btn" (click)="edit(row.id)">edit</button></mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

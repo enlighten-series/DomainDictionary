@@ -18,11 +18,17 @@ import { ROUTES } from './app.route';
 
 import { AppComponent } from './app.component';
 import { DomainListComponent } from './domain-list/domain-list.component';
+import { DomainDetailComponent } from './domain-detail/domain-detail.component';
+import { DomainEditFormComponent } from './domain-edit-form/domain-edit-form.component';
+import { DomainCreateComponent } from './domain-create/domain-create.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DomainListComponent
+    DomainListComponent,
+    DomainDetailComponent,
+    DomainEditFormComponent,
+    DomainCreateComponent
   ],
   imports: [
     BrowserModule,

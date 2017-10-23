@@ -1,4 +1,5 @@
 export class Domain {
+  id: number;
   name: string;
   type: string;
   length: number;
@@ -6,12 +7,14 @@ export class Domain {
   description: string;
 
   constructor(
+    id,
     name,
     type,
     length,
     format,
     description,
   ) {
+    this.id = id;
     this.name = name;
     this.type = type;
     this.length = length;
