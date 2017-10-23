@@ -11,6 +11,7 @@ import {
   MatInputModule,
   MatSidenavModule,
   MatTableModule,
+  MatTabsModule,
   MatToolbarModule,
 } from '@angular/material';
 
@@ -42,6 +43,7 @@ import { DomainCreateComponent } from './domain-create/domain-create.component';
     MatInputModule,
     MatSidenavModule,
     MatTableModule,
+    MatTabsModule,
     MatToolbarModule,
   ],
   providers: [],

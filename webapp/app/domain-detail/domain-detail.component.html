@@ -2,4 +2,17 @@
   項目
 </h2>
 
-<app-domain-edit-form></app-domain-edit-form>
+<mat-tab-group>
+  <mat-tab #editTab label="項目の編集">
+  </mat-tab>
+  <mat-tab #otherTab label="その他">
+  </mat-tab>
+</mat-tab-group>
+
+<!-- <ng-container *ngIf="editTab.isActive"> -->
+  <app-domain-edit-form></app-domain-edit-form>
+<!-- </ng-container> -->
+
+<!-- <ng-container *ngIf="otherTab.isActive"> -->
+  項目ID:{{id}}    
+<!-- </ng-container> -->

@@ -18,6 +18,8 @@ import { Domain } from '../models/domain';
 })
 export class DomainDetailComponent implements OnInit {
 
+  id: number;
+
   constructor(
     private activateRoute: ActivatedRoute
   ) { }
@@ -32,6 +34,7 @@ export class DomainDetailComponent implements OnInit {
     .subscribe((data) => {
       console.log('subscribe!');
       console.log(data);
+      this.id = data.id;
     });
   }
 
