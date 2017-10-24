@@ -7,6 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DomainEditFormComponent implements OnInit {
 
+  typeOptions = [
+    {label: '数値', value: 'number'},
+    {label: '混在文字列', value: 'free'},
+  ]
+
   constructor() { }
 
   ngOnInit() {

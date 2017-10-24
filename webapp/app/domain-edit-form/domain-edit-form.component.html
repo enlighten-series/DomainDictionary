@@ -1,11 +1,41 @@
 <mat-card>
   
-  <mat-form-field class="width-full">
-    <input matInput placeholder="項目名">
-  </mat-form-field>
+  <div class="form-block width-full">
+    <mat-form-field>
+      <input matInput placeholder="項目名">
+    </mat-form-field>
+  </div>
+  
+  <div class="form-block width-left">
+    <mat-form-field>
+      <mat-select placeholder="データ型" [(ngModel)]="selectedValue">
+        <mat-option *ngFor="let type of typeOptions" [value]="type.value">
+          {{type.label}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
-  <mat-form-field class="width-full">
-    <input matInput placeholder="桁数">
-  </mat-form-field>
+  <div class="form-block width-right">
+    <mat-form-field>
+      <input matInput placeholder="桁数">
+    </mat-form-field>
+  </div>
+
+  <div class="form-block width-full">
+    <mat-form-field>
+      <textarea matInput matTextareaAutosize placeholder="フォーマット説明"></textarea>
+    </mat-form-field>
+  </div>
+  
+  <div class="form-block width-full">
+    <mat-form-field>
+      <textarea matInput matTextareaAutosize placeholder="業務内容説明"></textarea>
+    </mat-form-field>
+  </div>
+
+  <div class="form-block width-full">
+    <button mat-raised-button color="primary">登録</button>
+  </div>
   
 </mat-card>
