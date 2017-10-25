@@ -61,6 +61,10 @@ export class DomainDetailComponent implements OnInit {
     return this.activeIndex == 2;
   }
 
+  emittedRegist() {
+    console.log('DomainDetailComponent regist emiited!');
+  }
+
   delete() {
     console.log('delete:' + this.id);
   }

@@ -12,4 +12,8 @@ export class DomainCreateComponent implements OnInit {
   ngOnInit() {
   }
 
+  emittedRegist() {
+    console.log('DomainCreateComponent regist emitted!');
+  }
+
 }

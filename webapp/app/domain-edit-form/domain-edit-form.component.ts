@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-domain-edit-form',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./domain-edit-form.component.css']
 })
 export class DomainEditFormComponent implements OnInit {
+
+  @Output() regist = new EventEmitter();
 
   typeOptions = [
     {label: '数値', value: 'number'},
@@ -15,6 +17,10 @@ export class DomainEditFormComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  clickedRegist() {
+    this.regist.emit();
   }
 
 }
