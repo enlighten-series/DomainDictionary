@@ -51,13 +51,13 @@ export class DomainDetailComponent implements OnInit {
   selectedIndexChanged(index) {
     this.activeIndex = index;
   }
-  activeDetail() {
+  isActiveDetail() {
     return this.activeIndex == 0;
   }
-  activeEdit() {
+  isActiveEdit() {
     return this.activeIndex == 1;
   }
-  activeOther() {
+  isActiveOther() {
     return this.activeIndex == 2;
   }
 
@@ -65,7 +65,7 @@ export class DomainDetailComponent implements OnInit {
     console.log('DomainDetailComponent regist emiited!');
   }
 
-  delete() {
+  clickedDelete() {
     console.log('delete:' + this.id);
   }
 

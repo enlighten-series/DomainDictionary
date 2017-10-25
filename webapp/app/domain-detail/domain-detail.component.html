@@ -4,7 +4,7 @@
   <mat-tab label="その他"></mat-tab>
 </mat-tab-group>
 
-<ng-container *ngIf="activeDetail()">
+<ng-container *ngIf="isActiveDetail()">
   <mat-card class="form-grid">
     <div class="form-block width-full">
       {{'項目名'}}
@@ -24,11 +24,11 @@
   </mat-card>
 </ng-container>
 
-<ng-container *ngIf="activeEdit()">
+<ng-container *ngIf="isActiveEdit()">
   <app-domain-edit-form (regist)="emittedRegist()"></app-domain-edit-form>
 </ng-container>
 
-<ng-container *ngIf="activeOther()">
+<ng-container *ngIf="isActiveOther()">
   <mat-card class="meta-card">
     <p>
       <span class="meta-label">項目ID:{{id}}</span>
@@ -43,7 +43,7 @@
 
   <mat-card>
     <p>
-      <button mat-raised-button color="warn" (click)="delete()">この項目を完全に削除</button>
+      <button mat-raised-button color="warn" (click)="clickedDelete()">この項目を完全に削除</button>
     </p>
   </mat-card>
 </ng-container>
