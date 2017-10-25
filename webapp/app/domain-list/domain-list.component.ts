@@ -61,7 +61,7 @@ export class DomainListComponent implements OnInit {
     this.router.navigate(['/create']);
   }
 
-  edit(id) {
+  detail(id) {
     this.router.navigate(['/detail', id]);
   }
 

@@ -1,9 +1,7 @@
 <mat-card>
 
   <div class="button-area">
-    <button mat-fab color="primary" (click)="create()">
-      <mat-icon>add</mat-icon>
-    </button>
+    <button mat-raised-button color="primary" (click)="create()">追加</button>
   </div>
   
   <div class="filter-area">
@@ -44,7 +42,7 @@
     </ng-container>
     <ng-container matColumnDef="edit">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let row"><button mat-raised-button class="edit-btn" (click)="edit(row.id)">edit</button></mat-cell>
+      <mat-cell *matCellDef="let row"><button mat-raised-button class="detail-btn" (click)="detail(row.id)">詳細</button></mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
