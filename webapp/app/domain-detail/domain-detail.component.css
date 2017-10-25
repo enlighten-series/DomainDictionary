@@ -1,3 +1,41 @@
 mat-tab-group {
   margin-bottom: 0.5em;
 }
+
+/*
+詳細タブ
+*/
+.form-grid {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.form-block {
+  padding: 0.5em;
+}
+.form-block mat-form-field {
+  width: 100%;
+}
+.form-block button {
+  width: 100%;
+}
+.width-full {
+  grid-column: 1 / span 2;
+}
+.width-left {
+  grid-column: 1;
+}
+.width-right {
+  grid-column: 2;
+}
+
+/*
+その他タブ
+*/
+.meta-card {
+  margin-bottom: 0.5em;
+}
+
+.meta-label {
+  color: #888;
+}

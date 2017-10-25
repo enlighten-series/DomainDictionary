@@ -1,14 +1,49 @@
 <mat-tab-group (selectedIndexChange)="selectedIndexChanged($event)">
-  <mat-tab label="項目の編集">
-  </mat-tab>
-  <mat-tab label="その他">
-  </mat-tab>
+  <mat-tab label="詳細"></mat-tab>
+  <mat-tab label="項目の編集"></mat-tab>
+  <mat-tab label="その他"></mat-tab>
 </mat-tab-group>
+
+<ng-container *ngIf="activeDetail()">
+  <mat-card>
+    <div class="form-block width-full">
+      {{'項目名'}}
+    </div>
+    <div class="form-block width-left">
+      {{'データ型'}}
+    </div>
+    <div class="form-block width-right">
+      {{'桁数'}}
+    </div>
+    <div class="form-block width-full">
+      {{'フォーマット'}}
+    </div>
+    <div class="form-block width-full">
+      {{'業務内容説明'}}
+    </div>
+  </mat-card>
+</ng-container>
 
 <ng-container *ngIf="activeEdit()">
   <app-domain-edit-form></app-domain-edit-form>
 </ng-container>
 
 <ng-container *ngIf="activeOther()">
-  項目ID:{{id}}    
+  <mat-card class="meta-card">
+    <p>
+      <span class="meta-label">項目ID:{{id}}</span>
+    </p>
+    <p>
+      <span class="meta-label">作成日:{{'2017/10/25'}}</span>
+    </p>
+    <p>
+      <span class="meta-label">更新日:{{'2017/10/25'}}</span>
+    </p>
+  </mat-card>
+
+  <mat-card>
+    <p>
+      <button mat-raised-button color="warn" (click)="delete()">この項目を完全に削除</button>
+    </p>
+  </mat-card>
 </ng-container>
