@@ -1,8 +1,10 @@
 <mat-card>
 
+  <div class="button-area">
     <button mat-fab color="primary" (click)="create()">
       <mat-icon>add</mat-icon>
     </button>
+  </div>
   
   <div class="filter-area">
     <mat-grid-list cols="2" rowHeight="70px">
@@ -42,7 +44,7 @@
     </ng-container>
     <ng-container matColumnDef="edit">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let row"><button mat-button class="menu-btn" (click)="edit(row.id)">edit</button></mat-cell>
+      <mat-cell *matCellDef="let row"><button mat-raised-button class="edit-btn" (click)="edit(row.id)">edit</button></mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
