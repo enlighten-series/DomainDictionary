@@ -19,6 +19,7 @@ import { Domain } from '../models/domain';
 export class DomainDetailComponent implements OnInit {
 
   id: number;
+  activeIndex = 0;
 
   constructor(
     private activateRoute: ActivatedRoute
@@ -45,6 +46,17 @@ export class DomainDetailComponent implements OnInit {
         return true;
       }
     });
+  }
+
+  selectedIndexChanged(index) {
+    this.activeIndex = index;
+  }
+
+  activeEdit() {
+    return this.activeIndex == 0;
+  }
+  activeOther() {
+    return this.activeIndex == 1;
   }
 
 }
