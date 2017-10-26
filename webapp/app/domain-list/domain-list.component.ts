@@ -6,8 +6,10 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/map';
 
 import { Domain } from '../models/domain';
 
@@ -40,7 +42,8 @@ export class DomainListComponent implements OnInit {
       'edit',
     ];
 
-    this.domainSource = new ExampleDataSource();
+    let exampleDatabase = new ExampleDatabase();
+    this.domainSource = new ExampleDataSource(exampleDatabase);
 
     // フィルタ変更ストリーム
     this.filterNameSubscription = Observable.fromEvent(this.filterName.nativeElement, 'keyup')
@@ -48,6 +51,7 @@ export class DomainListComponent implements OnInit {
       .distinctUntilChanged()
       .subscribe(() => {
         console.log('filter name:' + this.filterName.nativeElement.value);
+        this.domainSource.filter = this.filterName.nativeElement.value;
       });
     this.filterDescriptionSubscription = Observable.fromEvent(this.filterDescription.nativeElement, 'keyup')
       .debounceTime(150)
@@ -72,6 +76,7 @@ export class DomainListComponent implements OnInit {
 
 }
 
+/*
 const data: Domain[] = [
   new Domain(
     1,
@@ -90,12 +95,17 @@ const data: Domain[] = [
     'ー',
   ),
 ];
+*/
 
 export class ExampleDatabase {
   dataChange: BehaviorSubject<Domain[]> = new BehaviorSubject<Domain[]>([]);
-  /*
-  data: Domain[] = [
+  get data(): Domain[] {
+    return this.dataChange.value;
+  }
+  
+  dataAsset: Domain[] = [
     new Domain(
+      1,
       '契約番号',
       '半角英数',
       10,
@@ -103,6 +113,7 @@ export class ExampleDatabase {
       '顧客ごとに自動的に付与され…',
     ),
     new Domain(
+      2,
       '顧客正式名称',
       '全角文字列',
       50,
@@ -110,14 +121,39 @@ export class ExampleDatabase {
       'ー',
     ),
   ];
-  */
+  
   constructor() {
+    this.dataChange.next(this.dataAsset);
   }
 }
 
 export class ExampleDataSource extends DataSource<Domain> {
+  _filterChange = new BehaviorSubject('');
+  set filter(filter: string) {
+    this._filterChange.next(filter);
+  }
+  get filter() {
+    return this._filterChange.value;
+  }
+
+  constructor(
+    private _exampleDatabase: ExampleDatabase
+  ) {
+    super();
+  }
+
   connect(): Observable<Domain[]> {
-    return Observable.of(data);
+    const displayDataChanges = [
+      this._exampleDatabase.dataChange,
+      this._filterChange,
+    ];
+
+    return Observable.merge(...displayDataChanges).map(() => {
+      return this._exampleDatabase.data.slice().filter((item: Domain) => {
+        let searchStr = item.name;
+        return searchStr.indexOf(this.filter.toLowerCase()) != -1;
+      });
+    });
   }
 
   disconnect() {}
