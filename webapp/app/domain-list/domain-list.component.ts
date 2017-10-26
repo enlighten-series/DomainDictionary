@@ -50,14 +50,13 @@ export class DomainListComponent implements OnInit {
       .debounceTime(150)
       .distinctUntilChanged()
       .subscribe(() => {
-        console.log('filter name:' + this.filterName.nativeElement.value);
-        this.domainSource.filter = this.filterName.nativeElement.value;
+        this.domainSource.nameFilter = this.filterName.nativeElement.value;
       });
     this.filterDescriptionSubscription = Observable.fromEvent(this.filterDescription.nativeElement, 'keyup')
       .debounceTime(150)
       .distinctUntilChanged()
       .subscribe(() => {
-        console.log('filter description:' + this.filterDescription.nativeElement.value);
+        this.domainSource.descriptionFilter = this.filterDescription.nativeElement.value;
       });
   }
   
@@ -75,27 +74,6 @@ export class DomainListComponent implements OnInit {
   }
 
 }
-
-/*
-const data: Domain[] = [
-  new Domain(
-    1,
-    '契約番号',
-    '半角英数',
-    10,
-    '9-999-99999',
-    '顧客ごとに自動的に付与され…',
-  ),
-  new Domain(
-    2,
-    '顧客正式名称',
-    '全角文字列',
-    50,
-    'ー',
-    'ー',
-  ),
-];
-*/
 
 export class ExampleDatabase {
   dataChange: BehaviorSubject<Domain[]> = new BehaviorSubject<Domain[]>([]);
@@ -128,12 +106,19 @@ export class ExampleDatabase {
 }
 
 export class ExampleDataSource extends DataSource<Domain> {
-  _filterChange = new BehaviorSubject('');
-  set filter(filter: string) {
-    this._filterChange.next(filter);
+  _nameFilterChange = new BehaviorSubject('');
+  set nameFilter(filter: string) {
+    this._nameFilterChange.next(filter);
   }
-  get filter() {
-    return this._filterChange.value;
+  get nameFilter() {
+    return this._nameFilterChange.value;
+  }
+  _descriptionFilterChange = new BehaviorSubject('');
+  set descriptionFilter(filter: string) {
+    this._descriptionFilterChange.next(filter);
+  }
+  get descriptionFilter() {
+    return this._descriptionFilterChange.value;
   }
 
   constructor(
@@ -145,13 +130,14 @@ export class ExampleDataSource extends DataSource<Domain> {
   connect(): Observable<Domain[]> {
     const displayDataChanges = [
       this._exampleDatabase.dataChange,
-      this._filterChange,
+      this._nameFilterChange,
+      this._descriptionFilterChange,
     ];
 
     return Observable.merge(...displayDataChanges).map(() => {
       return this._exampleDatabase.data.slice().filter((item: Domain) => {
-        let searchStr = item.name;
-        return searchStr.indexOf(this.filter.toLowerCase()) != -1;
+        return item.name.indexOf(this.nameFilter) != -1
+          && item.description.indexOf(this.descriptionFilter) != -1;
       });
     });
   }
