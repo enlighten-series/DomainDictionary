@@ -4,7 +4,7 @@
       <mat-icon>home</mat-icon>
     </button>
 
-    <button mat-button class="menu-btn">
+    <button mat-button class="menu-btn" (click)="toggleAppMenuVisible()">
       <mat-icon>menu</mat-icon>
     </button>
   </div>
@@ -18,13 +18,10 @@
   <router-outlet></router-outlet>
 </div>
 
-<div class="app-menu">
+<div class="app-menu" *ngIf="appMenuVisible">
   <ul>
     <li>
       <a routerLink="/license">ライセンスの表示</a>
-    </li>
-    <li>
-      <a>ヘルプ</a>
     </li>
   </ul>
 </div>

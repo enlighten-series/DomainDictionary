@@ -11,6 +11,8 @@ export class AppComponent {
   
   @ViewChild(MatSidenav) sideNav: MatSidenav;
 
+  appMenuVisible = false;
+
   constructor(
     private router: Router
   ) {}
@@ -21,5 +23,9 @@ export class AppComponent {
 
   home() {
     this.router.navigate(['/']);
+  }
+
+  toggleAppMenuVisible() {
+    this.appMenuVisible = !this.appMenuVisible;
   }
 }
