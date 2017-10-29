@@ -23,6 +23,7 @@ import { DomainListComponent } from './domain-list/domain-list.component';
 import { DomainDetailComponent } from './domain-detail/domain-detail.component';
 import { DomainEditFormComponent } from './domain-edit-form/domain-edit-form.component';
 import { DomainCreateComponent } from './domain-create/domain-create.component';
+import { LicenseListComponent } from './license-list/license-list.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { DomainCreateComponent } from './domain-create/domain-create.component';
     DomainListComponent,
     DomainDetailComponent,
     DomainEditFormComponent,
-    DomainCreateComponent
+    DomainCreateComponent,
+    LicenseListComponent
   ],
   imports: [
     BrowserModule,
