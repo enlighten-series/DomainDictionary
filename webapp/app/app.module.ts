@@ -32,7 +32,7 @@ import { LicenseListComponent } from './license-list/license-list.component';
     DomainDetailComponent,
     DomainEditFormComponent,
     DomainCreateComponent,
-    LicenseListComponent
+    LicenseListComponent,
   ],
   imports: [
     BrowserModule,
