@@ -32,6 +32,9 @@ repositories {
 dependencies {
   compile('org.springframework.boot:spring-boot-starter')
   compile('org.springframework.boot:spring-boot-starter-web')
+
+  compile('org.projectlombok:lombok:1.16.18')
+
   testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
