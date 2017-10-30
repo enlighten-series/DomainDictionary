@@ -4,12 +4,12 @@
       <mat-icon>home</mat-icon>
     </button>
 
-    <button mat-button class="menu-btn" (click)="toggleAppMenuVisible($event)">
+    <button mat-button class="app-menu-btn" (click)="toggleAppMenuVisible($event)">
       <mat-icon>menu</mat-icon>
     </button>
   </div>
 
-  <button mat-fab class="user-btn">
+  <button mat-fab class="user-menu-btn" (click)="toggleUserMenuVisible($event)">
     <mat-icon>person</mat-icon>
   </button>
 </header>
@@ -21,7 +21,15 @@
 <div class="app-menu" *ngIf="appMenuVisible">
   <ul>
     <li>
-      <a routerLink="/license">ライセンスの表示</a>
+      <button mat-button (click)="license()">ライセンスの表示</button>
+    </li>
+  </ul>
+</div>
+
+<div class="user-menu" *ngIf="userMenuVisible">
+  <ul>
+    <li>
+      <button mat-button (click)="login()">ログイン</button>
     </li>
   </ul>
 </div>

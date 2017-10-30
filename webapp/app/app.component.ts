@@ -12,6 +12,7 @@ export class AppComponent implements OnInit{
   @ViewChild(MatSidenav) sideNav: MatSidenav;
 
   appMenuVisible = false;
+  userMenuVisible = false;
 
   constructor(
     private router: Router
@@ -38,15 +39,29 @@ export class AppComponent implements OnInit{
 
   toggleAppMenuVisible(e: MouseEvent) {
     this.appMenuVisible = !this.appMenuVisible;
-    
+    this.userMenuVisible = false;
+    // window:clickでメニューを閉じるイベントまでエスカレーションするのを防止する
+    e.stopPropagation();
+  }
+
+  toggleUserMenuVisible(e: MouseEvent) {
+    this.userMenuVisible = !this.userMenuVisible;
+    this.appMenuVisible = false;
     // window:clickでメニューを閉じるイベントまでエスカレーションするのを防止する
     e.stopPropagation();
   }
 
   @HostListener('window:click')
   windowClicked(e) {
-    if (this.appMenuVisible) {
-      this.appMenuVisible = false;
-    }
+    this.appMenuVisible = false;
+    this.userMenuVisible = false;
+  }
+
+  license() {
+    this.router.navigate(['/license']);
+  }
+
+  login() {
+    alert('login!');
   }
 }
