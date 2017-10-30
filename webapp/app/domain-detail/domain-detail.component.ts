@@ -33,8 +33,6 @@ export class DomainDetailComponent implements OnInit {
     })
     .first()
     .subscribe((data) => {
-      console.log('subscribe!');
-      console.log(data);
       this.id = data.id;
     });
   }
@@ -75,18 +73,16 @@ const data: Domain[] = [
   new Domain(
     1,
     '契約番号',
-    '半角英数',
-    10,
     '9-999-99999',
     '顧客ごとに自動的に付与され…',
+    'いる！',
   ),
   new Domain(
     2,
     '顧客正式名称',
-    '全角文字列',
-    50,
     'ー',
     'ー',
+    'いる！',
   ),
 ];
 

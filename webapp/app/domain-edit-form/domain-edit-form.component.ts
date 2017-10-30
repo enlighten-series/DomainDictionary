@@ -9,11 +9,6 @@ export class DomainEditFormComponent implements OnInit {
 
   @Output() regist = new EventEmitter();
 
-  typeOptions = [
-    {label: '数値', value: 'number'},
-    {label: '混在文字列', value: 'free'},
-  ]
-
   constructor() { }
 
   ngOnInit() {

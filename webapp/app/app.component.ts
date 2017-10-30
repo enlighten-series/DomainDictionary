@@ -29,10 +29,6 @@ export class AppComponent implements OnInit{
       });
   }
 
-  toggleMenu() {
-    this.sideNav.toggle();
-  }
-
   home() {
     this.router.navigate(['/']);
   }
