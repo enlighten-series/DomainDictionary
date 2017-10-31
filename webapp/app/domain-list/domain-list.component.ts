@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
@@ -29,7 +30,8 @@ export class DomainListComponent implements OnInit {
   public domainSource: ExampleDataSource;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private http: HttpClient,
   ) { }
 
   ngOnInit() {
@@ -56,6 +58,18 @@ export class DomainListComponent implements OnInit {
       .subscribe(() => {
         this.domainSource.descriptionFilter = this.filterDescription.nativeElement.value;
       });
+
+    this.http.get('/api/domains')
+      .subscribe(
+        (data) => {
+          console.log('http get!');
+          console.log(data);
+        },
+        (error) => {
+          console.log('http error...');
+          console.log(error);
+        }
+      );
   }
   
   create() {
