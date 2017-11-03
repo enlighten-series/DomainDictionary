@@ -29,6 +29,8 @@ export class DomainListComponent implements OnInit {
   public displayedColumns: string[];
   public domainSource: ExampleDataSource;
 
+  dataChange: BehaviorSubject<Domain[]> = new BehaviorSubject<Domain[]>([]);
+
   constructor(
     private router: Router,
     private http: HttpClient,
@@ -43,7 +45,7 @@ export class DomainListComponent implements OnInit {
     ];
 
     let exampleDatabase = new ExampleDatabase();
-    this.domainSource = new ExampleDataSource(exampleDatabase);
+    this.domainSource = new ExampleDataSource(this.dataChange);
 
     // フィルタ変更ストリーム
     this.filterNameSubscription = Observable.fromEvent(this.filterName.nativeElement, 'keyup')
@@ -61,9 +63,10 @@ export class DomainListComponent implements OnInit {
 
     this.http.get('/api/domains')
       .subscribe(
-        (data) => {
+        (data: any) => {
           console.log('http get!');
           console.log(data);
+          this.dataChange.next(data);
         },
         (error) => {
           console.log('http error...');
@@ -132,21 +135,24 @@ export class ExampleDataSource extends DataSource<Domain> {
   }
 
   constructor(
-    private _exampleDatabase: ExampleDatabase
+    //private _exampleDatabase: ExampleDatabase
+    private dataChange: BehaviorSubject<Domain[]>
   ) {
     super();
   }
 
   connect(): Observable<Domain[]> {
     const displayDataChanges = [
-      this._exampleDatabase.dataChange,
+      //this._exampleDatabase.dataChange,
+      this.dataChange,
       this._nameFilterChange,
       this._descriptionFilterChange,
     ];
 
     return Observable.merge(...displayDataChanges).map(() => {
-      return this._exampleDatabase.data.slice().filter((item: Domain) => {
-        return item.name.indexOf(this.nameFilter) != -1
+      //return this._exampleDatabase.data.slice().filter((item: Domain) => {
+      return this.dataChange.value.slice().filter((item: Domain) => {
+          return item.name.indexOf(this.nameFilter) != -1
           && item.description.indexOf(this.descriptionFilter) != -1;
       });
     });
