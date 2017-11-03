@@ -44,7 +44,6 @@ export class DomainListComponent implements OnInit {
       'edit',
     ];
 
-    let exampleDatabase = new ExampleDatabase();
     this.domainSource = new ExampleDataSource(this.dataChange);
 
     // フィルタ変更ストリーム
@@ -64,13 +63,11 @@ export class DomainListComponent implements OnInit {
     this.http.get('/api/domains')
       .subscribe(
         (data: any) => {
-          console.log('http get!');
-          console.log(data);
           this.dataChange.next(data);
         },
         (error) => {
-          console.log('http error...');
           console.log(error);
+          this.dataChange.next([]);
         }
       );
   }
@@ -90,35 +87,7 @@ export class DomainListComponent implements OnInit {
 
 }
 
-export class ExampleDatabase {
-  dataChange: BehaviorSubject<Domain[]> = new BehaviorSubject<Domain[]>([]);
-  get data(): Domain[] {
-    return this.dataChange.value;
-  }
-  
-  dataAsset: Domain[] = [
-    new Domain(
-      1,
-      '契約番号',
-      '9-999-99999',
-      '顧客ごとに自動的に付与され…',
-      'いる！',
-    ),
-    new Domain(
-      2,
-      '顧客正式名称',
-      'ー',
-      'ー',
-      'いる！',
-    ),
-  ];
-  
-  constructor() {
-    this.dataChange.next(this.dataAsset);
-  }
-}
-
-export class ExampleDataSource extends DataSource<Domain> {
+class ExampleDataSource extends DataSource<Domain> {
   _nameFilterChange = new BehaviorSubject('');
   set nameFilter(filter: string) {
     this._nameFilterChange.next(filter);
@@ -135,7 +104,6 @@ export class ExampleDataSource extends DataSource<Domain> {
   }
 
   constructor(
-    //private _exampleDatabase: ExampleDatabase
     private dataChange: BehaviorSubject<Domain[]>
   ) {
     super();
@@ -143,14 +111,12 @@ export class ExampleDataSource extends DataSource<Domain> {
 
   connect(): Observable<Domain[]> {
     const displayDataChanges = [
-      //this._exampleDatabase.dataChange,
       this.dataChange,
       this._nameFilterChange,
       this._descriptionFilterChange,
     ];
 
     return Observable.merge(...displayDataChanges).map(() => {
-      //return this._exampleDatabase.data.slice().filter((item: Domain) => {
       return this.dataChange.value.slice().filter((item: Domain) => {
           return item.name.indexOf(this.nameFilter) != -1
           && item.description.indexOf(this.descriptionFilter) != -1;
