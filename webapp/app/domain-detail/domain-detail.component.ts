@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataSource } from '@angular/cdk/collections';
+import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -21,28 +21,27 @@ export class DomainDetailComponent implements OnInit {
   id: number;
   activeIndex = 0;
 
+  viewDomain = {};
+
   constructor(
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    private http: HttpClient,
   ) { }
 
   ngOnInit() {
     this.activateRoute.paramMap
-    .switchMap((param: ParamMap) => {
-      console.log('routed:' + param.get('id'));
-      return this.getDomain(param.get('id'));
-    })
     .first()
-    .subscribe((data) => {
-      this.id = data.id;
-    });
-  }
-
-  getDomain(id): Observable<Domain> {
-    return Observable.from(data)
-    .filter((data) => {
-      if(data.id == id) {
-        return true;
-      }
+    .subscribe((param: ParamMap) => {
+      this.id = Number(param.get('id'));
+      this.http.get('/api/domains/' + param.get('id'))
+      .subscribe(
+        (domain: any) => {
+          this.viewDomain = domain;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     });
   }
 
@@ -67,29 +66,4 @@ export class DomainDetailComponent implements OnInit {
     console.log('delete:' + this.id);
   }
 
-}
-
-const data: Domain[] = [
-  new Domain(
-    1,
-    '契約番号',
-    '9-999-99999',
-    '顧客ごとに自動的に付与され…',
-    'いる！',
-  ),
-  new Domain(
-    2,
-    '顧客正式名称',
-    'ー',
-    'ー',
-    'いる！',
-  ),
-];
-
-export class ExampleDataSource extends DataSource<Domain> {
-  connect(): Observable<Domain[]> {
-    return Observable.of(data);
-  }
-
-  disconnect() {}
 }
