@@ -42,7 +42,7 @@ import { LicenseListComponent } from './license-list/license-list.component';
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot(ROUTES),
+    RouterModule.forRoot(ROUTES, {useHash: true}),
     MatButtonModule,
     MatCardModule,
     MatDialogModule,
