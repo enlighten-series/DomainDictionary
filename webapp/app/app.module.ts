@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import {
   MatButtonModule,
   MatCardModule,
+  MatDialogModule,
   MatGridListModule,
   MatIconModule,
   MatInputModule,
@@ -22,7 +23,7 @@ import { ROUTES } from './app.route';
 import { AppComponent } from './app.component';
 import { DomainListComponent } from './domain-list/domain-list.component';
 import { DomainDetailComponent } from './domain-detail/domain-detail.component';
-import { DomainEditFormComponent } from './domain-edit-form/domain-edit-form.component';
+import { DomainEditFormComponent, RegistConfirmDialog } from './domain-edit-form/domain-edit-form.component';
 import { DomainCreateComponent } from './domain-create/domain-create.component';
 import { LicenseListComponent } from './license-list/license-list.component';
 
@@ -32,6 +33,7 @@ import { LicenseListComponent } from './license-list/license-list.component';
     DomainListComponent,
     DomainDetailComponent,
     DomainEditFormComponent,
+    RegistConfirmDialog,
     DomainCreateComponent,
     LicenseListComponent,
   ],
@@ -43,6 +45,7 @@ import { LicenseListComponent } from './license-list/license-list.component';
     RouterModule.forRoot(ROUTES),
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatGridListModule,
     MatIconModule,
     MatInputModule,
@@ -51,6 +54,9 @@ import { LicenseListComponent } from './license-list/license-list.component';
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
+  ],
+  entryComponents: [
+    RegistConfirmDialog,
   ],
   providers: [],
   bootstrap: [AppComponent]
