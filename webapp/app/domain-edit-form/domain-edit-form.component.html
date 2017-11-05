@@ -1,31 +1,53 @@
-<mat-card class="form-grid">
+<form #form="ngForm">
+  <mat-card class="form-grid">
   
-  <div class="form-block width-full">
-    <mat-form-field>
-      <input matInput placeholder="項目名">
-    </mat-form-field>
-  </div>
+    <div class="form-block width-full">
+      <mat-form-field>
+        <input matInput placeholder="項目名"
+          [(ngModel)]="editingDomain.name"
+          name="name"
+          #nameForm="ngModel"
+          required
+        >
+      </mat-form-field>
+      <span [hidden]="nameForm.valid || nameForm.pristine">
+        項目名は必須です。
+      </span>
+    </div>
 
-  <div class="form-block width-full">
-    <mat-form-field>
-      <textarea matInput matTextareaAutosize placeholder="フォーマット説明"></textarea>
-    </mat-form-field>
-  </div>
-  
-  <div class="form-block width-full">
-    <mat-form-field>
-      <textarea matInput matTextareaAutosize placeholder="業務内容説明"></textarea>
-    </mat-form-field>
-  </div>
-  
-  <div class="form-block width-full">
-    <mat-form-field>
-      <textarea matInput matTextareaAutosize placeholder="存在理由・他との違い"></textarea>
-    </mat-form-field>
-  </div>
+    <div class="form-block width-full">
+      <mat-form-field>
+        <textarea matInput matTextareaAutosize placeholder="フォーマット説明"
+          [(ngModel)]="editingDomain.format"
+          name="format"
+          #formatForm="ngModel"
+        ></textarea>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-block width-full">
+      <mat-form-field>
+        <textarea matInput matTextareaAutosize placeholder="業務内容説明"
+        [(ngModel)]="editingDomain.description"
+        name="description"
+        #descriptionForm="ngModel"
+      ></textarea>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-block width-full">
+      <mat-form-field>
+        <textarea matInput matTextareaAutosize placeholder="存在理由・他との違い"
+          [(ngModel)]="editingDomain.existential"
+          name="existential"
+          #existentialForm="ngModel"
+        ></textarea>
+      </mat-form-field>
+    </div>
 
-  <div class="form-block width-full">
-    <button mat-raised-button color="primary" (click)="clickedRegist()">登録</button>
-  </div>
-  
-</mat-card>
+    <div class="form-block width-full">
+      <button mat-raised-button color="primary" (click)="clickedRegist(form)">登録</button>
+    </div>
+
+  </mat-card>
+</form>
