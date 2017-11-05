@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-domain-create',
@@ -7,13 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DomainCreateComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router,
+  ) { }
 
   ngOnInit() {
   }
 
-  emittedRegist() {
+  emittedRegist(event) {
     console.log('DomainCreateComponent regist emitted!');
+    console.log(event);
+
+    this.router.navigate(['/']);
   }
 
 }

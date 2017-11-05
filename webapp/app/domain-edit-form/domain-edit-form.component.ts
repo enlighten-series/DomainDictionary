@@ -31,7 +31,7 @@ export class RegistConfirmDialog {
 })
 export class DomainEditFormComponent implements OnInit {
 
-  @Output() regist = new EventEmitter();
+  @Output() regist = new EventEmitter<any>();
 
   editingDomain: any = {
     name: '',
