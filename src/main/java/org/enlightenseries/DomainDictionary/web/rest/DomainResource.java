@@ -2,11 +2,10 @@ package org.enlightenseries.DomainDictionary.web.rest;
 
 import org.enlightenseries.DomainDictionary.domain.Domain;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,5 +60,15 @@ public class DomainResource {
       return ResponseEntity.ok().body(domain);
     }
     return ResponseEntity.notFound().build();
+  }
+
+  @PostMapping("/domains")
+  public ResponseEntity<Domain> createNewDomain(@RequestBody Domain domain) throws URISyntaxException {
+    System.out.println(domain.toString());
+
+    domain.setId(3L);
+
+    return ResponseEntity.created(new URI("/api/domain/3"))
+      .body(domain);
   }
 }
