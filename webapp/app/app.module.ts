@@ -13,6 +13,7 @@ import {
   MatInputModule,
   MatSelectModule,
   MatSidenavModule,
+  MatSnackBarModule,
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
@@ -26,6 +27,7 @@ import { DomainDetailComponent } from './domain-detail/domain-detail.component';
 import { DomainEditFormComponent, RegistConfirmDialog } from './domain-edit-form/domain-edit-form.component';
 import { DomainCreateComponent } from './domain-create/domain-create.component';
 import { LicenseListComponent } from './license-list/license-list.component';
+import { GrowlMessagerComponent } from './widgets/growl-messager.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,7 @@ import { LicenseListComponent } from './license-list/license-list.component';
     RegistConfirmDialog,
     DomainCreateComponent,
     LicenseListComponent,
+    GrowlMessagerComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,12 +54,14 @@ import { LicenseListComponent } from './license-list/license-list.component';
     MatInputModule,
     MatSelectModule,
     MatSidenavModule,
+    MatSnackBarModule,
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
   ],
   entryComponents: [
     RegistConfirmDialog,
+    GrowlMessagerComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]
