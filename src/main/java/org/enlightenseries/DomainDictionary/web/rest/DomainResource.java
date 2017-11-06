@@ -63,12 +63,20 @@ public class DomainResource {
   }
 
   @PostMapping("/domains")
-  public ResponseEntity<Domain> createNewDomain(@RequestBody Domain domain) throws URISyntaxException {
-    System.out.println(domain.toString());
+  public ResponseEntity<Domain> createDomain(@RequestBody Domain domain) throws URISyntaxException {
+    System.out.println("createDomain¥r¥n" + domain.toString());
 
     domain.setId(3L);
 
     return ResponseEntity.created(new URI("/api/domain/3"))
+      .body(domain);
+  }
+
+  @PutMapping("/domains/{id}")
+  public ResponseEntity<Domain> updateDomain(@PathVariable Long id, @RequestBody Domain domain) throws URISyntaxException {
+    System.out.println("updateDomain[" + id + "]¥r¥n" + domain.toString());
+
+    return ResponseEntity.ok()
       .body(domain);
   }
 }

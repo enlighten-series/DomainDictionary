@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
@@ -30,6 +30,14 @@ export class RegistConfirmDialog {
   styleUrls: ['./domain-edit-form.component.css'],
 })
 export class DomainEditFormComponent implements OnInit {
+
+  @Input()
+  set initialValue(d: Domain) {
+    this.editingDomain.name = d.name;
+    this.editingDomain.format = d.format;
+    this.editingDomain.description = d.description;
+    this.editingDomain.existential = d.existential;
+  }
 
   @Output() regist = new EventEmitter<any>();
 

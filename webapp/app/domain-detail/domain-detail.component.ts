@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -10,6 +11,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/switchMap';
 
 import { Domain } from '../models/domain';
+import { GrowlMessagerComponent } from '../widgets/growl-messager.component';
 
 @Component({
   selector: 'app-domain-detail',
@@ -22,10 +24,12 @@ export class DomainDetailComponent implements OnInit {
   activeIndex = 0;
 
   viewDomain = {};
+  editFormInitialValue: Domain;
 
   constructor(
     private activateRoute: ActivatedRoute,
     private http: HttpClient,
+    private snack: MatSnackBar,
   ) { }
 
   ngOnInit() {
@@ -33,16 +37,21 @@ export class DomainDetailComponent implements OnInit {
     .first()
     .subscribe((param: ParamMap) => {
       this.id = Number(param.get('id'));
-      this.http.get('/api/domains/' + param.get('id'))
-      .subscribe(
-        (domain: any) => {
-          this.viewDomain = domain;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+      this.load();
     });
+  }
+
+  load() {
+    this.http.get('/api/domains/' + this.id)
+    .subscribe(
+      (domain: any) => {
+        this.viewDomain = domain;
+        this.editFormInitialValue = domain;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   selectedIndexChanged(index) {
@@ -59,8 +68,21 @@ export class DomainDetailComponent implements OnInit {
   }
 
   emittedRegist(event) {
-    console.log('DomainDetailComponent regist emiited!');
-    console.log(event);
+    this.http.put('/api/domains/' + this.id, event)
+    .subscribe(
+      (data: any) => {
+        this.snack.openFromComponent(GrowlMessagerComponent, {
+          data: {
+            message: 'ドメインを更新しました',
+          },
+          duration: 1500,
+        });
+        this.load();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   clickedDelete() {
