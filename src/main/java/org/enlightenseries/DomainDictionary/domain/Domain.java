@@ -2,8 +2,10 @@ package org.enlightenseries.DomainDictionary.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class Domain {
   private Long id;

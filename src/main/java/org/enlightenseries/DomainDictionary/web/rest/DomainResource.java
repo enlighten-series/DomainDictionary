@@ -1,6 +1,7 @@
 package org.enlightenseries.DomainDictionary.web.rest;
 
 import org.enlightenseries.DomainDictionary.domain.Domain;
+import org.enlightenseries.DomainDictionary.mapper.DomainMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +14,17 @@ import java.util.List;
 @RequestMapping("/api")
 public class DomainResource {
 
+  DomainMapper domainMapper;
+
+  public DomainResource(
+    DomainMapper _domainMapper
+  ) {
+    this.domainMapper = _domainMapper;
+  }
+
   @GetMapping("/domains")
   public List<Domain> getAllDomains() {
+    /*
     return Arrays.asList(
       new Domain(
         1L,
@@ -31,6 +41,8 @@ public class DomainResource {
         "いる！"
       )
     );
+    */
+    return this.domainMapper.selectAll();
   }
 
   @GetMapping("/domains/{id}")
