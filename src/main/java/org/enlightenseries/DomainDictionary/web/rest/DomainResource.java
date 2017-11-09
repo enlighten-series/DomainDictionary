@@ -47,26 +47,7 @@ public class DomainResource {
 
   @GetMapping("/domains/{id}")
   public ResponseEntity<Domain> getDomain(@PathVariable Long id) {
-    Domain domain = null;
-
-    if (id == 1L) {
-      domain = new Domain(
-        1L,
-        "顧客番号",
-        "123-456-789",
-        "おきゃくさんごとにつくおきゃくさんごとにつくおきゃくさんごとにつくおきゃくさんごとにつくおきゃくさんごとにつくおきゃくさんごとにつくおきゃくさんごとにつく",
-        "おもいつき"
-      );
-    }
-    if (id == 2L) {
-      domain = new Domain(
-        2L,
-        "顧客",
-        "-",
-        "顧客の情報を格納する",
-        "いる！"
-      );
-    }
+    Domain domain = this.domainMapper.select(id);
 
     if (domain != null) {
       return ResponseEntity.ok().body(domain);
