@@ -63,4 +63,13 @@ task buildClientDev(type: NpmTask, dependsOn: 'npmInstall') {
   args = ['run','buildDev']
 }
 
+task buildClientProd(type: NpmTask, dependsOn: 'npmInstall') {
+  group = 'build'
+  description = 'Compile client side folder for production packaging'
+  args = ['run','buildProd']
+}
+
 bootRun.dependsOn(buildClientDev)
+
+// TODO: パッケージ時は本番ビルドになるようにする
+bootRepackage.dependsOn(buildClientProd)
