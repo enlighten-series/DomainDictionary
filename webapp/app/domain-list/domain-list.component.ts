@@ -118,8 +118,16 @@ class ExampleDataSource extends DataSource<Domain> {
 
     return Observable.merge(...displayDataChanges).map(() => {
       return this.dataChange.value.slice().filter((item: Domain) => {
-          return item.name.indexOf(this.nameFilter) != -1
-          && item.description.indexOf(this.descriptionFilter) != -1;
+        let through = true;
+        // 項目名フィルタ適用
+        if (item.name.indexOf(this.nameFilter) == -1) {
+          through = false;
+        }
+        // 説明フィルタ適用
+        if (item.description && item.description.indexOf(this.descriptionFilter) == -1) {
+          through = false;
+        }
+        return through;
       });
     });
   }

@@ -78,9 +78,9 @@ public class DomainResource {
   public ResponseEntity<Domain> createDomain(@RequestBody Domain domain) throws URISyntaxException {
     System.out.println("createDomain¥r¥n" + domain.toString());
 
-    domain.setId(3L);
+    this.domainMapper.insert(domain);
 
-    return ResponseEntity.created(new URI("/api/domain/3"))
+    return ResponseEntity.created(new URI("/api/domain/" + domain.getId()))
       .body(domain);
   }
 
