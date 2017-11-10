@@ -23,7 +23,7 @@ import { ROUTES } from './app.route';
 
 import { AppComponent } from './app.component';
 import { DomainListComponent } from './domain-list/domain-list.component';
-import { DomainDetailComponent } from './domain-detail/domain-detail.component';
+import { DomainDetailComponent, DeleteConfirmDialog } from './domain-detail/domain-detail.component';
 import { DomainEditFormComponent, RegistConfirmDialog } from './domain-edit-form/domain-edit-form.component';
 import { DomainCreateComponent } from './domain-create/domain-create.component';
 import { LicenseListComponent } from './license-list/license-list.component';
@@ -34,6 +34,7 @@ import { GrowlMessagerComponent } from './widgets/growl-messager.component';
     AppComponent,
     DomainListComponent,
     DomainDetailComponent,
+    DeleteConfirmDialog,
     DomainEditFormComponent,
     RegistConfirmDialog,
     DomainCreateComponent,
@@ -60,6 +61,7 @@ import { GrowlMessagerComponent } from './widgets/growl-messager.component';
     MatToolbarModule,
   ],
   entryComponents: [
+    DeleteConfirmDialog,
     RegistConfirmDialog,
     GrowlMessagerComponent,
   ],

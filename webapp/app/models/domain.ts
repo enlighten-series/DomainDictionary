@@ -6,16 +6,16 @@ export class Domain {
   existential: string;
 
   constructor(
-    id,
-    name,
-    format,
-    description,
-    existential,
+    id?,
+    name?,
+    format?,
+    description?,
+    existential?,
   ) {
-    this.id = id;
-    this.name = name;
-    this.format = format;
-    this.description = description;
-    this.existential = existential;
+    this.id = id ? id : 1;
+    this.name = name ? name : '';
+    this.format = format ? format : '';
+    this.description = description ? description : '';
+    this.existential = existential ? existential : '';
   }
 }
