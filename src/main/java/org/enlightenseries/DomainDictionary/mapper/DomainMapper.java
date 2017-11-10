@@ -20,4 +20,7 @@ public interface DomainMapper {
 
   @Update("UPDATE domain SET name=#{domain.name}, format=#{domain.format}, description=#{domain.description}, existential=#{domain.existential} WHERE id=#{id}")
   void update(@Param("id") Long id, @Param("domain") Domain domain);
+
+  @Delete("DELETE FROM domain WHERE id=#{id}")
+  void delete(@Param("id") Long id);
 }

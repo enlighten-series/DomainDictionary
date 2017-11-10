@@ -45,8 +45,18 @@ public class DomainResource {
   }
 
   @PutMapping("/domains/{id}")
-  public ResponseEntity<Domain> updateDomain(@PathVariable Long id, @RequestBody Domain domain) throws URISyntaxException {
+  public ResponseEntity<Domain> updateDomain(@PathVariable Long id, @RequestBody Domain domain) {
     this.domainMapper.update(id, domain);
+
+    return ResponseEntity.ok()
+      .body(domain);
+  }
+
+  @DeleteMapping("/domains/{id}")
+  public ResponseEntity<Domain> deleteDomain(@PathVariable Long id) {
+    Domain domain = this.domainMapper.select(id);
+
+    this.domainMapper.delete(id);
 
     return ResponseEntity.ok()
       .body(domain);
