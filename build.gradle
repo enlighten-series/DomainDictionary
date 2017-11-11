@@ -69,6 +69,25 @@ task buildClientProd(type: NpmTask, dependsOn: 'npmInstall') {
   args = ['run','buildProd']
 }
 
+def activeProfiles = 'dev'
+if (project.hasProperty('prod')) {
+  activeProfiles = 'prod'
+}
+processResources {
+  filesMatching('**/application.yml') {
+    filter {
+      it.replace('#spring.profiles.active#', activeProfiles)
+    }
+  }
+}
+
+/**
+ * Task dependencies
+ */
+
+compileJava.dependsOn processResources
+processResources.dependsOn clean
+
 bootRun.dependsOn(buildClientDev)
 
 // TODO: パッケージ時は本番ビルドになるようにする

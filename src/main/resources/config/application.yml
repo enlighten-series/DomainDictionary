@@ -1,2 +1,6 @@
+spring:
+  profiles:
+    active: #spring.profiles.active#
+
 server:
   port: 8084
