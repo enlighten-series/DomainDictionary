@@ -1,5 +1,6 @@
 package org.enlightenseries.DomainDictionary.presentation.rest;
 
+import org.enlightenseries.DomainDictionary.application.service.DomainService;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.DomainMapper;
 import org.springframework.http.ResponseEntity;
@@ -12,23 +13,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class DomainResource {
-
-  DomainMapper domainMapper;
+  DomainService domainService;
 
   public DomainResource(
-    DomainMapper _domainMapper
+    DomainService _domainService
   ) {
-    this.domainMapper = _domainMapper;
+    this.domainService = _domainService;
   }
 
   @GetMapping("/domains")
   public List<Domain> getAllDomains() {
-    return this.domainMapper.selectAll();
+    return this.domainService.list();
   }
 
   @GetMapping("/domains/{id}")
   public ResponseEntity<Domain> getDomain(@PathVariable Long id) {
-    Domain domain = this.domainMapper.select(id);
+    Domain domain = this.domainService.findBy(id);
 
     if (domain != null) {
       return ResponseEntity.ok().body(domain);
@@ -38,7 +38,7 @@ public class DomainResource {
 
   @PostMapping("/domains")
   public ResponseEntity<Domain> createDomain(@RequestBody Domain domain) throws URISyntaxException {
-    this.domainMapper.insert(domain);
+    this.domainService.register(domain);
 
     return ResponseEntity.created(new URI("/api/domain/" + domain.getId()))
       .body(domain);
@@ -46,7 +46,7 @@ public class DomainResource {
 
   @PutMapping("/domains/{id}")
   public ResponseEntity<Domain> updateDomain(@PathVariable Long id, @RequestBody Domain domain) {
-    this.domainMapper.update(id, domain);
+    this.domainService.update(id, domain);
 
     return ResponseEntity.ok()
       .body(domain);
@@ -54,9 +54,9 @@ public class DomainResource {
 
   @DeleteMapping("/domains/{id}")
   public ResponseEntity<Domain> deleteDomain(@PathVariable Long id) {
-    Domain domain = this.domainMapper.select(id);
+    Domain domain = this.domainService.findBy(id);
 
-    this.domainMapper.delete(id);
+    this.domainService.delete(id);
 
     return ResponseEntity.ok()
       .body(domain);
