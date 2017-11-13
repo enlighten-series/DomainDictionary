@@ -1,7 +1,7 @@
-package org.enlightenseries.DomainDictionary.mapper;
+package org.enlightenseries.DomainDictionary.infrastructure.datasource.domain;
 
 import org.apache.ibatis.annotations.*;
-import org.enlightenseries.DomainDictionary.domain.Domain;
+import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 
 import java.util.List;
 

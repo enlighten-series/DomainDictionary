@@ -1,7 +1,7 @@
-package org.enlightenseries.DomainDictionary.web.rest;
+package org.enlightenseries.DomainDictionary.presentation.rest;
 
-import org.enlightenseries.DomainDictionary.domain.Domain;
-import org.enlightenseries.DomainDictionary.mapper.DomainMapper;
+import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
+import org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.DomainMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

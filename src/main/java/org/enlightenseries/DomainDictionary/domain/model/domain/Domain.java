@@ -1,4 +1,4 @@
-package org.enlightenseries.DomainDictionary.domain;
+package org.enlightenseries.DomainDictionary.domain.model.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
