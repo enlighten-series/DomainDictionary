@@ -31,10 +31,10 @@
       <span class="meta-label">項目ID:{{id}}</span>
     </p>
     <p>
-      <span class="meta-label">作成日:{{'2017/10/25'}}</span>
+      <span class="meta-label">作成日:{{viewDomain.created | date:'yyyy/MM/dd HH:mm'}}</span>
     </p>
     <p>
-      <span class="meta-label">更新日:{{'2017/10/25'}}</span>
+      <span class="meta-label">更新日:{{viewDomain.updated | date:'yyyy/MM/dd HH:mm'}}</span>
     </p>
   </mat-card>
 
