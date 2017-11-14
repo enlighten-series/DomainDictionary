@@ -4,4 +4,6 @@ CREATE TABLE domain (
     ,format TEXT
     ,description TEXT
     ,existential TEXT
+    ,created TIMESTAMP
+    ,updated TIMESTAMP
 );
