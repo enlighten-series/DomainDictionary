@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
@@ -28,6 +28,8 @@ import { DomainEditFormComponent, RegistConfirmDialog } from './domain-edit-form
 import { DomainCreateComponent } from './domain-create/domain-create.component';
 import { LicenseListComponent } from './license-list/license-list.component';
 import { GrowlMessagerComponent } from './widgets/growl-messager.component';
+import { HttpStatusInterceptor } from './services/http-status-interceptor';
+import { ErrorPageComponent } from './error-page/error-page.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,7 @@ import { GrowlMessagerComponent } from './widgets/growl-messager.component';
     DomainCreateComponent,
     LicenseListComponent,
     GrowlMessagerComponent,
+    ErrorPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,7 +68,11 @@ import { GrowlMessagerComponent } from './widgets/growl-messager.component';
     RegistConfirmDialog,
     GrowlMessagerComponent,
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: HttpStatusInterceptor,
+    multi: true,
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

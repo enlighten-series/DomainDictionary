@@ -77,7 +77,7 @@ export class DomainDetailComponent implements OnInit {
   activeIndex = 0;
 
   viewDomain: Domain = new Domain();
-  editFormInitialValue: Domain;
+  editFormInitialValue: Domain = new Domain();
 
   constructor(
     private activateRoute: ActivatedRoute,
