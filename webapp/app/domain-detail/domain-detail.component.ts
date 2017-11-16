@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTabGroup } from '@angular/material';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -71,6 +71,8 @@ export class DeleteConfirmDialog {
 })
 export class DomainDetailComponent implements OnInit {
 
+  @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
+
   id: number;
   activeIndex = 0;
 
@@ -131,6 +133,7 @@ export class DomainDetailComponent implements OnInit {
           duration: 1500,
         });
         this.load();
+        this.matTabGroup.selectedIndex = 0;
       },
       (error) => {
         console.log(error);
