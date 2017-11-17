@@ -7,3 +7,10 @@ CREATE TABLE domain (
     ,created TIMESTAMP
     ,updated TIMESTAMP
 );
+
+CREATE TABLE metadata (
+    key TEXT NOT NULL
+    ,value TEXT
+    ,created TIMESTAMP
+    ,updated TIMESTAMP
+);

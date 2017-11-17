@@ -15,6 +15,7 @@ insert into domain (
   ,CURRENT_TIMESTAMP()
   ,CURRENT_TIMESTAMP()
 );
+
 insert into domain (
   id
   ,name
@@ -29,6 +30,27 @@ insert into domain (
   ,'BBBBB'
   ,'DBドメイン２説明'
   ,'DBドメイン２理由'
+  ,CURRENT_TIMESTAMP()
+  ,CURRENT_TIMESTAMP()
+);
+
+insert into metadata values (
+  'major_version'
+  ,'1'
+  ,CURRENT_TIMESTAMP()
+  ,CURRENT_TIMESTAMP()
+);
+
+insert into metadata values (
+  'minor_version'
+  ,'2'
+  ,CURRENT_TIMESTAMP()
+  ,CURRENT_TIMESTAMP()
+);
+
+insert into metadata values (
+  'patch_version'
+  ,'3'
   ,CURRENT_TIMESTAMP()
   ,CURRENT_TIMESTAMP()
 );
