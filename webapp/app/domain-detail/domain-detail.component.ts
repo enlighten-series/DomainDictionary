@@ -74,10 +74,11 @@ export class DomainDetailComponent implements OnInit {
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
 
   id: number;
-  activeIndex = 0;
-
   viewDomain: Domain = new Domain();
   editFormInitialValue: Domain = new Domain();
+
+  private activeIndex = 0;
+  private idSubscription: Subscription;
 
   constructor(
     private activateRoute: ActivatedRoute,
@@ -88,8 +89,8 @@ export class DomainDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.activateRoute.paramMap
-    .first()
+    // URLでidのみ変更される場合はコンポーネント再作成が行われないため、firstではなく継続的にsubscribeする。
+    this.idSubscription = this.activateRoute.paramMap
     .subscribe((param: ParamMap) => {
       this.id = Number(param.get('id'));
       this.load();
@@ -168,6 +169,10 @@ export class DomainDetailComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  ngOnDestroy() {
+    this.idSubscription.unsubscribe();
   }
 
 }
