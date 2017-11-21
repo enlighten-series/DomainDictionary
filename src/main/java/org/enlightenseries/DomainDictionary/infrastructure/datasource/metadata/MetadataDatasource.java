@@ -19,7 +19,7 @@ public class MetadataDatasource implements MetadataRepository{
     return this.metadataMapper.select(key);
   }
 
-  public void registor(Metadata metadata) {
+  public void register(Metadata metadata) {
     this.metadataMapper.insert(metadata);
   }
 

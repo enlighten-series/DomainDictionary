@@ -20,8 +20,6 @@ public class ApplicationMigration {
 
   @PostConstruct
   public void checkApplicationMetadata() {
-    System.out.println("ApplicationMigration.checkApplicationMetadata");
-
     try {
       Metadata majorVersion = this.metadataRepository.findByKey("major_version");
 
@@ -32,7 +30,6 @@ public class ApplicationMigration {
     }
   }
 
-  @Transactional
   private void initializeDatabase() {
     this.metadataRepository.createTable();
 
@@ -47,9 +44,9 @@ public class ApplicationMigration {
     patchVersion.setKey("patch_version");
     patchVersion.setValue("7");
 
-    this.metadataRepository.registor(majorVersion);
-    this.metadataRepository.registor(minorVersion);
-    this.metadataRepository.registor(patchVersion);
+    this.metadataRepository.register(majorVersion);
+    this.metadataRepository.register(minorVersion);
+    this.metadataRepository.register(patchVersion);
   }
 
 }

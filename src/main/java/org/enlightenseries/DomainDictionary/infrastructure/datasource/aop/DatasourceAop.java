@@ -14,8 +14,8 @@ import java.util.Date;
 @Component
 public class DatasourceAop {
 
-  @Before("execution(* org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.*Datasource.register(..)) ||"
-    + "execution(* org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.*Datasource.update(..))")
+  @Before("execution(* org.enlightenseries.DomainDictionary.infrastructure.datasource.*.*Datasource.register(..)) ||"
+    + "execution(* org.enlightenseries.DomainDictionary.infrastructure.datasource.*.*Datasource.update(..))")
   public void setDataSourceCommonMetadata(JoinPoint jp) throws Throwable {
 
     MethodSignature signature = (MethodSignature) jp.getSignature();
