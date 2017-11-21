@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.enlightenseries.DomainDictionary.infrastructure.datasource.metadata.MetadataMapper">
+  <select id="select" parameterType="String" resultType="org.enlightenseries.DomainDictionary.domain.model.metadata.Metadata">
+    SELECT
+      key,
+      value,
+      created,
+      updated
+    FROM
+      metadata
+    WHERE
+      key=#{key}
+  </select>
+  <insert id="insert" parameterType="org.enlightenseries.DomainDictionary.domain.model.metadata.Metadata">
+    INSERT INTO metadata (
+      key,
+      value,
+      created,
+      updated
+    ) values (
+      #{key},
+      #{value},
+      #{created},
+      #{updated}
+    )
+  </insert>
+  <update id="update" parameterType="org.enlightenseries.DomainDictionary.domain.model.metadata.Metadata">
+    UPDATE
+      metadata
+    SET
+      value=#{value},
+      updated=#{updated}
+    WHERE
+      key=#{key}
+  </update>
+  <insert id="createTable">
+    CREATE TABLE metadata (
+    key TEXT NOT NULL
+    ,value TEXT
+    ,created TIMESTAMP
+    ,updated TIMESTAMP
+    )
+  </insert>
+</mapper>

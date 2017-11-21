@@ -15,18 +15,19 @@ public class MetadataDatasource implements MetadataRepository{
     this.metadataMapper = _metadataMapper;
   }
 
-  @Override
   public Metadata findByKey(String key) {
     return this.metadataMapper.select(key);
   }
 
-  @Override
   public void registor(Metadata metadata) {
     this.metadataMapper.insert(metadata);
   }
 
-  @Override
   public void update(Metadata metadata) {
     this.metadataMapper.update(metadata);
+  }
+
+  public void createTable() {
+    this.metadataMapper.createTable();
   }
 }

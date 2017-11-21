@@ -6,4 +6,6 @@ public interface MetadataRepository {
   void registor(Metadata metadata);
 
   void update(Metadata metadata);
+
+  void createTable();
 }
