@@ -4,6 +4,7 @@ import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository
 import org.enlightenseries.DomainDictionary.domain.model.metadata.Metadata;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.MetadataRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 
@@ -28,15 +29,21 @@ public class ApplicationMigration {
       // TODO: バージョン確認とマイグレーション処理
     } catch (Exception e) {
       // TODO: 例外内容がテーブル未作成であることを判断
-      this.initializeDatabase();
+      this.initializeApplicationDatabase();
     }
   }
 
-  private void initializeDatabase() {
+  private void initializeApplicationDatabase() {
+    createTables();
+    insertInitialData();
+  }
+
+  private void createTables() {
     this.metadataRepository.createTable();
     this.domainRepository.createTable();
+  }
 
-    // 初期データ作成
+  private void insertInitialData() {
     Metadata majorVersion = new Metadata();
     majorVersion.setKey("major_version");
     majorVersion.setValue("9");
