@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.DomainMapper">
+  <select id="selectAll" resultType="org.enlightenseries.DomainDictionary.domain.model.domain.Domain">
+    SELECT
+      id,
+      name,
+      format,
+      description,
+      existential,
+      created,
+      updated
+    FROM
+      domain
+  </select>
+  <select id="select" parameterType="Long" resultType="org.enlightenseries.DomainDictionary.domain.model.domain.Domain">
+    SELECT
+      id,
+      name,
+      format,
+      description,
+      existential,
+      created,
+      updated
+    FROM
+      domain
+    WHERE
+      id=#{id}
+  </select>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="org.enlightenseries.DomainDictionary.domain.model.domain.Domain">
+    INSERT INTO domain (
+      name,
+      format,
+      description,
+      existential,
+      created,
+      updated
+    ) values (
+      #{name},
+      #{format},
+      #{description},
+      #{existential},
+      #{created},
+      #{updated}
+    )
+  </insert>
+  <update id="update">
+    UPDATE
+      domain
+    SET
+      name=#{domain.name},
+      format=#{domain.format},
+      description=#{domain.description},
+      existential=#{domain.existential},
+      updated=#{domain.updated}
+    WHERE
+      id=#{id}
+  </update>
+  <delete id="delete">
+    DELETE FROM
+      domain
+    WHERE
+      id=#{id}
+  </delete>
+  <insert id="createTable">
+  </insert>
+</mapper>

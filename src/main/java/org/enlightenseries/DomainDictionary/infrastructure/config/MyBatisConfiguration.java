@@ -24,9 +24,9 @@ public class MyBatisConfiguration {
     ResourcePatternResolver resolver = ResourcePatternUtils.getResourcePatternResolver(
       new DefaultResourceLoader());
 
-    // MyBatis のコンフィグレーションファイル
+    // MyBatisの設定ファイル
     bean.setConfigLocation(resolver.getResource("classpath:config/mybatis.xml"));
-    // MyBatis で使用する SQL ファイル群
+    // MyBatisで使用するクエリXML
     bean.setMapperLocations(resolver.getResources("classpath:query/*.xml"));
 
     return new SqlSessionTemplate(bean.getObject());
