@@ -12,4 +12,6 @@ public interface DomainRepository {
   void update(Long id, Domain domain);
 
   void delete(Long id);
+
+  void createTable();
 }

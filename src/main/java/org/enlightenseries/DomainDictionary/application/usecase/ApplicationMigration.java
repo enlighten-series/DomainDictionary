@@ -1,21 +1,23 @@
 package org.enlightenseries.DomainDictionary.application.usecase;
 
-import org.apache.ibatis.exceptions.PersistenceException;
+import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.Metadata;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.MetadataRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 
 @Service
 public class ApplicationMigration {
   MetadataRepository metadataRepository;
+  DomainRepository domainRepository;
 
   public ApplicationMigration(
-    MetadataRepository _metadataRepository
+    MetadataRepository _metadataRepository,
+    DomainRepository _domainRepository
   ) {
     this.metadataRepository = _metadataRepository;
+    this.domainRepository = _domainRepository;
   }
 
   @PostConstruct
@@ -32,6 +34,7 @@ public class ApplicationMigration {
 
   private void initializeDatabase() {
     this.metadataRepository.createTable();
+    this.domainRepository.createTable();
 
     // 初期データ作成
     Metadata majorVersion = new Metadata();

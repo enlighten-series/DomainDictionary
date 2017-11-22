@@ -35,4 +35,8 @@ public class DomainDatasource implements DomainRepository {
   public void delete(Long id) {
     this.domainMapper.delete(id);
   }
+
+  public void createTable() {
+    this.domainMapper.createTable();
+  }
 }

@@ -17,4 +17,6 @@ public interface DomainMapper {
   void update(@Param("id") Long id, @Param("domain") Domain domain);
 
   void delete(Long id);
+
+  void createTable();
 }
