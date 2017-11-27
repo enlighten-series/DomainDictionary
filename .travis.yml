@@ -7,7 +7,7 @@ jobs:
   include:
     - stage: test
       jdk: oraclejdk8
-      script: ./gradlew bootRepackage -PprodS
+      script: ./gradlew bootRepackage -Pprod
 
 notifications:
   email: false
