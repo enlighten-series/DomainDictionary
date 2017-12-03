@@ -3,11 +3,5 @@ language: java
 before_install:
 - chmod +x ./gradlew
 
-jobs:
-  include:
-    - stage: test
-      jdk: oraclejdk8
-      script: ./gradlew bootRepackage -Pprod
-
 notifications:
   email: false
