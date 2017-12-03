@@ -21,7 +21,6 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'com.moowork.node'
 
 group = 'org.enlighten-series'
-version = '0.1.0-beta.1'
 sourceCompatibility = 1.8
 
 repositories {
