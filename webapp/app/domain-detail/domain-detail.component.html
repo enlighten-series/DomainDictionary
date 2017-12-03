@@ -7,20 +7,19 @@
 <ng-container *ngIf="isActiveDetail()">
   <mat-card class="form-grid">
     <div class="form-block width-full">
-      <p class="data-title">項目名</p>
-      {{viewDomain.name}}
+      <p class="md-contents" [innerHTML]="innerHtmlOfName()"></p>
     </div>
     <div class="form-block width-full">
       <p class="data-title">フォーマット</p>
-      {{viewDomain.format}}
+      <p class="md-contents" [innerHTML]="innerHtmlOfFormat()"></p>
     </div>
     <div class="form-block width-full">
       <p class="data-title">業務内容説明</p>
-      {{viewDomain.description}}
+      <p class="md-contents" [innerHTML]="innerHtmlOfDescription()"></p>
     </div>
     <div class="form-block width-full">
       <p class="data-title">存在理由・他との違い</p>
-      {{viewDomain.existential}}
+      <p class="md-contents" [innerHTML]="innerHtmlOfExistential()"></p>
     </div>
   </mat-card>
 </ng-container>
