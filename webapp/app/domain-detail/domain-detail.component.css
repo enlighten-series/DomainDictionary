@@ -29,6 +29,12 @@ mat-tab-group {
   grid-column: 2;
 }
 
+.data-title {
+  border-bottom: 1px solid #eee;
+  color: #aaa;
+  font-size: 0.8em;
+}
+
 /*
 その他タブ
 */

@@ -4,6 +4,7 @@ import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTabGroup } fr
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import * as marked from 'marked';
 
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/first';
@@ -80,6 +81,11 @@ export class DomainDetailComponent implements OnInit {
   private activeIndex = 0;
   private idSubscription: Subscription;
 
+  private parsedName = '';
+  private parsedFormat = '';
+  private parsedDescription = '';
+  private parsedExistential = '';
+
   constructor(
     private activateRoute: ActivatedRoute,
     private http: HttpClient,
@@ -103,6 +109,21 @@ export class DomainDetailComponent implements OnInit {
       (domain: Domain) => {
         this.viewDomain = domain;
         this.editFormInitialValue = domain;
+
+        // markdown parse
+        this.parsedName = this.viewDomain.name;
+        marked(this.viewDomain.format, (err, content) => {
+          if (err) throw err;
+          this.parsedFormat = content;
+        });
+        marked(this.viewDomain.description, (err, content) => {
+          if (err) throw err;
+          this.parsedDescription = content;
+        });
+        marked(this.viewDomain.existential, (err, content) => {
+          if (err) throw err;
+          this.parsedExistential = content;
+        });
       },
       (error) => {
         console.log(error);
@@ -121,6 +142,19 @@ export class DomainDetailComponent implements OnInit {
   }
   isActiveOther() {
     return this.activeIndex == 2;
+  }
+
+  innerHtmlOfName() {
+    return this.parsedName;
+  }
+  innerHtmlOfFormat() {
+    return this.parsedFormat;
+  }
+  innerHtmlOfDescription() {
+    return this.parsedDescription;
+  }
+  innerHtmlOfExistential() {
+    return this.parsedExistential;
   }
 
   emittedRegist(event) {
