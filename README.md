@@ -16,4 +16,4 @@ https://domaindictionary-demo.herokuapp.com/
 
 Wikiページに記載しています。
 
-https://github.com/enlighten-series/DomainDictionary/wiki/%E5%B0%8E%E5%85%A5%E6%89%8B%E9%A0%86
+[導入手順](https://github.com/enlighten-series/DomainDictionary/wiki/%E5%B0%8E%E5%85%A5%E6%89%8B%E9%A0%86)
