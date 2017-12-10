@@ -21,3 +21,8 @@
 .width-right {
   grid-column: 2;
 }
+
+.form-error {
+  color: #c00;
+  font-size: 0.7em;
+}
