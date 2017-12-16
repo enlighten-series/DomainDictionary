@@ -46,7 +46,8 @@ export class DomainListComponent implements OnInit {
 
     this.domainSource = new ExampleDataSource(this.dataChange);
 
-    // フィルタ変更ストリーム
+    // フィルタ仕様検討のため一旦除去
+    /*
     this.filterNameSubscription = Observable.fromEvent(this.filterName.nativeElement, 'keyup')
       .debounceTime(150)
       .distinctUntilChanged()
@@ -59,6 +60,7 @@ export class DomainListComponent implements OnInit {
       .subscribe(() => {
         this.domainSource.descriptionFilter = this.filterDescription.nativeElement.value;
       });
+    */
 
     this.http.get('/api/domains')
       .subscribe(
@@ -81,8 +83,11 @@ export class DomainListComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    // フィルタ仕様検討のため一旦除去
+    /*
     this.filterNameSubscription.unsubscribe();
     this.filterDescriptionSubscription.unsubscribe();
+    */
   }
 
 }
