@@ -20,5 +20,4 @@ Wikiページに記載しています。
 
 ## ビルド状況
 
-master ![master](https://travis-ci.org/enlighten-series/DomainDictionary.svg?branch=master)
-
+[![master](https://travis-ci.org/enlighten-series/DomainDictionary.svg?branch=master)](https://travis-ci.org/enlighten-series/DomainDictionary)
