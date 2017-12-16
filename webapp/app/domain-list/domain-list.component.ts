@@ -21,56 +21,48 @@ import { Domain } from '../models/domain';
 })
 export class DomainListComponent implements OnInit {
 
-  @ViewChild('filterName') filterName;
-  @ViewChild('filterDescription') filterDescription;
-  private filterNameSubscription: Subscription;
-  private filterDescriptionSubscription: Subscription;
+  // #region interfaces
 
-  public displayedColumns: string[];
-  public domainSource: ExampleDataSource;
+  // #endregion
 
-  dataChange: BehaviorSubject<Domain[]> = new BehaviorSubject<Domain[]>([]);
+  // #region constructor and lifecycle events
 
   constructor(
     private router: Router,
     private http: HttpClient,
-  ) { }
-
-  ngOnInit() {
+  ) {
     this.displayedColumns = [
       'name',
       'format',
       'description',
       'edit',
     ];
+    this.filteredDomains = new ViewDomainListDataSource(this.allDomains$);
+  }
 
-    this.domainSource = new ExampleDataSource(this.dataChange);
-
-    this.filterNameSubscription = Observable.fromEvent(this.filterName.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
-      .subscribe(() => {
-        this.domainSource.nameFilter = this.filterName.nativeElement.value;
-      });
-    this.filterDescriptionSubscription = Observable.fromEvent(this.filterDescription.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
-      .subscribe(() => {
-        this.domainSource.descriptionFilter = this.filterDescription.nativeElement.value;
-      });
-
-    this.http.get('/api/domains')
-      .subscribe(
-        (data: any) => {
-          this.dataChange.next(data);
-        },
-        (error) => {
-          console.log(error);
-          this.dataChange.next([]);
-        }
-      );
+  ngOnInit() {
+    this.setupSubscriptions();
+    this.reqGetAllDomains();
   }
   
+  ngOnDestroy() {
+    this.destroySubscriptions();
+  }
+
+  // #endregion
+
+  // #region view binds
+
+  @ViewChild('filterName') filterName;
+  @ViewChild('filterDescription') filterDescription;
+
+  public displayedColumns: string[];
+  public filteredDomains: ViewDomainListDataSource;
+
+  // #endregion
+
+  // #region view events
+
   create() {
     this.router.navigate(['/create']);
   }
@@ -79,14 +71,52 @@ export class DomainListComponent implements OnInit {
     this.router.navigate(['/detail', id]);
   }
 
-  ngOnDestroy() {
+  // #endregion
+
+  // #region privates
+
+  private filterNameSubscription: Subscription;
+  private filterDescriptionSubscription: Subscription;
+  private allDomains$: BehaviorSubject<Domain[]> = new BehaviorSubject<Domain[]>([]);
+
+  private setupSubscriptions() {
+    this.filterNameSubscription = Observable.fromEvent(this.filterName.nativeElement, 'keyup')
+      .debounceTime(150)
+      .distinctUntilChanged()
+      .subscribe(() => {
+        this.filteredDomains.nameFilter = this.filterName.nativeElement.value;
+      });
+    this.filterDescriptionSubscription = Observable.fromEvent(this.filterDescription.nativeElement, 'keyup')
+      .debounceTime(150)
+      .distinctUntilChanged()
+      .subscribe(() => {
+        this.filteredDomains.descriptionFilter = this.filterDescription.nativeElement.value;
+      });
+  }
+
+  private destroySubscriptions() {
     this.filterNameSubscription.unsubscribe();
     this.filterDescriptionSubscription.unsubscribe();
   }
 
+  private reqGetAllDomains() {
+    this.http.get('/api/domains')
+      .subscribe(
+        (data: any) => {
+          this.allDomains$.next(data);
+        },
+        (error) => {
+          console.log(error);
+          this.allDomains$.next([]);
+        }
+      );
+  }
+
+  // #endregion
+
 }
 
-class ExampleDataSource extends DataSource<Domain> {
+class ViewDomainListDataSource extends DataSource<Domain> {
   _nameFilterChange = new BehaviorSubject('');
   set nameFilter(filter: string) {
     this._nameFilterChange.next(filter);

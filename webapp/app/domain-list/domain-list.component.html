@@ -19,7 +19,7 @@
     </mat-grid-list>
   </div>
 
-  <mat-table #table [dataSource]="domainSource">
+  <mat-table #table [dataSource]="filteredDomains">
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef>項目名</mat-header-cell>
       <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
