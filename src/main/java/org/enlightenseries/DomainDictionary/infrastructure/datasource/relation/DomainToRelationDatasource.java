@@ -8,7 +8,7 @@ public class DomainToRelationDatasource implements DomainToRelationRepository {
 
   private DomainToRelationMapper domainToRelationMapper;
 
-  public void DomainToRelationDatasource(
+  public DomainToRelationDatasource(
     DomainToRelationMapper _domainToRelationMapper
   ) {
     this.domainToRelationMapper = _domainToRelationMapper;

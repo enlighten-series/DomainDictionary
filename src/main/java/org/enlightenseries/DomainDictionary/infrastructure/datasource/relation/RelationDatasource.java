@@ -8,7 +8,7 @@ public class RelationDatasource implements RelationRepository {
 
   private RelationMapper relationMapper;
 
-  public void RelationDatasource(
+  public RelationDatasource(
     RelationMapper _relationMapper
   ) {
     this.relationMapper = _relationMapper;

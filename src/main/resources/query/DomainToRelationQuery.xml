@@ -3,8 +3,8 @@
 <mapper namespace="org.enlightenseries.DomainDictionary.infrastructure.datasource.relation.DomainToRelationMapper">
   <insert id="createTable">
     CREATE TABLE domain_to_relation (
-      domain_id IDENTITY,
-      relation_id IDENTITY
+      domain_id BIGINT,
+      relation_id BIGINT
     )
   </insert>
 </mapper>
