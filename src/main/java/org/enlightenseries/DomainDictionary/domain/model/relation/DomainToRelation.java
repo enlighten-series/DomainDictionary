@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DomainToRelation {
+  private Long id;
   private Long domainId;
   private Long relationId;
 }
