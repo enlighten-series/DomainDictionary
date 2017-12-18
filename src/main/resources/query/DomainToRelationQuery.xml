@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.enlightenseries.DomainDictionary.infrastructure.datasource.relation.DomainToRelationMapper">
+  <insert id="createTable">
+    CREATE TABLE domain_to_relation (
+      domain_id IDENTITY,
+      relation_id IDENTITY
+    )
+  </insert>
+</mapper>
