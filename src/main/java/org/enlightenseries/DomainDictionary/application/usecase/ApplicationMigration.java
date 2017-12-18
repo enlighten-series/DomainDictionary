@@ -3,6 +3,8 @@ package org.enlightenseries.DomainDictionary.application.usecase;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.Metadata;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.MetadataRepository;
+import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelationRepository;
+import org.enlightenseries.DomainDictionary.domain.model.relation.RelationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,15 +12,22 @@ import javax.annotation.PostConstruct;
 
 @Service
 public class ApplicationMigration {
+
   MetadataRepository metadataRepository;
   DomainRepository domainRepository;
+  DomainToRelationRepository domainToRelationRepository;
+  RelationRepository relationRepository;
 
   public ApplicationMigration(
     MetadataRepository _metadataRepository,
-    DomainRepository _domainRepository
+    DomainRepository _domainRepository,
+    DomainToRelationRepository _domainToRelationRepository,
+    RelationRepository _relationRepository
   ) {
     this.metadataRepository = _metadataRepository;
     this.domainRepository = _domainRepository;
+    this.domainToRelationRepository = _domainToRelationRepository;
+    this.relationRepository = _relationRepository;
   }
 
   @PostConstruct
@@ -41,6 +50,8 @@ public class ApplicationMigration {
   private void createTables() {
     this.metadataRepository.createTable();
     this.domainRepository.createTable();
+    this.domainToRelationRepository.createTable();
+    this.relationRepository.createTable();
   }
 
   private void insertInitialData() {
