@@ -7,6 +7,8 @@ public interface DomainRepository {
 
   Domain findBy(Long id);
 
+  DomainSummary findDomainSummaryBy(Long id);
+
   void register(Domain domain);
 
   void update(Long id, Domain domain);
