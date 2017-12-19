@@ -27,6 +27,15 @@
     WHERE
       id=#{id}
   </select>
+  <select id="selectSummary" parameterType="Long" resultType="org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary">
+    SELECT
+      id,
+      name
+    FROM
+      domain
+    WHERE
+      id=#{id}
+  </select>
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="org.enlightenseries.DomainDictionary.domain.model.domain.Domain">
     INSERT INTO domain (
       name,

@@ -2,6 +2,7 @@ package org.enlightenseries.DomainDictionary.infrastructure.datasource.domain;
 
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
+import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,6 +23,10 @@ public class DomainDatasource implements DomainRepository {
 
   public Domain findBy(Long id) {
     return this.domainMapper.select(id);
+  }
+
+  public DomainSummary findDomainSummaryBy(Long id) {
+    return this.domainMapper.selectSummary(id);
   }
 
   public void register(Domain domain) {

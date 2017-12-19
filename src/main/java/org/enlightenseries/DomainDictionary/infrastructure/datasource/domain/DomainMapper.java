@@ -2,6 +2,7 @@ package org.enlightenseries.DomainDictionary.infrastructure.datasource.domain;
 
 import org.apache.ibatis.annotations.*;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
+import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ public interface DomainMapper {
   List<Domain> selectAll();
 
   Domain select(Long id);
+
+  DomainSummary selectSummary(Long id);
 
   void insert(Domain domain);
 
