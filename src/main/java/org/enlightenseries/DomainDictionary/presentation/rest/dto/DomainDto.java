@@ -1,11 +1,13 @@
 package org.enlightenseries.DomainDictionary.presentation.rest.dto;
 
+import lombok.Data;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
 
 import java.util.Date;
 import java.util.List;
 
+@Data
 public class DomainDto {
   private Long id;
   private String name;

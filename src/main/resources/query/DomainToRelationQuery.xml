@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.enlightenseries.DomainDictionary.infrastructure.datasource.relation.DomainToRelationMapper">
   <select id="selectDest" parameterType="Long" resultType="org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelation">
+    <![CDATA[
     SELECT
       dst.id,
       dst.domain_id,
@@ -22,6 +23,7 @@
       dst.relation_id = src.relation_id
     AND
       dst.id <> src.id
+    ]]>
   </select>
   <insert id="createTable">
     CREATE TABLE domain_to_relation (
