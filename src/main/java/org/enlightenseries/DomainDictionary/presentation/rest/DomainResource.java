@@ -2,7 +2,8 @@ package org.enlightenseries.DomainDictionary.presentation.rest;
 
 import org.enlightenseries.DomainDictionary.application.service.DomainService;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
-import org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.DomainMapper;
+import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
+import org.enlightenseries.DomainDictionary.presentation.rest.dto.DomainDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,11 +28,15 @@ public class DomainResource {
   }
 
   @GetMapping("/domains/{id}")
-  public ResponseEntity<Domain> getDomain(@PathVariable Long id) {
+  public ResponseEntity<DomainDto> getDomain(@PathVariable Long id) {
     Domain domain = this.domainService.findBy(id);
 
+    List<DomainSummary> related = this.domainService.findRelatedDomains(id);
+
+    DomainDto ret = new DomainDto(domain, related);
+
     if (domain != null) {
-      return ResponseEntity.ok().body(domain);
+      return ResponseEntity.ok().body(ret);
     }
     return ResponseEntity.notFound().build();
   }
