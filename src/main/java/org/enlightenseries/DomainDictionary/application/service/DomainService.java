@@ -2,18 +2,25 @@ package org.enlightenseries.DomainDictionary.application.service;
 
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
+import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
+import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelation;
+import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class DomainService {
   DomainRepository domainRepository;
+  DomainToRelationRepository domainToRelationRepository;
 
   public DomainService(
-    DomainRepository _domainRepository
+    DomainRepository _domainRepository,
+    DomainToRelationRepository _domainToRelationRepository
   ) {
     this.domainRepository = _domainRepository;
+    this.domainToRelationRepository = _domainToRelationRepository;
   }
 
   public List<Domain> list() {
@@ -22,6 +29,21 @@ public class DomainService {
 
   public Domain findBy(Long id) {
     return this.domainRepository.findBy(id);
+  }
+
+  public List<DomainSummary> findRelatedDomains(Long sourceDomainId) {
+    List<DomainSummary> result = new ArrayList<>();
+    List<DomainToRelation> relatedIds = this.domainToRelationRepository.selectDestinations(sourceDomainId);
+
+    relatedIds.forEach(d2r -> {
+      result.add(this.domainRepository.findDomainSummaryBy(d2r.getDomainId()));
+    });
+
+    return result;
+  }
+
+  public DomainSummary findDomainSummaryBy(Long id) {
+    return this.domainRepository.findDomainSummaryBy(id);
   }
 
   public void register(Domain domain) {
