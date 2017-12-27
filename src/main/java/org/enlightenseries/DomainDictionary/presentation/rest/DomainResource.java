@@ -31,11 +31,9 @@ public class DomainResource {
   public ResponseEntity<DomainDto> getDomain(@PathVariable Long id) {
     Domain domain = this.domainService.findBy(id);
 
-    List<DomainSummary> related = this.domainService.findRelatedDomains(id);
-
-    DomainDto ret = new DomainDto(domain, related);
-
     if (domain != null) {
+      List<DomainSummary> related = this.domainService.findRelatedDomains(id);
+      DomainDto ret = new DomainDto(domain, related);
       return ResponseEntity.ok().body(ret);
     }
     return ResponseEntity.notFound().build();
