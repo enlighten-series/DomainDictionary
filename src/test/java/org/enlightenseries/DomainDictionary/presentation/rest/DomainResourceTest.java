@@ -77,7 +77,7 @@ public class DomainResourceTest {
   }
 
   @Test
-  public void getExistOneDomain() throws Exception {
+  public void getOneDomainExist() throws Exception {
     when(domainService.findBy(1L)).thenReturn(assertDomain);
     when(domainService.findRelatedDomains(1L)).thenReturn(assertRelatedDomains);
 
@@ -105,6 +105,15 @@ public class DomainResourceTest {
         Matchers.equalTo(assertRelatedDomains.get(1).getId().intValue())
       )))
       .andExpect(jsonPath("$.relatedDomains[1].name").value(assertRelatedDomains.get(1).getName()));
+  }
+
+  @Test
+  public void getOneDomainNotFound() throws Exception {
+    when(domainService.findBy(1L)).thenReturn(assertDomain);
+    when(domainService.findRelatedDomains(1L)).thenReturn(assertRelatedDomains);
+
+    domainResourceMockMvc.perform(get("/api/domains/2"))
+      .andExpect(status().isNotFound());
   }
 
 }
