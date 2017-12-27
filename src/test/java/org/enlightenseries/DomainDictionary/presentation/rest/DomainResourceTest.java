@@ -77,16 +77,34 @@ public class DomainResourceTest {
   }
 
   @Test
-  public void getOneDomain() throws Exception {
+  public void getExistOneDomain() throws Exception {
     when(domainService.findBy(1L)).thenReturn(assertDomain);
     when(domainService.findRelatedDomains(1L)).thenReturn(assertRelatedDomains);
 
     domainResourceMockMvc.perform(get("/api/domains/1"))
       .andExpect(status().isOk())
+
       .andExpect(jsonPath("$.id").value(Matchers.anyOf(
         Matchers.equalTo((Number) assertDomain.getId()),
         Matchers.equalTo((Number) assertDomain.getId().intValue())
-      )));
+      )))
+      .andExpect(jsonPath("$.name").value(Matchers.equalTo(assertDomain.getName())))
+      .andExpect(jsonPath("$.format").value(Matchers.equalTo(assertDomain.getFormat())))
+      .andExpect(jsonPath("$.description").value(Matchers.equalTo(assertDomain.getDescription())))
+      .andExpect(jsonPath("$.existential").value(Matchers.equalTo(assertDomain.getExistential())))
+      .andExpect(jsonPath("$.created").value(Matchers.equalTo(assertDomain.getCreated().getTime())))
+      .andExpect(jsonPath("$.updated").value(Matchers.equalTo(assertDomain.getUpdated().getTime())))
+
+      .andExpect(jsonPath("$.relatedDomains[0].id").value(Matchers.anyOf(
+        Matchers.equalTo(assertRelatedDomains.get(0).getId()),
+        Matchers.equalTo(assertRelatedDomains.get(0).getId().intValue())
+      )))
+      .andExpect(jsonPath("$.relatedDomains[0].name").value(assertRelatedDomains.get(0).getName()))
+      .andExpect(jsonPath("$.relatedDomains[1].id").value(Matchers.anyOf(
+        Matchers.equalTo(assertRelatedDomains.get(1).getId()),
+        Matchers.equalTo(assertRelatedDomains.get(1).getId().intValue())
+      )))
+      .andExpect(jsonPath("$.relatedDomains[1].name").value(assertRelatedDomains.get(1).getName()));
   }
 
 }
