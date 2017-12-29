@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class DomainToRelation {
-  private Long id;
+  private UUID id;
   private Long domainId;
-  private Long relationId;
+  private UUID relationId;
 }

@@ -10,5 +10,7 @@ public interface DomainToRelationMapper {
 
   List<DomainToRelation> selectDest(Long id);
 
+  void insert(DomainToRelation domainToRelation);
+
   void createTable();
 }

@@ -21,6 +21,10 @@ public class DomainToRelationDatasource implements DomainToRelationRepository {
     return this.domainToRelationMapper.selectDest(sourceDomainId);
   }
 
+  public void register(DomainToRelation domainToRelation) {
+    this.domainToRelationMapper.insert(domainToRelation);
+  }
+
   public void createTable() {
     this.domainToRelationMapper.createTable();
   }

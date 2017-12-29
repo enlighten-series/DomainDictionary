@@ -6,5 +6,7 @@ public interface DomainToRelationRepository {
 
   List<DomainToRelation> selectDestinations(Long sourceDomainId);
 
+  void register(DomainToRelation domainToRelation);
+
   void createTable();
 }

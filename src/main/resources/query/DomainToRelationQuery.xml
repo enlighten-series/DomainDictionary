@@ -25,11 +25,22 @@
       dst.id <> src.id
     ]]>
   </select>
+  <insert id="insert" parameterType="org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelation">
+    INSERT INTO domain_to_relation (
+      id,
+      domain_id,
+      relation_id
+    ) values (
+      #{id},
+      #{domainId},
+      #{relationId}
+    )
+  </insert>
   <insert id="createTable">
     CREATE TABLE domain_to_relation (
-      id IDENTITY,
+      id VARCHAR,
       domain_id BIGINT,
-      relation_id BIGINT
+      relation_id VARCHAR
     )
   </insert>
 </mapper>
