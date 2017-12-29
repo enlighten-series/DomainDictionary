@@ -9,6 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
+/**
+ * https://github.com/mybatis/mybatis-3/blob/master/src/test/java/org/apache/ibatis/submitted/uuid_test/UUIDTypeHandler.java
+ * から取得
+ */
 public class UUIDTypeHandler extends BaseTypeHandler<UUID> {
 
   @Override

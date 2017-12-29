@@ -76,8 +76,9 @@ Thumbs.db
 # 静的ページはビルド時に生成するためリポジトリ管理外
 src/main/resources/static/*
 
-# bootRun生成分
+# gradle生成分
 /bin/
+/out/
 
 # H2DB永続化ファイル
 *.mv.db

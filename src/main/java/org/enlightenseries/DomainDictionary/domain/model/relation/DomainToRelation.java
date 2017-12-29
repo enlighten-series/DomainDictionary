@@ -13,4 +13,10 @@ public class DomainToRelation {
   private UUID id;
   private Long domainId;
   private UUID relationId;
+
+  public DomainToRelation(Long domainId, UUID relationId) {
+    this.id = UUID.randomUUID();
+    this.domainId = domainId;
+    this.relationId = relationId;
+  }
 }
