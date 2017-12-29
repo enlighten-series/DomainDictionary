@@ -3,7 +3,7 @@
 <mapper namespace="org.enlightenseries.DomainDictionary.infrastructure.datasource.relation.RelationMapper">
   <insert id="createTable">
     CREATE TABLE relation (
-      id IDENTITY
+      id UUID
     )
   </insert>
 </mapper>
