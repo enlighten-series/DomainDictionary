@@ -3,6 +3,7 @@ package org.enlightenseries.DomainDictionary.presentation.rest;
 import org.enlightenseries.DomainDictionary.DomainDictionaryApplication;
 import org.enlightenseries.DomainDictionary.application.service.RelationService;
 import org.enlightenseries.DomainDictionary.domain.model.relation.Relation;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,8 @@ import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -53,7 +56,9 @@ public class RelationResourceTest {
         .contentType(MediaType.APPLICATION_JSON)
         .content(json)
       )
-      .andExpect(status().isCreated());
+      .andExpect(status().isCreated())
+      .andExpect(header().string("Location", "/api/relations/" + assertData.getId().toString()))
+      .andExpect(jsonPath("$.id").value(Matchers.equalTo(assertData.getId().toString())));
 
     verify(relationServiceMock, times(1)).createNewRelation(1L, 2L);
   }
