@@ -12,5 +12,7 @@ public interface RelationMapper {
 
   void insert(Relation relation);
 
+  void delete(UUID id);
+
   void createTable();
 }

@@ -15,11 +15,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DomainDictionaryApplication.class)
@@ -74,5 +73,31 @@ public class RelationServiceTest {
 
     assertThat(first.getRelationId().toString()).isEqualTo(relation.getId().toString());
     assertThat(second.getRelationId().toString()).isEqualTo(relation.getId().toString());
+  }
+
+  @Test
+  public void findRelation() throws Exception {
+    // when
+    Relation assertData = new Relation();
+    when(relationRepositoryMock.findBy(assertData.getId())).thenReturn(new Relation(UUID.fromString(assertData.getId().toString())));
+
+    // try
+    Relation subject = relationService.findBy(assertData.getId());
+
+    // expect
+    assertThat(subject.getId().toString()).isEqualTo(assertData.getId().toString());
+  }
+
+  @Test
+  public void deleteRelation() throws Exception {
+    // when
+    Relation assertData = new Relation();
+
+    // try
+    relationService.deleteRelation(assertData.getId());
+
+    // expect
+    verify(relationRepositoryMock, times(1)).delete(assertData.getId());
+    verify(domainToRelationRepositoryMock, times(1)).deleteRelationBy(assertData.getId());
   }
 }

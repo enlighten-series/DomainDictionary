@@ -3,6 +3,7 @@ package org.enlightenseries.DomainDictionary.infrastructure.datasource.relation;
 import org.enlightenseries.DomainDictionary.DomainDictionaryApplication;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelation;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelationRepository;
+import org.enlightenseries.DomainDictionary.domain.model.relation.Relation;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,5 +41,17 @@ public class DomainToRelationDatasourceTest {
 
     // expect
     verify(domainToRelationDatasource, times(1)).register(assertData);
+  }
+
+  @Test
+  public void deleteRelation() throws Exception {
+    // when
+    Relation assertData = new Relation();
+
+    // try
+    domainToRelationDatasource.deleteRelationBy(assertData.getId());
+
+    // expect
+    verify(domainToRelationMapperMock, times(1)).deleteRelationBy(assertData.getId());
   }
 }

@@ -25,6 +25,10 @@ public class RelationDatasource implements RelationRepository {
     this.relationMapper.insert(relation);
   }
 
+  public void delete(UUID id) {
+    this.relationMapper.delete(id);
+  }
+
   public void createTable() {
     this.relationMapper.createTable();
   }

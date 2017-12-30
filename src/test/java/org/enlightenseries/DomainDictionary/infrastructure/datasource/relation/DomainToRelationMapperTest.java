@@ -47,4 +47,25 @@ public class DomainToRelationMapperTest {
     assertThat(fromDestination.get(0).getDomainId()).isEqualTo(expectSourceId);
     assertThat(fromDestination.get(0).getRelationId().toString()).isEqualTo(expectDestination.getRelationId().toString());
   }
+
+  @Test
+  public void deleteRelation() throws Exception {
+    // when
+    Long expectSourceId = 1L;
+    Long expectDestinationId = 2L;
+    Relation expectRelation = new Relation();
+    DomainToRelation expectSource = new DomainToRelation(expectSourceId, expectRelation.getId());
+    DomainToRelation expectDestination = new DomainToRelation(expectDestinationId, expectRelation.getId());
+    domainToRelationMapper.insert(expectSource);
+    domainToRelationMapper.insert(expectDestination);
+
+    // try
+    domainToRelationMapper.deleteRelationBy(expectRelation.getId());
+    List<DomainToRelation> subjectFromSource = domainToRelationMapper.selectDest(expectSourceId);
+    List<DomainToRelation> subjectFromDestination = domainToRelationMapper.selectDest(expectDestinationId);
+
+    // expect
+    assertThat(subjectFromSource.size()).isEqualTo(0);
+    assertThat(subjectFromDestination.size()).isEqualTo(0);
+  }
 }

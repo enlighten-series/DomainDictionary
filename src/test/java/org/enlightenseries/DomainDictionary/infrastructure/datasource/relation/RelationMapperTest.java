@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.setRemoveAssertJRelatedElementsFromStackTrace;
 
@@ -33,5 +35,19 @@ public class RelationMapperTest {
 
     // expect
     assertThat(subject.getId().toString()).isEqualTo(assertData.getId().toString());
+  }
+
+  @Test
+  public void delete() throws Exception {
+    // when
+    Relation assertData = new Relation();
+    relationMapper.insert(assertData);
+
+    // try
+    relationMapper.delete(UUID.fromString(assertData.getId().toString()));
+    Relation subject = relationMapper.select(assertData.getId());
+
+    // expect
+    assertThat(subject).isNull();
   }
 }

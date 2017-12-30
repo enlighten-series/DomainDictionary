@@ -7,6 +7,8 @@ import org.enlightenseries.DomainDictionary.domain.model.relation.RelationReposi
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 public class RelationService {
 
@@ -39,5 +41,31 @@ public class RelationService {
     domainToRelationRepository.register(destination);
 
     return newRelation;
+  }
+
+  /**
+   * １つの関連を取得します。
+   *
+   * @param id 関連のUUID
+   * @return 関連
+   */
+  public Relation findBy(UUID id) {
+    return relationRepository.findBy(id);
+  }
+
+  /**
+   * 指定された関連を削除します。
+   *
+   * @param relationId 関連のID（DomainToRelationのIDではない）
+   * @return 削除に成功したRelation
+   */
+  public Relation deleteRelation(UUID relationId) {
+    Relation target = findBy(relationId);
+
+    domainToRelationRepository.deleteRelationBy(relationId);
+
+    relationRepository.delete(relationId);
+
+    return target;
   }
 }

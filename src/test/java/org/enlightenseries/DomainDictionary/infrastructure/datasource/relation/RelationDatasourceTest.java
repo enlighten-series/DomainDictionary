@@ -57,4 +57,16 @@ public class RelationDatasourceTest {
     verify(relationMapperMock, times(1)).select(assertData.getId());
     assertThat(subject.getId().toString()).isEqualTo(assertData.getId().toString());
   }
+
+  @Test
+  public void delete() throws Exception {
+    // when
+    Relation assertData = new Relation();
+
+    // try
+    relationDatasource.delete(assertData.getId());
+
+    // expect
+    verify(relationMapperMock, times(1)).delete(assertData.getId());
+  }
 }

@@ -16,6 +16,12 @@
     #{id}
   )
   </insert>
+  <delete id="delete" parameterType="java.util.UUID">
+    DELETE FROM
+      relation
+    WHERE
+      id=#{id}
+  </delete>
   <insert id="createTable">
     CREATE TABLE relation (
       id VARCHAR

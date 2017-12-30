@@ -5,6 +5,7 @@ import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelati
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class DomainToRelationDatasource implements DomainToRelationRepository {
@@ -23,6 +24,10 @@ public class DomainToRelationDatasource implements DomainToRelationRepository {
 
   public void register(DomainToRelation domainToRelation) {
     this.domainToRelationMapper.insert(domainToRelation);
+  }
+
+  public void deleteRelationBy(UUID relationId) {
+    this.domainToRelationMapper.deleteRelationBy(relationId);
   }
 
   public void createTable() {

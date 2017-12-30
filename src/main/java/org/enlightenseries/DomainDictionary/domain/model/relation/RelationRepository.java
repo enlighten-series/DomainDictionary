@@ -8,5 +8,7 @@ public interface RelationRepository {
 
   void register(Relation relation);
 
+  void delete(UUID id);
+
   void createTable();
 }

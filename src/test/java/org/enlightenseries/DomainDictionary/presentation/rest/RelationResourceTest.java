@@ -62,4 +62,20 @@ public class RelationResourceTest {
 
     verify(relationServiceMock, times(1)).createNewRelation(1L, 2L);
   }
+
+  @Test
+  public void deleteRelation() throws Exception {
+    // when
+    Relation assertData = new Relation();
+    when(relationServiceMock.deleteRelation(assertData.getId())).thenReturn(assertData);
+
+    // try
+    relationResourceMockMvc.perform(MockMvcRequestBuilders
+      .delete("/api/relations/" + assertData.getId().toString())
+    )
+    .andExpect(status().isOk());
+
+    // expect
+    verify(relationServiceMock, times(1)).deleteRelation(assertData.getId());
+  }
 }

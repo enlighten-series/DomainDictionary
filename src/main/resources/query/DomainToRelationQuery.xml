@@ -36,6 +36,12 @@
       #{relationId}
     )
   </insert>
+  <delete id="deleteRelationBy" parameterType="java.util.UUID">
+    DELETE FROM
+      domain_to_relation
+    WHERE
+      relation_id=#{relation_id}
+  </delete>
   <insert id="createTable">
     CREATE TABLE domain_to_relation (
       id VARCHAR,
