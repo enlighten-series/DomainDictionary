@@ -4,6 +4,8 @@ import org.enlightenseries.DomainDictionary.DomainDictionaryApplication;
 import org.enlightenseries.DomainDictionary.application.service.DomainService;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
+import org.enlightenseries.DomainDictionary.domain.model.domain.RelatedDomainSummary;
+import org.enlightenseries.DomainDictionary.domain.model.relation.Relation;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +40,7 @@ public class DomainResourceTest {
    */
   private int assertJsonDomainId;
   private Domain assertDomain;
-  private List<DomainSummary> assertRelatedDomains;
+  private List<RelatedDomainSummary> assertRelatedDomains;
 
   @Before
   public void setup() {
@@ -65,12 +67,15 @@ public class DomainResourceTest {
     assertDomain.setCreated(new Date("2016/2/29 23:59:59"));
     assertDomain.setUpdated(new Date("2017/12/31 12:34:56"));
 
+    Relation relation = new Relation();
     assertRelatedDomains = new ArrayList<>();
-    assertRelatedDomains.add(new DomainSummary(
+    assertRelatedDomains.add(new RelatedDomainSummary(
+      relation.getId(),
       2L,
       "related_domain%$\"'"
     ));
-    assertRelatedDomains.add(new DomainSummary(
+    assertRelatedDomains.add(new RelatedDomainSummary(
+      relation.getId(),
       3L,
       "関連ドメイン"
     ));
@@ -78,10 +83,14 @@ public class DomainResourceTest {
 
   @Test
   public void getOneDomainExist() throws Exception {
+    // when
     when(domainService.findBy(1L)).thenReturn(assertDomain);
     when(domainService.findRelatedDomains(1L)).thenReturn(assertRelatedDomains);
 
+    // try
     domainResourceMockMvc.perform(get("/api/domains/1"))
+
+    // expect
       .andExpect(status().isOk())
 
       .andExpect(jsonPath("$.id").value(Matchers.anyOf(
@@ -95,14 +104,16 @@ public class DomainResourceTest {
       .andExpect(jsonPath("$.created").value(Matchers.equalTo(assertDomain.getCreated().getTime())))
       .andExpect(jsonPath("$.updated").value(Matchers.equalTo(assertDomain.getUpdated().getTime())))
 
-      .andExpect(jsonPath("$.relatedDomains[0].id").value(Matchers.anyOf(
-        Matchers.equalTo(assertRelatedDomains.get(0).getId()),
-        Matchers.equalTo(assertRelatedDomains.get(0).getId().intValue())
+      .andExpect(jsonPath("$.relatedDomains[0].relationId").value(Matchers.equalTo(assertRelatedDomains.get(0).getRelationId().toString())))
+      .andExpect(jsonPath("$.relatedDomains[0].domainId").value(Matchers.anyOf(
+        Matchers.equalTo(assertRelatedDomains.get(0).getDomainId()),
+        Matchers.equalTo(assertRelatedDomains.get(0).getDomainId().intValue())
       )))
       .andExpect(jsonPath("$.relatedDomains[0].name").value(assertRelatedDomains.get(0).getName()))
-      .andExpect(jsonPath("$.relatedDomains[1].id").value(Matchers.anyOf(
-        Matchers.equalTo(assertRelatedDomains.get(1).getId()),
-        Matchers.equalTo(assertRelatedDomains.get(1).getId().intValue())
+      .andExpect(jsonPath("$.relatedDomains[1].relationId").value(Matchers.equalTo(assertRelatedDomains.get(1).getRelationId().toString())))
+      .andExpect(jsonPath("$.relatedDomains[1].domainId").value(Matchers.anyOf(
+        Matchers.equalTo(assertRelatedDomains.get(1).getDomainId()),
+        Matchers.equalTo(assertRelatedDomains.get(1).getDomainId().intValue())
       )))
       .andExpect(jsonPath("$.relatedDomains[1].name").value(assertRelatedDomains.get(1).getName()));
   }

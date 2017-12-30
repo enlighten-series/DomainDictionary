@@ -3,6 +3,7 @@ package org.enlightenseries.DomainDictionary.presentation.rest.dto;
 import lombok.Data;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
+import org.enlightenseries.DomainDictionary.domain.model.domain.RelatedDomainSummary;
 
 import java.util.Date;
 import java.util.List;
@@ -14,11 +15,11 @@ public class DomainDto {
   private String format;
   private String description;
   private String existential;
-  private List<DomainSummary> relatedDomains;
+  private List<RelatedDomainSummary> relatedDomains;
   private Date created;
   private Date updated;
 
-  public DomainDto(Domain primary, List<DomainSummary> relatedDomains) {
+  public DomainDto(Domain primary, List<RelatedDomainSummary> relatedDomains) {
     this.id = primary.getId();
     this.name = primary.getName();
     this.format = primary.getFormat();

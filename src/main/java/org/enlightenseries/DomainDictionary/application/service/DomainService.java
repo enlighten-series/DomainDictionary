@@ -3,6 +3,7 @@ package org.enlightenseries.DomainDictionary.application.service;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
+import org.enlightenseries.DomainDictionary.domain.model.domain.RelatedDomainSummary;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelation;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelationRepository;
 import org.springframework.stereotype.Service;
@@ -31,12 +32,19 @@ public class DomainService {
     return this.domainRepository.findBy(id);
   }
 
-  public List<DomainSummary> findRelatedDomains(Long sourceDomainId) {
-    List<DomainSummary> result = new ArrayList<>();
+  public List<RelatedDomainSummary> findRelatedDomains(Long sourceDomainId) {
+    List<RelatedDomainSummary> result = new ArrayList<>();
     List<DomainToRelation> relatedIds = this.domainToRelationRepository.selectDestinations(sourceDomainId);
 
     relatedIds.forEach(d2r -> {
-      result.add(this.domainRepository.findDomainSummaryBy(d2r.getDomainId()));
+      DomainSummary related = domainRepository.findDomainSummaryBy(d2r.getDomainId());
+      result.add(
+        new RelatedDomainSummary(
+          d2r.getRelationId(),
+          related.getId(),
+          related.getName()
+        )
+      );
     });
 
     return result;

@@ -2,7 +2,7 @@ package org.enlightenseries.DomainDictionary.presentation.rest;
 
 import org.enlightenseries.DomainDictionary.application.service.DomainService;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
-import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
+import org.enlightenseries.DomainDictionary.domain.model.domain.RelatedDomainSummary;
 import org.enlightenseries.DomainDictionary.presentation.rest.dto.DomainDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +32,7 @@ public class DomainResource {
     Domain domain = this.domainService.findBy(id);
 
     if (domain != null) {
-      List<DomainSummary> related = this.domainService.findRelatedDomains(id);
+      List<RelatedDomainSummary> related = this.domainService.findRelatedDomains(id);
       DomainDto ret = new DomainDto(domain, related);
       return ResponseEntity.ok().body(ret);
     }
