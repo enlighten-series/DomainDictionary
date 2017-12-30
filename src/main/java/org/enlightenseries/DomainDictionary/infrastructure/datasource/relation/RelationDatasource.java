@@ -4,6 +4,8 @@ import org.enlightenseries.DomainDictionary.domain.model.relation.Relation;
 import org.enlightenseries.DomainDictionary.domain.model.relation.RelationRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
 public class RelationDatasource implements RelationRepository {
 
@@ -13,6 +15,10 @@ public class RelationDatasource implements RelationRepository {
     RelationMapper _relationMapper
   ) {
     this.relationMapper = _relationMapper;
+  }
+
+  public Relation findBy(UUID id) {
+    return this.relationMapper.select(id);
   }
 
   public void register(Relation relation) {
