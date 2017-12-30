@@ -97,7 +97,7 @@ public class RelationServiceTest {
     relationService.deleteRelation(assertData.getId());
 
     // expect
-    verify(relationRepositoryMock, times(1)).delete(assertData.getId());
     verify(domainToRelationRepositoryMock, times(1)).deleteRelationBy(assertData.getId());
+    verify(relationRepositoryMock, times(1)).delete(assertData.getId());
   }
 }
