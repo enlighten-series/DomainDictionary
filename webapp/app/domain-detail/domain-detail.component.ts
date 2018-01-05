@@ -13,6 +13,7 @@ import 'rxjs/add/operator/switchMap';
 
 import { Domain } from '../models/domain';
 import { GrowlMessagerComponent } from '../widgets/growl-messager.component';
+import { EditRelationDialogComponent } from './edit-relation-dialog/edit-relation-dialog.component';
 
 @Component({
   selector: 'delete-confirm-dialog',
@@ -77,6 +78,7 @@ export class DomainDetailComponent implements OnInit {
   id: number;
   viewDomain: Domain = new Domain();
   editFormInitialValue: Domain = new Domain();
+  relatedDomains: any[] = [];
 
   private activeIndex = 0;
   private idSubscription: Subscription;
@@ -91,7 +93,7 @@ export class DomainDetailComponent implements OnInit {
     private http: HttpClient,
     private snack: MatSnackBar,
     private router: Router,
-    private deleteConfirmDialog: MatDialog,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -99,11 +101,11 @@ export class DomainDetailComponent implements OnInit {
     this.idSubscription = this.activateRoute.paramMap
     .subscribe((param: ParamMap) => {
       this.id = Number(param.get('id'));
-      this.load();
+      this.loadDomainDetail();
     });
   }
 
-  load() {
+  loadDomainDetail() {
     this.http.get('/api/domains/' + this.id)
     .subscribe(
       (domain: Domain) => {
@@ -124,6 +126,50 @@ export class DomainDetailComponent implements OnInit {
           if (err) throw err;
           this.parsedExistential = content;
         });
+
+        // related domain
+        this.relatedDomains = [
+          {
+            relationId: 'aaa-bbb-ccc-ddd',
+            domainId: 1,
+            name: '関連ドメイン１'
+          },
+          {
+            relationId: 'aaa-bbb-ccc-eee',
+            domainId: 2,
+            name: '関連ドメイン２'
+          },
+          {
+            relationId: 'aaa-bbb-ccc-fff',
+            domainId: 3,
+            name: '関連ドメイン３'
+          },
+          {
+            relationId: 'aaa-bbb-ccc-fff',
+            domainId: 3,
+            name: '関連ドメイン３'
+          },
+          {
+            relationId: 'aaa-bbb-ccc-fff',
+            domainId: 3,
+            name: '関連ドメイン３'
+          },
+          {
+            relationId: 'aaa-bbb-ccc-fff',
+            domainId: 3,
+            name: '関連ドメイン３'
+          },
+          {
+            relationId: 'aaa-bbb-ccc-fff',
+            domainId: 3,
+            name: '関連ドメイン３'
+          },
+          {
+            relationId: 'aaa-bbb-ccc-fff',
+            domainId: 3,
+            name: '関連ドメイン３'
+          },
+        ];
       },
       (error) => {
         console.log(error);
@@ -167,7 +213,7 @@ export class DomainDetailComponent implements OnInit {
           },
           duration: 1500,
         });
-        this.load();
+        this.loadDomainDetail();
         this.matTabGroup.selectedIndex = 0;
       },
       (error) => {
@@ -176,9 +222,22 @@ export class DomainDetailComponent implements OnInit {
     );
   }
 
+  showAddRelationDialog() {
+    let dialogRef = this.dialog.open(EditRelationDialogComponent, {
+      data: {
+        currentRelatedDomains: this.relatedDomains,
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('close EditRelationDialogComponent');
+    });
+  }
+
   clickedDelete() {
-    let dialogRef = this.deleteConfirmDialog.open(DeleteConfirmDialog, {
-      data: {name: this.viewDomain.name}
+    let dialogRef = this.dialog.open(DeleteConfirmDialog, {
+      data: {
+        name: this.viewDomain.name,
+      },
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

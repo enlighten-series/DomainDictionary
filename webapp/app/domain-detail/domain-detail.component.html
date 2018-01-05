@@ -21,6 +21,17 @@
       <p class="data-title">存在理由・他との違い</p>
       <p class="md-contents" [innerHTML]="innerHtmlOfExistential()"></p>
     </div>
+    <div class="form-block width-full">
+      <p class="data-title">関連項目</p>
+      <section class="related-domains">
+        <mat-chip-list class="mat-chip-list-stacked">
+          <mat-chip *ngFor="let _domain of relatedDomains">
+            <a [routerLink]="'/detail/' + _domain.domainId">{{_domain.name}}</a>
+          </mat-chip>
+        </mat-chip-list>
+      </section>
+      <button mat-raised-button (click)="showAddRelationDialog()">関連項目を編集する</button>
+    </div>
   </mat-card>
 </ng-container>
 

@@ -2,11 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
+  MatAutocompleteModule,
   MatButtonModule,
   MatCardModule,
+  MatChipsModule,
   MatDialogModule,
   MatGridListModule,
   MatIconModule,
@@ -30,6 +32,7 @@ import { LicenseListComponent } from './license-list/license-list.component';
 import { GrowlMessagerComponent } from './widgets/growl-messager.component';
 import { HttpStatusInterceptor } from './services/http-status-interceptor';
 import { ErrorPageComponent } from './error-page/error-page.component';
+import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialog/edit-relation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -43,15 +46,19 @@ import { ErrorPageComponent } from './error-page/error-page.component';
     LicenseListComponent,
     GrowlMessagerComponent,
     ErrorPageComponent,
+    EditRelationDialogComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot(ROUTES, {useHash: true}),
+    MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
+    MatChipsModule,
     MatDialogModule,
     MatGridListModule,
     MatIconModule,
@@ -67,6 +74,7 @@ import { ErrorPageComponent } from './error-page/error-page.component';
     DeleteConfirmDialog,
     RegistConfirmDialog,
     GrowlMessagerComponent,
+    EditRelationDialogComponent,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
