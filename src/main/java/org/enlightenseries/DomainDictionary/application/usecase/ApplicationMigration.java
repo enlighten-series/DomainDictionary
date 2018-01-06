@@ -34,6 +34,8 @@ public class ApplicationMigration {
   public void checkApplicationMetadata() {
     try {
       Metadata majorVersion = this.metadataRepository.findByKey("major_version");
+      Metadata minorVersion = this.metadataRepository.findByKey("minor_version");
+      Metadata patchVersion = this.metadataRepository.findByKey("patch_version");
 
       // TODO: バージョン確認とマイグレーション処理
     } catch (Exception e) {
@@ -55,15 +57,16 @@ public class ApplicationMigration {
   }
 
   private void insertInitialData() {
+    // TODO: バージョン番号を定数取得（Gradleとか）
     Metadata majorVersion = new Metadata();
     majorVersion.setKey("major_version");
-    majorVersion.setValue("9");
+    majorVersion.setValue("0");
     Metadata minorVersion = new Metadata();
     minorVersion.setKey("minor_version");
-    minorVersion.setValue("8");
+    minorVersion.setValue("3");
     Metadata patchVersion = new Metadata();
     patchVersion.setKey("patch_version");
-    patchVersion.setValue("7");
+    patchVersion.setValue("0");
 
     this.metadataRepository.register(majorVersion);
     this.metadataRepository.register(minorVersion);
