@@ -14,6 +14,7 @@ import 'rxjs/add/operator/switchMap';
 import { Domain } from '../models/domain';
 import { GrowlMessagerComponent } from '../widgets/growl-messager.component';
 import { EditRelationDialogComponent } from './edit-relation-dialog/edit-relation-dialog.component';
+import { RelatedDomain } from '../models/related-domain';
 
 @Component({
   selector: 'delete-confirm-dialog',
@@ -78,7 +79,7 @@ export class DomainDetailComponent implements OnInit {
   id: number;
   viewDomain: Domain = new Domain();
   editFormInitialValue: Domain = new Domain();
-  relatedDomains: any[] = [];
+  relatedDomains: RelatedDomain[] = [];
 
   private activeIndex = 0;
   private idSubscription: Subscription;
@@ -128,48 +129,7 @@ export class DomainDetailComponent implements OnInit {
         });
 
         // related domain
-        this.relatedDomains = [
-          {
-            relationId: 'aaa-bbb-ccc-ddd',
-            domainId: 1,
-            name: '関連ドメイン１'
-          },
-          {
-            relationId: 'aaa-bbb-ccc-eee',
-            domainId: 2,
-            name: '関連ドメイン２'
-          },
-          {
-            relationId: 'aaa-bbb-ccc-fff',
-            domainId: 3,
-            name: '関連ドメイン３'
-          },
-          {
-            relationId: 'aaa-bbb-ccc-fff',
-            domainId: 3,
-            name: '関連ドメイン３'
-          },
-          {
-            relationId: 'aaa-bbb-ccc-fff',
-            domainId: 3,
-            name: '関連ドメイン３'
-          },
-          {
-            relationId: 'aaa-bbb-ccc-fff',
-            domainId: 3,
-            name: '関連ドメイン３'
-          },
-          {
-            relationId: 'aaa-bbb-ccc-fff',
-            domainId: 3,
-            name: '関連ドメイン３'
-          },
-          {
-            relationId: 'aaa-bbb-ccc-fff',
-            domainId: 3,
-            name: '関連ドメイン３'
-          },
-        ];
+        this.relatedDomains = this.viewDomain.relatedDomains;
       },
       (error) => {
         console.log(error);
@@ -230,7 +190,7 @@ export class DomainDetailComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('close EditRelationDialogComponent');
+      this.loadDomainDetail();
     });
   }
 
