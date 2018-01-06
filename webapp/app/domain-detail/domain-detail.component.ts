@@ -225,6 +225,7 @@ export class DomainDetailComponent implements OnInit {
   showAddRelationDialog() {
     let dialogRef = this.dialog.open(EditRelationDialogComponent, {
       data: {
+        sourceId: this.id,
         currentRelatedDomains: this.relatedDomains,
       },
     });

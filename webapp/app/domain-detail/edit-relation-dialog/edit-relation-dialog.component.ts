@@ -1,13 +1,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 
 import { DomainSummary } from '../../models/domain-summary';
-import {  } from '@angular/forms/src/model';
+import { RelatedDomain } from '../../models/related-domain';
+import { GrowlMessagerComponent } from '../../widgets/growl-messager.component';
 
 @Component({
   selector: 'app-edit-relation-dialog',
@@ -26,9 +27,11 @@ export class EditRelationDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<EditRelationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient,
+    public snack: MatSnackBar,
   ) {
     this.setupFilter();
 
+    this.sourceId = this.data.sourceId;
     this.relatedDomains = this.data.currentRelatedDomains.slice();
   }
 
@@ -45,7 +48,7 @@ export class EditRelationDialogComponent implements OnInit {
   });
 
   filteredOptions$: Observable<DomainSummary[]>;
-  relatedDomains: DomainSummary[] = [];
+  relatedDomains: RelatedDomain[] = [];
   
   displayFn(option: DomainSummary) {
     return option ? option.name : option;
@@ -64,17 +67,62 @@ export class EditRelationDialogComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.domainAddFormGroup.valid) {
-      console.log('submit');
-      console.log(this.domainAddFormGroup.value);
+    if (!this.domainAddFormGroup.valid) {
+      return false;
     }
+
+    const _formValue = this.domainAddFormGroup.value['addDomain'];
+    let targetDomain = null;
+    if (typeof _formValue === 'string') {
+      for (let i = 0; i < this.domainSummaryOptions.length; i++) {
+        if (this.domainSummaryOptions[i].name === _formValue) {
+          targetDomain = this.domainSummaryOptions[i];
+          break;
+        }
+      }
+    } else {
+      targetDomain = _formValue;
+    }
+
+    if (targetDomain == null) {
+      alert('該当する項目が見つかりません');
+      return;
+    }
+
+    this.http.post('/api/relations', {
+      source: this.sourceId,
+      destination: targetDomain.id,
+    })
+    .subscribe(
+      (data: any) => {
+        this.relatedDomains.push(new RelatedDomain(
+          data.id,
+          targetDomain.id,
+          targetDomain.name,
+        ));
+        this.snack.openFromComponent(GrowlMessagerComponent, {
+          data: {
+            message: '関連を追加しました',
+          },
+          duration: 800,
+        });
+      },
+      (error) => {
+        alert('登録時にエラーがありました。コンソールログを確認してください。');
+        console.log(error);
+      }
+    );
+
+    // 送信したらフォームはクリア
+    this.domainAddFormGroup.reset();
   }
 
   // #endregion
 
   // #region private
 
-  private domainSummaryOptions = [];
+  private domainSummaryOptions: DomainSummary[] = [];
+  private sourceId: number;
 
   private setupFilter() {
     this.filteredOptions$ = this.domainAddFormGroup.controls['addDomain'].valueChanges
@@ -88,7 +136,7 @@ export class EditRelationDialogComponent implements OnInit {
   private requestAllDomainSummary() {
     this.http.get('/api/domains')
       .subscribe(
-        (data: any) => {
+        (data: DomainSummary[]) => {
           this.domainSummaryOptions = data;
         },
         (error) => {
