@@ -58,11 +58,26 @@ export class EditRelationDialogComponent implements OnInit {
 
   // #region event
 
-  remove(domain: any): void {
+  remove(domain: RelatedDomain): void {
     let index = this.relatedDomains.indexOf(domain);
 
     if (index >= 0) {
-      this.relatedDomains.splice(index, 1);
+      this.http.delete('/api/relations/' + domain.relationId)
+      .subscribe(
+        (data: any) => {
+          this.relatedDomains.splice(index, 1);
+          this.snack.openFromComponent(GrowlMessagerComponent, {
+            data: {
+              message: '関連を削除しました',
+            },
+            duration: 800,
+          });
+        },
+        (error) => {
+          alert('エラーがありました。コンソールログを確認してください。');
+          console.log(error);
+        }
+      );
     }
   }
 
@@ -88,6 +103,11 @@ export class EditRelationDialogComponent implements OnInit {
       alert('該当する項目が見つかりません');
       return;
     }
+    if (targetDomain.id == this.sourceId) {
+      alert('同一ドメインを関連づけることはできません');
+      this.domainAddFormGroup.reset();
+      return;
+    }
 
     this.http.post('/api/relations', {
       source: this.sourceId,
@@ -108,7 +128,7 @@ export class EditRelationDialogComponent implements OnInit {
         });
       },
       (error) => {
-        alert('登録時にエラーがありました。コンソールログを確認してください。');
+        alert('エラーがありました。コンソールログを確認してください。');
         console.log(error);
       }
     );
