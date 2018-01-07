@@ -46,6 +46,11 @@ public class DomainDatasource implements DomainRepository {
     this.domainMapper.createTable();
   }
 
+  /**
+   * TODO: テストを作成
+   * @param exportFilePath
+   * @throws IOException
+   */
   public void export(String exportFilePath) throws IOException {
     File exportFile = new File(exportFilePath);
 

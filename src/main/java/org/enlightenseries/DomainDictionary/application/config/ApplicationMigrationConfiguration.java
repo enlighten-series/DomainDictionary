@@ -6,7 +6,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
-public class AsyncConfiguration {
+public class ApplicationMigrationConfiguration {
 
   @Bean(name="generatingExportFileExecutor")
   public TaskExecutor generatingExportFileExecutor() {

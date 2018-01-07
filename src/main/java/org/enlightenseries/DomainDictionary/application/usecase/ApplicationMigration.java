@@ -2,6 +2,7 @@ package org.enlightenseries.DomainDictionary.application.usecase;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.enlightenseries.DomainDictionary.application.singleton.ApplicationMigrationStatus;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.Metadata;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.MetadataRepository;
@@ -28,12 +29,17 @@ public class ApplicationMigration {
   private MetadataRepository metadataRepository;
   private DomainRepository domainRepository;
 
+  private ApplicationMigrationStatus applicationMigrationStatus;
+
   public ApplicationMigration(
     MetadataRepository _metadataRepository,
-    DomainRepository _domainRepository
+    DomainRepository _domainRepository,
+    ApplicationMigrationStatus _applicationMigrationStatus
   ) {
     this.metadataRepository = _metadataRepository;
     this.domainRepository = _domainRepository;
+
+    this.applicationMigrationStatus = _applicationMigrationStatus;
   }
 
   @PostConstruct
@@ -79,10 +85,14 @@ public class ApplicationMigration {
    */
   @Async("generatingExportFileExecutor")
   public void generatingExportFile() throws InterruptedException, IOException {
+    applicationMigrationStatus.setNowGeneratingExportFile(true);
+
     // 各Repositoryにファイルへのエクスポートを依頼する（大量データ処理はインフラに依存するため）
     domainRepository.export(exportOutputDirectioryPath + "/" + exportDomainFileName);
 
-    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ created!");
+    TimeUnit.SECONDS.sleep(10);
+
+    applicationMigrationStatus.setNowGeneratingExportFile(false);
   }
 
   /**
@@ -91,8 +101,7 @@ public class ApplicationMigration {
    * @return 生成処理中ならtrue, 未作成／作成済み問わず処理をしていなければfalse
    */
   public boolean isGeneratingExportFile() {
-    // TODO: 別スレッドでの生成状態をチェック
-    return false;
+    return applicationMigrationStatus.isNowGeneratingExportFile();
   }
 
   /**
