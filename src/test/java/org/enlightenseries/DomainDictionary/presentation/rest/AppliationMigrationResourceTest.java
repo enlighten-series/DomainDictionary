@@ -12,6 +12,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -28,7 +30,7 @@ public class AppliationMigrationResourceTest {
   @Before
   public void setup() {
     MockitoAnnotations.initMocks(this);
-    ApplicationMigrationResource applicationMigrationResource = new ApplicationMigrationResource();
+    ApplicationMigrationResource applicationMigrationResource = new ApplicationMigrationResource(applicationMigrationUsecaseMock);
     applicationMigrationResourceMockMvc = MockMvcBuilders.standaloneSetup(applicationMigrationResource).build();
   }
 
@@ -41,36 +43,39 @@ public class AppliationMigrationResourceTest {
     // try
     applicationMigrationResourceMockMvc.perform(get("/api/application-migration/export/status"))
 
-      // expect
+    // expect
       .andExpect(status().isOk())
 
       .andExpect(jsonPath("$.nowGenerating").value(Matchers.equalTo(false)))
-      .andExpect(jsonPath("$.latestGeneratedDate").value(Matchers.equalTo("")));
+      .andExpect(jsonPath("$.latestGeneratedDate").value(Matchers.nullValue()));
+
+    verify(applicationMigrationUsecaseMock, times(1)).isGeneratingExportFile();
+    verify(applicationMigrationUsecaseMock, times(1)).getExportFileGeneratedDate();
   }
 
   @Test
   public void requestStartGenerating() {
-
+    // TODO
   }
 
   @Test
   public void downloadNotExistGeneratedFile() {
-
+    // TODO
   }
 
   @Test
   public void getStatusGenerated() {
-
+    // TODO
   }
 
   @Test
   public void downloadExistGeneratedFile() {
-
+    // TODO
   }
 
   @Test
   public void requetReStartGenerating() {
-
+    // TODO
   }
 
 }

@@ -1,18 +1,31 @@
 package org.enlightenseries.DomainDictionary.application.usecase;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.Metadata;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.MetadataRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ApplicationMigration {
-  MetadataRepository metadataRepository;
-  DomainRepository domainRepository;
+
+  private final String exportFilePath = "./data/export.csv";
+
+  private MetadataRepository metadataRepository;
+  private DomainRepository domainRepository;
 
   public ApplicationMigration(
     MetadataRepository _metadataRepository,
@@ -58,6 +71,27 @@ public class ApplicationMigration {
     this.metadataRepository.register(majorVersion);
     this.metadataRepository.register(minorVersion);
     this.metadataRepository.register(patchVersion);
+  }
+
+  /**
+   * エクスポートファイルの生成を開始する
+   */
+  @Async("generatingExportFileExecutor")
+  public void generatingExportFile() throws InterruptedException, IOException {
+    File exportFile = new File(exportFilePath);
+    exportFile.createNewFile();
+
+    try (BufferedWriter bw = new BufferedWriter(
+      new OutputStreamWriter(new FileOutputStream(exportFile), StandardCharsets.UTF_8))) {
+
+      CSVPrinter p = CSVFormat.RFC4180.print(bw);
+      p.printRecord("hello!", "world!", " this is double quote:\" ", "this is crlf:\r\n");
+
+    } catch (IOException e) {
+      throw e;
+    }
+
+    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ created!");
   }
 
   /**
