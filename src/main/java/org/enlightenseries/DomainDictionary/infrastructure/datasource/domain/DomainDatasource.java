@@ -2,6 +2,8 @@ package org.enlightenseries.DomainDictionary.infrastructure.datasource.domain;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.ibatis.session.ResultContext;
+import org.apache.ibatis.session.ResultHandler;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.springframework.stereotype.Repository;
@@ -53,9 +55,23 @@ public class DomainDatasource implements DomainRepository {
       exportFile.createNewFile();
 
       CSVPrinter p = CSVFormat.RFC4180.print(bw);
-      p.printRecord("1st repository world!*", "yahoo!", "this is double quote:\" ", "this is crlf:\r\n");
-      p.printRecord("2nd repository world!,", "yahoo!", "this is double quote:\" ", "this is crlf:\r\n");
-      p.printRecord("2nd repository world!\"", "yahoo!", "this is double quote:\" ", "this is crlf:\r\n");
+
+      domainMapper.exportAll(context -> {
+        Domain domain = context.getResultObject();
+        try {
+          p.printRecord(
+            domain.getId(),
+            domain.getName(),
+            domain.getFormat(),
+            domain.getDescription(),
+            domain.getExistential(),
+            domain.getCreated(),
+            domain.getUpdated()
+          );
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      });
 
     } catch (IOException e) {
       throw e;

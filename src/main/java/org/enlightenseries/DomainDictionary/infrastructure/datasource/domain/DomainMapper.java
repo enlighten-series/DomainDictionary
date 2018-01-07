@@ -1,6 +1,7 @@
 package org.enlightenseries.DomainDictionary.infrastructure.datasource.domain;
 
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.session.ResultHandler;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface DomainMapper {
   void delete(Long id);
 
   void createTable();
+
+  void exportAll(ResultHandler<Domain> resultHandler);
 }

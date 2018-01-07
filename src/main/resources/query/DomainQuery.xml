@@ -73,4 +73,16 @@
       ,updated TIMESTAMP
     )
   </insert>
+  <select id="exportAll" resultType="org.enlightenseries.DomainDictionary.domain.model.domain.Domain">
+    SELECT
+      id,
+      name,
+      format,
+      description,
+      existential,
+      created,
+      updated
+    FROM
+      domain
+  </select>
 </mapper>
