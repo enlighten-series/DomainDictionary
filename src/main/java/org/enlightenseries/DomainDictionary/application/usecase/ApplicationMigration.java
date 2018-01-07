@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.Date;
 
 @Service
 public class ApplicationMigration {
@@ -57,6 +58,26 @@ public class ApplicationMigration {
     this.metadataRepository.register(majorVersion);
     this.metadataRepository.register(minorVersion);
     this.metadataRepository.register(patchVersion);
+  }
+
+  /**
+   * エクスポートファイルが生成途中か否かを判断する
+   *
+   * @return 生成処理中ならtrue, 未作成／作成済み問わず処理をしていなければfalse
+   */
+  public boolean isGeneratingExportFile() {
+    // TODO: 別スレッドでの生成状態をチェック
+    return false;
+  }
+
+  /**
+   * 生成ずみのエクスポートファイルの作成日時を返す
+   *
+   * @return ファイルが存在しなければnullを返す
+   */
+  public Date getExportFileGeneratedDate() {
+    // TODO: ファイルの存在チェック＋ファイルの作成日時取得
+    return null;
   }
 
 }
