@@ -22,7 +22,8 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class ApplicationMigration {
 
-  private final String exportFilePath = "./data/export.csv";
+  private final String exportOutputDirectioryPath = "./data";
+  private final String exportDomainFileName = "export.csv";
 
   private MetadataRepository metadataRepository;
   private DomainRepository domainRepository;
@@ -78,18 +79,8 @@ public class ApplicationMigration {
    */
   @Async("generatingExportFileExecutor")
   public void generatingExportFile() throws InterruptedException, IOException {
-    File exportFile = new File(exportFilePath);
-    exportFile.createNewFile();
-
-    try (BufferedWriter bw = new BufferedWriter(
-      new OutputStreamWriter(new FileOutputStream(exportFile), StandardCharsets.UTF_8))) {
-
-      CSVPrinter p = CSVFormat.RFC4180.print(bw);
-      p.printRecord("hello!", "world!", " this is double quote:\" ", "this is crlf:\r\n");
-
-    } catch (IOException e) {
-      throw e;
-    }
+    // 各Repositoryにファイルへのエクスポートを依頼する（大量データ処理はインフラに依存するため）
+    domainRepository.export(exportOutputDirectioryPath + "/" + exportDomainFileName);
 
     System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ created!");
   }
