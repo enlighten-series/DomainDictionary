@@ -30,6 +30,7 @@ import { LicenseListComponent } from './license-list/license-list.component';
 import { GrowlMessagerComponent } from './widgets/growl-messager.component';
 import { HttpStatusInterceptor } from './services/http-status-interceptor';
 import { ErrorPageComponent } from './error-page/error-page.component';
+import { DataExportDialogComponent } from './data-export-dialog/data-export-dialog.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { ErrorPageComponent } from './error-page/error-page.component';
     LicenseListComponent,
     GrowlMessagerComponent,
     ErrorPageComponent,
+    DataExportDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,6 +66,7 @@ import { ErrorPageComponent } from './error-page/error-page.component';
     MatToolbarModule,
   ],
   entryComponents: [
+    DataExportDialogComponent,
     DeleteConfirmDialog,
     RegistConfirmDialog,
     GrowlMessagerComponent,
