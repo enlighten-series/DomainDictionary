@@ -23,7 +23,7 @@ public class ApplicationMigrationResource {
   }
 
   @GetMapping("/application-migration/export/status")
-  public ResponseEntity<ExportFileGeneratingStatus> getGenerateExportFileStatus() {
+  public ResponseEntity<ExportFileGeneratingStatus> getGenerateExportFileStatus() throws Exception {
     boolean nowGenerating = applicationMigrationUsecase.isGeneratingExportFile();
     Date latestGeneratedDate = applicationMigrationUsecase.getExportFileGeneratedDate();
 

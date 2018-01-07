@@ -16,6 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -96,6 +100,10 @@ public class ApplicationMigration {
     applicationMigrationStatus.setNowGeneratingExportFile(false);
   }
 
+  public String getExportFilePath() {
+    return exportOutputDirectioryPath + "/" + exportDomainFileName;
+  }
+
   /**
    * エクスポートファイルが生成途中か否かを判断する
    *
@@ -110,9 +118,16 @@ public class ApplicationMigration {
    *
    * @return ファイルが存在しなければnullを返す
    */
-  public Date getExportFileGeneratedDate() {
-    // TODO: ファイルの存在チェック＋ファイルの作成日時取得
-    return null;
+  public Date getExportFileGeneratedDate() throws IOException {
+    File exportFile = new File(exportOutputDirectioryPath + "/" + exportDomainFileName);
+
+    if (!exportFile.exists()) {
+      return null;
+    }
+
+    BasicFileAttributes attr = Files.readAttributes(exportFile.toPath(), BasicFileAttributes.class);
+
+    return Date.from(attr.creationTime().toInstant());
   }
 
 }
