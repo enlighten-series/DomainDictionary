@@ -65,15 +65,16 @@ public class ApplicationMigration {
   }
 
   private void insertInitialData() {
+    // TODO: バージョン番号を定数取得（Gradleとか）
     Metadata majorVersion = new Metadata();
     majorVersion.setKey("major_version");
-    majorVersion.setValue("9");
+    majorVersion.setValue("0");
     Metadata minorVersion = new Metadata();
     minorVersion.setKey("minor_version");
-    minorVersion.setValue("8");
+    minorVersion.setValue("2");
     Metadata patchVersion = new Metadata();
     patchVersion.setKey("patch_version");
-    patchVersion.setValue("7");
+    patchVersion.setValue("2");
 
     this.metadataRepository.register(majorVersion);
     this.metadataRepository.register(minorVersion);
