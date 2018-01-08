@@ -34,6 +34,7 @@ import { HttpStatusInterceptor } from './services/http-status-interceptor';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { DataExportDialogComponent } from './data-export-dialog/data-export-dialog.component';
 import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialog/edit-relation-dialog.component';
+import { DataImportDialogComponent } from './data-import-dialog/data-import-dialog.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialo
     ErrorPageComponent,
     DataExportDialogComponent,
     EditRelationDialogComponent,
+    DataImportDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +76,7 @@ import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialo
   ],
   entryComponents: [
     DataExportDialogComponent,
+    DataImportDialogComponent,
     DeleteConfirmDialog,
     RegistConfirmDialog,
     GrowlMessagerComponent,

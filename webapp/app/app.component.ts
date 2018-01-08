@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { MatSidenav, MatDialog } from '@angular/material';
 import { Router, NavigationStart } from '@angular/router';
 import { DataExportDialogComponent } from './data-export-dialog/data-export-dialog.component';
+import { DataImportDialogComponent } from './data-import-dialog/data-import-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -58,6 +59,11 @@ export class AppComponent implements OnInit{
   export() {
     // エクスポートなので後処理なし
     let dialogRef = this.dialog.open(DataExportDialogComponent);
+  }
+
+  import() {
+    // エクスポートなので後処理なし
+    let dialogRef = this.dialog.open(DataImportDialogComponent);
   }
 
   license() {

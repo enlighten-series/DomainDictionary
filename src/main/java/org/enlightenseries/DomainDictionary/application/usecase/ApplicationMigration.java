@@ -1,7 +1,10 @@
 package org.enlightenseries.DomainDictionary.application.usecase;
 
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
+import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.application.singleton.ApplicationMigrationStatus;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.Metadata;
@@ -14,6 +17,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
@@ -138,6 +142,41 @@ public class ApplicationMigration {
     BasicFileAttributes attr = Files.readAttributes(exportFile.toPath(), BasicFileAttributes.class);
 
     return Date.from(attr.lastModifiedTime().toInstant());
+  }
+
+  @Transactional
+  public void startImport(MultipartFile importFile) throws Exception {
+    try (BufferedReader br = new BufferedReader(new InputStreamReader(importFile.getInputStream()))) {
+
+      CSVParser parser = CSVFormat
+        .RFC4180
+        .withIgnoreEmptyLines(true)
+        .withIgnoreSurroundingSpaces(true)
+        .parse(br);
+
+      String majorVersion = "";
+      String minorVersion = "";
+      String patchVersion = "";
+
+      for(CSVRecord firstRecord : parser) {
+        majorVersion = firstRecord.get(1);
+        minorVersion = firstRecord.get(2);
+        patchVersion = firstRecord.get(3);
+        break;
+      }
+
+      if (!majorVersion.equals("0")
+        || !minorVersion.equals("2")
+        || !patchVersion.equals("2")) {
+        throw new ApplicationException("現在、バージョン0.2.2以外のエクスポートファイルをインポートすることはできません");
+      }
+
+      // TODO: 各リポジトリに取り込み委譲
+      System.out.println("とりこみ！");
+
+    } catch (IOException e) {
+      throw e;
+    }
   }
 
 }
