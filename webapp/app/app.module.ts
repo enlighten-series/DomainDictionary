@@ -32,6 +32,7 @@ import { LicenseListComponent } from './license-list/license-list.component';
 import { GrowlMessagerComponent } from './widgets/growl-messager.component';
 import { HttpStatusInterceptor } from './services/http-status-interceptor';
 import { ErrorPageComponent } from './error-page/error-page.component';
+import { DataExportDialogComponent } from './data-export-dialog/data-export-dialog.component';
 import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialog/edit-relation-dialog.component';
 
 @NgModule({
@@ -46,6 +47,7 @@ import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialo
     LicenseListComponent,
     GrowlMessagerComponent,
     ErrorPageComponent,
+    DataExportDialogComponent,
     EditRelationDialogComponent,
   ],
   imports: [
@@ -71,6 +73,7 @@ import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialo
     MatToolbarModule,
   ],
   entryComponents: [
+    DataExportDialogComponent,
     DeleteConfirmDialog,
     RegistConfirmDialog,
     GrowlMessagerComponent,

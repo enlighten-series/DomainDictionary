@@ -4,7 +4,7 @@
       <mat-icon>home</mat-icon>
     </button>
 
-    <button *ngIf="false" mat-button class="app-menu-btn" (click)="toggleAppMenuVisible($event)">
+    <button mat-button class="app-menu-btn" (click)="toggleAppMenuVisible($event)">
       <mat-icon>menu</mat-icon>
     </button>
   </div>
@@ -21,6 +21,9 @@
 <div class="app-menu" *ngIf="appMenuVisible">
   <ul>
     <li>
+      <button mat-button (click)="export()">データエクスポート</button>
+    </li>
+    <li *ngIf="false">
       <button mat-button (click)="license()">ライセンスの表示</button>
     </li>
   </ul>

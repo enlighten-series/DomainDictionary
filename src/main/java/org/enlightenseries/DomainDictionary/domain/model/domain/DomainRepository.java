@@ -1,5 +1,6 @@
 package org.enlightenseries.DomainDictionary.domain.model.domain;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface DomainRepository {
@@ -16,4 +17,6 @@ public interface DomainRepository {
   void delete(Long id);
 
   void createTable();
+
+  void export(String exportFilePath) throws IOException;
 }

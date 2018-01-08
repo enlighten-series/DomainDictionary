@@ -1,33 +1,57 @@
 package org.enlightenseries.DomainDictionary.application.usecase;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.enlightenseries.DomainDictionary.application.singleton.ApplicationMigrationStatus;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.Metadata;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.MetadataRepository;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelationRepository;
 import org.enlightenseries.DomainDictionary.domain.model.relation.RelationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ApplicationMigration {
 
-  MetadataRepository metadataRepository;
-  DomainRepository domainRepository;
-  DomainToRelationRepository domainToRelationRepository;
-  RelationRepository relationRepository;
+  private final String exportOutputDirectioryPath = "./data";
+  private final String exportDomainFileName = "export.csv";
+
+  private MetadataRepository metadataRepository;
+  private DomainRepository domainRepository;
+  private DomainToRelationRepository domainToRelationRepository;
+  private RelationRepository relationRepository;
+
+  private ApplicationMigrationStatus applicationMigrationStatus;
 
   public ApplicationMigration(
     MetadataRepository _metadataRepository,
     DomainRepository _domainRepository,
     DomainToRelationRepository _domainToRelationRepository,
-    RelationRepository _relationRepository
+    RelationRepository _relationRepository,
+    ApplicationMigrationStatus _applicationMigrationStatus
   ) {
     this.metadataRepository = _metadataRepository;
     this.domainRepository = _domainRepository;
     this.domainToRelationRepository = _domainToRelationRepository;
     this.relationRepository = _relationRepository;
+
+    this.applicationMigrationStatus = _applicationMigrationStatus;
   }
 
   @PostConstruct
@@ -71,6 +95,49 @@ public class ApplicationMigration {
     this.metadataRepository.register(majorVersion);
     this.metadataRepository.register(minorVersion);
     this.metadataRepository.register(patchVersion);
+  }
+
+  /**
+   * エクスポートファイルの生成を開始する
+   */
+  @Async("generatingExportFileExecutor")
+  public void generatingExportFile() throws InterruptedException, IOException {
+    applicationMigrationStatus.setNowGeneratingExportFile(true);
+
+    // 各Repositoryにファイルへのエクスポートを依頼する（大量データ処理はインフラに依存するため）
+    domainRepository.export(exportOutputDirectioryPath + "/" + exportDomainFileName);
+
+    applicationMigrationStatus.setNowGeneratingExportFile(false);
+  }
+
+  public String getExportFilePath() {
+    return exportOutputDirectioryPath + "/" + exportDomainFileName;
+  }
+
+  /**
+   * エクスポートファイルが生成途中か否かを判断する
+   *
+   * @return 生成処理中ならtrue, 未作成／作成済み問わず処理をしていなければfalse
+   */
+  public boolean isGeneratingExportFile() {
+    return applicationMigrationStatus.isNowGeneratingExportFile();
+  }
+
+  /**
+   * 生成ずみのエクスポートファイルの作成日時を返す
+   *
+   * @return ファイルが存在しなければnullを返す
+   */
+  public Date getExportFileGeneratedDate() throws IOException {
+    File exportFile = new File(exportOutputDirectioryPath + "/" + exportDomainFileName);
+
+    if (!exportFile.exists()) {
+      return null;
+    }
+
+    BasicFileAttributes attr = Files.readAttributes(exportFile.toPath(), BasicFileAttributes.class);
+
+    return Date.from(attr.lastModifiedTime().toInstant());
   }
 
 }
