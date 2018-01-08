@@ -1,5 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import 'rxjs/add/observable/throw';
 
 @Component({
   selector: 'app-data-export-dialog',
@@ -17,13 +19,11 @@ export class DataExportDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DataExportDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private http: HttpClient,
   ) { }
 
   ngOnInit() {
-    // TODO: エクスポートファイルの生成状態をリクエスト
-    this.nowGenerating = false;
-    this.generated = true;
-    this.latestGeneratedDate = new Date('2017/12/31 23:59:59');
+    this.checkGeneratingStatus();
   }
 
   // #endregion
@@ -47,20 +47,57 @@ export class DataExportDialogComponent implements OnInit {
   // #region イベント
 
   generateExportFile() {
-    // TODO: エクスポートファイルの生成開始リクエスト
+    this.nowGenerating = true;
+    this.http.post('/api/application-migration/export/generate', null)
+    .subscribe(
+      (res: any) => {
+        console.log('trigger start!');
+        this.triggerCycleCheckStatus();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   downloadExportFile() {
-    // TODO: エクスポートファイルのダウンロードリクエスト
+    window.location.href = '/api/application-migration/export/download';
   }
 
   // #endregion
 
   // #region プライベート
 
-  nowGenerating: boolean = false;
-  generated: boolean = false;
-  latestGeneratedDate: Date;
+  private nowGenerating: boolean = false;
+  private generated: boolean = false;
+  private latestGeneratedDate: Date;
+
+  private checkGeneratingStatus() {
+    this.http.get('/api/application-migration/export/status')
+    .subscribe(
+      (status: any) => {
+        this.nowGenerating = status.nowGenerating;
+        this.latestGeneratedDate = status.latestGeneratedDate;
+        if (this.latestGeneratedDate) {
+          this.generated = true;
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+  
+  private triggerCycleCheckStatus() {
+    console.log('trigger');
+    setTimeout(() => {
+      console.log('check');
+      this.checkGeneratingStatus();
+      if (this.nowGenerating) {
+        this.triggerCycleCheckStatus();
+      }
+    }, 1000);
+  }
 
   // #endregion
 

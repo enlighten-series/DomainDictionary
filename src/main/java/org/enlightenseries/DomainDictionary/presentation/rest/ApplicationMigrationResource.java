@@ -1,6 +1,7 @@
 package org.enlightenseries.DomainDictionary.presentation.rest;
 
 import org.enlightenseries.DomainDictionary.application.usecase.ApplicationMigration;
+import org.enlightenseries.DomainDictionary.presentation.rest.dto.EmptyDto;
 import org.enlightenseries.DomainDictionary.presentation.rest.dto.ExportFileGeneratingStatus;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -40,10 +41,10 @@ public class ApplicationMigrationResource {
   }
 
   @PostMapping("/application-migration/export/generate")
-  public ResponseEntity startGeneratingExportFile() throws Exception {
+  public ResponseEntity<EmptyDto> startGeneratingExportFile() throws Exception {
     applicationMigrationUsecase.generatingExportFile();
 
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok().body(new EmptyDto());
   }
 
   @GetMapping("/application-migration/export/download")

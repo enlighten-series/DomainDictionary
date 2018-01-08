@@ -95,8 +95,6 @@ public class ApplicationMigration {
     // 各Repositoryにファイルへのエクスポートを依頼する（大量データ処理はインフラに依存するため）
     domainRepository.export(exportOutputDirectioryPath + "/" + exportDomainFileName);
 
-    TimeUnit.SECONDS.sleep(10);
-
     applicationMigrationStatus.setNowGeneratingExportFile(false);
   }
 
