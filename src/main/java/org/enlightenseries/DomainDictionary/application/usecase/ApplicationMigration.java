@@ -127,7 +127,7 @@ public class ApplicationMigration {
 
     BasicFileAttributes attr = Files.readAttributes(exportFile.toPath(), BasicFileAttributes.class);
 
-    return Date.from(attr.creationTime().toInstant());
+    return Date.from(attr.lastModifiedTime().toInstant());
   }
 
 }
