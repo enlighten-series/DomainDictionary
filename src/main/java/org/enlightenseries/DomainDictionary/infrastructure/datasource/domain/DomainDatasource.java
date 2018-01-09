@@ -99,10 +99,9 @@ public class DomainDatasource implements DomainRepository {
    * @param parser
    */
   public void import_0_2_X(CSVParser parser) throws ApplicationException {
+    domainMapper.deleteAllForImport();
+
     boolean proceed = false;
-
-    //きぞんでーたを全部削除！
-
     for(CSVRecord record : parser) {
       if (!proceed) {
         if (record.get(0).equals("Domain start")) {
@@ -124,7 +123,6 @@ public class DomainDatasource implements DomainRepository {
         new Date(record.get(5)),
         new Date(record.get(6))
       );
-
       domainMapper.insertForImport(_new);
     }
 

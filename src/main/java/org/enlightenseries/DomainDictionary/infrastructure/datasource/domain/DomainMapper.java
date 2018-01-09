@@ -26,5 +26,7 @@ public interface DomainMapper {
 
   void exportAll(ResultHandler<Domain> resultHandler);
 
+  void deleteAllForImport();
+
   void insertForImport(Domain domain);
 }
