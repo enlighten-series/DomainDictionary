@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternUtils;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.sql.DataSource;
 
@@ -30,5 +32,11 @@ public class MyBatisConfiguration {
     bean.setMapperLocations(resolver.getResources("classpath:query/*.xml"));
 
     return new SqlSessionTemplate(bean.getObject());
+  }
+
+  @Autowired
+  @Bean
+  public DataSourceTransactionManager transactionManager(DataSource dataSource) throws Exception {
+    return new DataSourceTransactionManager(dataSource);
   }
 }

@@ -25,4 +25,6 @@ public interface DomainMapper {
   void createTable();
 
   void exportAll(ResultHandler<Domain> resultHandler);
+
+  void insertForImport(Domain domain);
 }

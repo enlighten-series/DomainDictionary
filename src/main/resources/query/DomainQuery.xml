@@ -94,4 +94,23 @@
     FROM
       domain
   </select>
+  <insert id="insertForImport" parameterType="org.enlightenseries.DomainDictionary.domain.model.domain.Domain">
+    INSERT INTO domain (
+      id,
+      name,
+      format,
+      description,
+      existential,
+      created,
+      updated
+    ) values (
+      #{id},
+      #{name},
+      #{format},
+      #{description},
+      #{existential},
+      #{created},
+      #{updated}
+    )
+  </insert>
 </mapper>

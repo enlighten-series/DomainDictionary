@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
@@ -144,7 +145,12 @@ public class ApplicationMigration {
     return Date.from(attr.lastModifiedTime().toInstant());
   }
 
-  @Transactional
+  /**
+   * 独自例外をロールバック対象に含めるよう、rollbackForを指定する
+   * @param importFile
+   * @throws Exception
+   */
+  @Transactional(rollbackFor = Exception.class)
   public void startImport(MultipartFile importFile) throws Exception {
     try (BufferedReader br = new BufferedReader(new InputStreamReader(importFile.getInputStream()))) {
 
@@ -171,12 +177,16 @@ public class ApplicationMigration {
         throw new ApplicationException("現在、バージョン0.2.2以外のエクスポートファイルをインポートすることはできません");
       }
 
-      // TODO: 各リポジトリに取り込み委譲
-      System.out.println("とりこみ！");
+      // バージョンに合わせたインポートを実行
+      import_0_2_X(parser);
 
     } catch (IOException e) {
       throw e;
     }
+  }
+
+  private void import_0_2_X(CSVParser parser) throws ApplicationException {
+    domainRepository.import_0_2_X(parser);
   }
 
 }
