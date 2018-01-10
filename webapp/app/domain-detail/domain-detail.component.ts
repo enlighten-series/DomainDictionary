@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTabGroup } from '@angular/material';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -13,6 +13,8 @@ import 'rxjs/add/operator/switchMap';
 
 import { Domain } from '../models/domain';
 import { GrowlMessagerComponent } from '../widgets/growl-messager.component';
+import { EditRelationDialogComponent } from './edit-relation-dialog/edit-relation-dialog.component';
+import { RelatedDomain } from '../models/related-domain';
 
 @Component({
   selector: 'delete-confirm-dialog',
@@ -77,6 +79,7 @@ export class DomainDetailComponent implements OnInit {
   id: number;
   viewDomain: Domain = new Domain();
   editFormInitialValue: Domain = new Domain();
+  relatedDomains: RelatedDomain[] = [];
 
   private activeIndex = 0;
   private idSubscription: Subscription;
@@ -91,7 +94,7 @@ export class DomainDetailComponent implements OnInit {
     private http: HttpClient,
     private snack: MatSnackBar,
     private router: Router,
-    private deleteConfirmDialog: MatDialog,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -99,11 +102,11 @@ export class DomainDetailComponent implements OnInit {
     this.idSubscription = this.activateRoute.paramMap
     .subscribe((param: ParamMap) => {
       this.id = Number(param.get('id'));
-      this.load();
+      this.loadDomainDetail();
     });
   }
 
-  load() {
+  loadDomainDetail() {
     this.http.get('/api/domains/' + this.id)
     .subscribe(
       (domain: Domain) => {
@@ -124,6 +127,9 @@ export class DomainDetailComponent implements OnInit {
           if (err) throw err;
           this.parsedExistential = content;
         });
+
+        // related domain
+        this.relatedDomains = this.viewDomain.relatedDomains;
       },
       (error) => {
         console.log(error);
@@ -167,7 +173,7 @@ export class DomainDetailComponent implements OnInit {
           },
           duration: 1500,
         });
-        this.load();
+        this.loadDomainDetail();
         this.matTabGroup.selectedIndex = 0;
       },
       (error) => {
@@ -176,9 +182,23 @@ export class DomainDetailComponent implements OnInit {
     );
   }
 
+  showAddRelationDialog() {
+    let dialogRef = this.dialog.open(EditRelationDialogComponent, {
+      data: {
+        sourceId: this.id,
+        currentRelatedDomains: this.relatedDomains,
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadDomainDetail();
+    });
+  }
+
   clickedDelete() {
-    let dialogRef = this.deleteConfirmDialog.open(DeleteConfirmDialog, {
-      data: {name: this.viewDomain.name}
+    let dialogRef = this.dialog.open(DeleteConfirmDialog, {
+      data: {
+        name: this.viewDomain.name,
+      },
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -199,8 +219,13 @@ export class DomainDetailComponent implements OnInit {
         });
         this.router.navigate(['/']);
       },
-      (error) => {
-        console.log(error);
+      (error: HttpErrorResponse) => {
+        this.snack.openFromComponent(GrowlMessagerComponent, {
+          data: {
+            message: error.error.message,
+          },
+          duration: 3000,
+        });
       }
     );
   }

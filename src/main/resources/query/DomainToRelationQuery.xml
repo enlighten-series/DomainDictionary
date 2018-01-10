@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.enlightenseries.DomainDictionary.infrastructure.datasource.relation.DomainToRelationMapper">
+  <select id="selectDest" parameterType="Long" resultType="org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelation">
+    <![CDATA[
+    SELECT
+      dst.id,
+      dst.domain_id,
+      dst.relation_id
+    FROM
+      domain_to_relation dst,
+      (
+        SELECT
+        id,
+        domain_id,
+        relation_id
+        FROM
+        domain_to_relation
+        WHERE
+        domain_id = #{id}
+      ) src
+    WHERE
+      dst.relation_id = src.relation_id
+    AND
+      dst.id <> src.id
+    ]]>
+  </select>
+  <insert id="insert" parameterType="org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelation">
+    INSERT INTO domain_to_relation (
+      id,
+      domain_id,
+      relation_id
+    ) values (
+      #{id},
+      #{domainId},
+      #{relationId}
+    )
+  </insert>
+  <delete id="deleteRelationBy" parameterType="java.util.UUID">
+    DELETE FROM
+      domain_to_relation
+    WHERE
+      relation_id=#{relation_id}
+  </delete>
+  <insert id="createTable">
+    CREATE TABLE domain_to_relation (
+      id VARCHAR,
+      domain_id BIGINT,
+      relation_id VARCHAR
+    )
+  </insert>
+  <delete id="deleteAllForImport">
+    DELETE FROM
+      domain_to_relation
+  </delete>
+</mapper>

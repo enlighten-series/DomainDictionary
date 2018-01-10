@@ -1,3 +1,5 @@
+import { RelatedDomain } from "./related-domain";
+
 export class Domain {
   id: number;
   name: string;
@@ -6,6 +8,7 @@ export class Domain {
   existential: string;
   created: Date;
   updated: Date;
+  relatedDomains: RelatedDomain[];
 
   constructor(
     id?,
@@ -15,6 +18,7 @@ export class Domain {
     existential?,
     created?,
     updated?,
+    relatedDomains?
   ) {
     this.id = id ? id : 1;
     this.name = name ? name : '';
@@ -23,5 +27,6 @@ export class Domain {
     this.existential = existential ? existential : '';
     this.created = created ? created : new Date();
     this.updated = updated ? updated : new Date();
+    this.relatedDomains = relatedDomains ? relatedDomains : [];
   }
 }

@@ -27,6 +27,15 @@
     WHERE
       id=#{id}
   </select>
+  <select id="selectSummary" parameterType="Long" resultType="org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary">
+    SELECT
+      id,
+      name
+    FROM
+      domain
+    WHERE
+      id=#{id}
+  </select>
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="org.enlightenseries.DomainDictionary.domain.model.domain.Domain">
     INSERT INTO domain (
       name,
@@ -71,6 +80,41 @@
       ,existential TEXT
       ,created TIMESTAMP
       ,updated TIMESTAMP
+    )
+  </insert>
+  <select id="exportAll" resultType="org.enlightenseries.DomainDictionary.domain.model.domain.Domain">
+    SELECT
+      id,
+      name,
+      format,
+      description,
+      existential,
+      created,
+      updated
+    FROM
+      domain
+  </select>
+  <delete id="deleteAllForImport">
+    DELETE FROM
+      domain
+  </delete>
+  <insert id="insertForImport" parameterType="org.enlightenseries.DomainDictionary.domain.model.domain.Domain">
+    INSERT INTO domain (
+      id,
+      name,
+      format,
+      description,
+      existential,
+      created,
+      updated
+    ) values (
+      #{id},
+      #{name},
+      #{format},
+      #{description},
+      #{existential},
+      #{created},
+      #{updated}
     )
   </insert>
 </mapper>

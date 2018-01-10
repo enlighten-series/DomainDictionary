@@ -19,18 +19,18 @@
     </mat-grid-list>
   </div>
 
-  <mat-table #table [dataSource]="domainSource">
+  <mat-table #table [dataSource]="filteredDomains">
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef>項目名</mat-header-cell>
       <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="format">
       <mat-header-cell *matHeaderCellDef>フォーマット</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.format}}</mat-cell>
+      <mat-cell *matCellDef="let row">{{row.format | slice:0:40 }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="description">
       <mat-header-cell *matHeaderCellDef>説明</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.description}}</mat-cell>
+      <mat-cell *matCellDef="let row">{{row.description | slice:0:40 }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="edit">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>

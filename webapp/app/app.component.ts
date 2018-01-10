@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
-import { MatSidenav } from '@angular/material';
+import { MatSidenav, MatDialog } from '@angular/material';
 import { Router, NavigationStart } from '@angular/router';
+import { DataExportDialogComponent } from './data-export-dialog/data-export-dialog.component';
+import { DataImportDialogComponent } from './data-import-dialog/data-import-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +17,8 @@ export class AppComponent implements OnInit{
   userMenuVisible = false;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -51,6 +54,21 @@ export class AppComponent implements OnInit{
   windowClicked(e) {
     this.appMenuVisible = false;
     this.userMenuVisible = false;
+  }
+
+  export() {
+    // エクスポートなので後処理なし
+    let dialogRef = this.dialog.open(DataExportDialogComponent);
+  }
+
+  import() {
+    let dialogRef = this.dialog.open(DataImportDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        alert('インポートが完了しました。アプリケーションをリロードします。');
+        window.location.href = '/';
+      }
+    });
   }
 
   license() {

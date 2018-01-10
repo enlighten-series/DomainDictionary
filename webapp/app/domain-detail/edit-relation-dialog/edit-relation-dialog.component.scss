@@ -1,0 +1,14 @@
+.domain-input {
+  width: 20.0em;
+}
+
+.related-domains {
+  padding-bottom: 0.5em;
+  overflow: hidden;
+
+  /deep/ .mat-chip-list-stacked .mat-chip-list-wrapper .mat-chip:not(.mat-basic-chip) {
+    display: inline-flex;
+    float: left;
+    margin: 0.3em;
+  }
+}

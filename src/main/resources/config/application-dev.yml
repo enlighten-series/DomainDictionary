@@ -1,4 +1,6 @@
 spring:
+  datasource:
+    initialize: false
   h2:
     console:
       enabled: true

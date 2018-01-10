@@ -1,0 +1,21 @@
+<mat-dialog-content>
+  <form [formGroup]="domainAddFormGroup" (ngSubmit)="onSubmit()">
+    <mat-form-field class="domain-input">
+      <input type="text" name="addDomain" placeholder="関連項目を入力してください" aria-label="関連項目" matInput formControlName="addDomain" [matAutocomplete]="relatedDomainAutocomplete" [required]="true">
+      <mat-autocomplete #relatedDomainAutocomplete="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option">
+          {{ option.name }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+
+  <section class="related-domains">
+    <mat-chip-list class="mat-chip-list-stacked">
+      <mat-chip *ngFor="let _domain of relatedDomains" [removable]="true" (remove)="remove(_domain)">
+        <span>{{_domain.name}}</span>
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </section>
+</mat-dialog-content>

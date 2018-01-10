@@ -35,6 +35,15 @@ mat-tab-group {
   font-size: 0.8em;
 }
 
+.related-domains {
+  padding-bottom: 0.5em;
+  overflow: hidden;
+}
+.related-domains /deep/ .mat-chip-list-stacked .mat-chip-list-wrapper .mat-chip:not(.mat-basic-chip) {
+  float: left;
+  margin: 0.3em;
+}
+
 /*
 その他タブ
 */

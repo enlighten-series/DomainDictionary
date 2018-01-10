@@ -1,0 +1,16 @@
+<mat-dialog-content>
+  <div>
+    <p>
+      ファイルを選択してインポートしてください。
+    </p>
+    <p>
+      ※現在、バージョン0.2.2のエクスポートファイルのみインポートすることが可能です。
+    </p>
+    <form #form="ngForm">
+      <input #importFile type="file" (change)="importFileChange($event)" ngModel name="importFile">
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button class="import-button" color="primary" (click)="import()">インポート</button>
+</mat-dialog-actions>
