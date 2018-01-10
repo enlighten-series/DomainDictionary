@@ -1,15 +1,12 @@
 package org.enlightenseries.DomainDictionary.infrastructure.datasource.domain;
 
-import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import org.apache.ibatis.session.ResultContext;
-import org.apache.ibatis.session.ResultHandler;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Repository
@@ -51,35 +48,28 @@ public class DomainDatasource implements DomainRepository {
    * @param exportFilePath
    * @throws IOException
    */
-  public void export(String exportFilePath) throws IOException {
-    File exportFile = new File(exportFilePath);
+  public void export(CSVPrinter printer) throws IOException {
+    printer.printRecord("Domain start");
 
-    try (BufferedWriter bw = new BufferedWriter(
-      new OutputStreamWriter(new FileOutputStream(exportFile), StandardCharsets.UTF_8))) {
+    SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd hh:mm:ss");
 
-      exportFile.createNewFile();
+    domainMapper.exportAll(context -> {
+      Domain domain = context.getResultObject();
+      try {
+        printer.printRecord(
+          domain.getId(),
+          domain.getName(),
+          domain.getFormat(),
+          domain.getDescription(),
+          domain.getExistential(),
+          sdf.format(domain.getCreated()),
+          sdf.format(domain.getUpdated())
+        );
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    });
 
-      CSVPrinter p = CSVFormat.RFC4180.print(bw);
-
-      domainMapper.exportAll(context -> {
-        Domain domain = context.getResultObject();
-        try {
-          p.printRecord(
-            domain.getId(),
-            domain.getName(),
-            domain.getFormat(),
-            domain.getDescription(),
-            domain.getExistential(),
-            domain.getCreated(),
-            domain.getUpdated()
-          );
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      });
-
-    } catch (IOException e) {
-      throw e;
-    }
+    printer.printRecord("Domain end");
   }
 }

@@ -1,6 +1,7 @@
 package org.enlightenseries.DomainDictionary.domain.model.domain;
 
-import java.io.IOException;
+import org.apache.commons.csv.CSVPrinter;
+
 import java.util.List;
 
 public interface DomainRepository {
@@ -16,5 +17,5 @@ public interface DomainRepository {
 
   void createTable();
 
-  void export(String exportFilePath) throws IOException;
+  void export(CSVPrinter printer) throws Exception;
 }

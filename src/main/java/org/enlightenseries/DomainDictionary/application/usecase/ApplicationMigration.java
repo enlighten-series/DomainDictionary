@@ -6,23 +6,15 @@ import org.enlightenseries.DomainDictionary.application.singleton.ApplicationMig
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.Metadata;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.MetadataRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class ApplicationMigration {
@@ -35,6 +27,10 @@ public class ApplicationMigration {
 
   private ApplicationMigrationStatus applicationMigrationStatus;
 
+  private String currentMajorVersion;
+  private String currentMinorVersion;
+  private String currentPatchVersion;
+
   public ApplicationMigration(
     MetadataRepository _metadataRepository,
     DomainRepository _domainRepository,
@@ -44,6 +40,10 @@ public class ApplicationMigration {
     this.domainRepository = _domainRepository;
 
     this.applicationMigrationStatus = _applicationMigrationStatus;
+
+    this.currentMajorVersion = "0";
+    this.currentMinorVersion = "2";
+    this.currentPatchVersion = "2";
   }
 
   @PostConstruct
@@ -72,13 +72,13 @@ public class ApplicationMigration {
     // TODO: バージョン番号を定数取得（Gradleとか）
     Metadata majorVersion = new Metadata();
     majorVersion.setKey("major_version");
-    majorVersion.setValue("0");
+    majorVersion.setValue(currentMajorVersion);
     Metadata minorVersion = new Metadata();
     minorVersion.setKey("minor_version");
-    minorVersion.setValue("2");
+    minorVersion.setValue(currentMinorVersion);
     Metadata patchVersion = new Metadata();
     patchVersion.setKey("patch_version");
-    patchVersion.setValue("2");
+    patchVersion.setValue(currentPatchVersion);
 
     this.metadataRepository.register(majorVersion);
     this.metadataRepository.register(minorVersion);
@@ -89,13 +89,32 @@ public class ApplicationMigration {
    * エクスポートファイルの生成を開始する
    */
   @Async("generatingExportFileExecutor")
-  public void generatingExportFile() throws InterruptedException, IOException {
+  public void generatingExportFile() throws Exception {
     applicationMigrationStatus.setNowGeneratingExportFile(true);
 
-    // 各Repositoryにファイルへのエクスポートを依頼する（大量データ処理はインフラに依存するため）
-    domainRepository.export(exportOutputDirectioryPath + "/" + exportDomainFileName);
+    String exportFilePath = exportOutputDirectioryPath + "/" + exportDomainFileName;
+    File exportFile = new File(exportFilePath);
 
-    applicationMigrationStatus.setNowGeneratingExportFile(false);
+    try (BufferedWriter bw = new BufferedWriter(
+      new OutputStreamWriter(new FileOutputStream(exportFile), StandardCharsets.UTF_8))) {
+      exportFile.createNewFile();
+      CSVPrinter printer = CSVFormat.RFC4180.print(bw);
+
+      // バージョン番号出力
+      printer.printRecord("Version",
+        currentMajorVersion,
+        currentMinorVersion,
+        currentPatchVersion
+      );
+
+      // 各Repositoryにファイルへのエクスポートを依頼する（大量データ処理はインフラに依存するため）
+      domainRepository.export(printer);
+
+    } catch (Exception e) {
+      throw e;
+    } finally {
+      applicationMigrationStatus.setNowGeneratingExportFile(false);
+    }
   }
 
   public String getExportFilePath() {
