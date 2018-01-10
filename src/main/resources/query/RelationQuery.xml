@@ -27,4 +27,8 @@
       id VARCHAR
     )
   </insert>
+  <delete id="deleteAllForImport">
+    DELETE FROM
+      relation
+  </delete>
 </mapper>

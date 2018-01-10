@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
@@ -73,9 +73,13 @@ export class EditRelationDialogComponent implements OnInit {
             duration: 800,
           });
         },
-        (error) => {
-          alert('エラーがありました。コンソールログを確認してください。');
-          console.log(error);
+        (error: HttpErrorResponse) => {
+          this.snack.openFromComponent(GrowlMessagerComponent, {
+            data: {
+              message: error.error.message,
+            },
+            duration: 3000,
+          });
         }
       );
     }

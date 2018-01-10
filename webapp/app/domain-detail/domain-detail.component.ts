@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTabGroup } from '@angular/material';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -219,8 +219,13 @@ export class DomainDetailComponent implements OnInit {
         });
         this.router.navigate(['/']);
       },
-      (error) => {
-        console.log(error);
+      (error: HttpErrorResponse) => {
+        this.snack.openFromComponent(GrowlMessagerComponent, {
+          data: {
+            message: error.error.message,
+          },
+          duration: 3000,
+        });
       }
     );
   }

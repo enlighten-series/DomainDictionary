@@ -1,8 +1,25 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { GrowlMessagerComponent } from '../widgets/growl-messager.component';
+
+@Component({
+  selector: 'regist-confirm-dialog',
+  template: `
+  <mat-dialog-content>インポートを行うと、関連を含む全てのデータが削除されます。実行しますか？</mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button mat-dialog-close>No</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="true">Yes</button>
+  </mat-dialog-actions>
+  `,
+})
+export class ImportConfirmDialog {
+  constructor(
+    public dialogRef: MatDialogRef<ImportConfirmDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) { }
+}
 
 @Component({
   selector: 'app-data-import-dialog',
@@ -22,6 +39,7 @@ export class DataImportDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient,
     private snack: MatSnackBar,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -51,6 +69,21 @@ export class DataImportDialogComponent implements OnInit {
   }
 
   import() {
+    let dialogRef = this.dialog.open(ImportConfirmDialog);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.executeImport();
+      }
+    });
+  }
+
+  // #endregion
+
+  // #region プライベート
+
+  private selectedImportFile: File;
+
+  private executeImport() {
     const formData: FormData = new FormData();
     formData.append('importFile', this.selectedImportFile, this.selectedImportFile.name);
 
@@ -68,6 +101,7 @@ export class DataImportDialogComponent implements OnInit {
           },
           duration: 3000,
         });
+        this.dialogRef.close(true);
       },
       (error: HttpErrorResponse) => {
         this.snack.openFromComponent(GrowlMessagerComponent, {
@@ -80,12 +114,6 @@ export class DataImportDialogComponent implements OnInit {
     );
     this.form.reset();
   }
-
-  // #endregion
-
-  // #region プライベート
-
-  private selectedImportFile: File;
 
   // #endregion
 

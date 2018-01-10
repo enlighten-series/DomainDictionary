@@ -1,11 +1,8 @@
 package org.enlightenseries.DomainDictionary.infrastructure.datasource.domain;
 
-import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.ibatis.session.ResultContext;
-import org.apache.ibatis.session.ResultHandler;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
@@ -13,7 +10,7 @@ import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +18,7 @@ import java.util.List;
 @Repository
 public class DomainDatasource implements DomainRepository {
   DomainMapper domainMapper;
+  private final SimpleDateFormat importExportDateFormat = new SimpleDateFormat("yy/MM/dd hh:mm:ss");
 
   public DomainDatasource(
     DomainMapper _domainMapper
@@ -58,47 +56,37 @@ public class DomainDatasource implements DomainRepository {
 
   /**
    * TODO: テストを作成
-   * @param exportFilePath
+   * @param printer
    * @throws IOException
    */
-  public void export(String exportFilePath) throws IOException {
-    File exportFile = new File(exportFilePath);
+  public void export(CSVPrinter printer) throws IOException {
+    printer.printRecord("Domain start");
 
-    try (BufferedWriter bw = new BufferedWriter(
-      new OutputStreamWriter(new FileOutputStream(exportFile), StandardCharsets.UTF_8))) {
+    domainMapper.exportAll(context -> {
+      Domain domain = context.getResultObject();
+      try {
+        printer.printRecord(
+          domain.getId(),
+          domain.getName(),
+          domain.getFormat(),
+          domain.getDescription(),
+          domain.getExistential(),
+          importExportDateFormat.format(domain.getCreated()),
+          importExportDateFormat.format(domain.getUpdated())
+        );
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    });
 
-      exportFile.createNewFile();
-
-      CSVPrinter p = CSVFormat.RFC4180.print(bw);
-      SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd hh:mm:ss");
-
-      domainMapper.exportAll(context -> {
-        Domain domain = context.getResultObject();
-        try {
-          p.printRecord(
-            domain.getId(),
-            domain.getName(),
-            domain.getFormat(),
-            domain.getDescription(),
-            domain.getExistential(),
-            domain.getCreated(),
-            domain.getUpdated()
-          );
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      });
-
-    } catch (IOException e) {
-      throw e;
-    }
+    printer.printRecord("Domain end");
   }
 
   /**
    * TODO: テストを作成
    * @param parser
    */
-  public void import_0_2_X(CSVParser parser) throws ApplicationException {
+  public void import_0_2_X(CSVParser parser) throws ApplicationException, ParseException {
     domainMapper.deleteAllForImport();
 
     boolean proceed = false;
@@ -120,8 +108,8 @@ public class DomainDatasource implements DomainRepository {
         record.get(2),
         record.get(3),
         record.get(4),
-        new Date(record.get(5)),
-        new Date(record.get(6))
+        importExportDateFormat.parse(record.get(5)),
+        importExportDateFormat.parse(record.get(6))
       );
       domainMapper.insertForImport(_new);
     }

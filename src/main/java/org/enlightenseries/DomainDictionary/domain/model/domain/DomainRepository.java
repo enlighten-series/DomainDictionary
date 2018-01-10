@@ -2,8 +2,9 @@ package org.enlightenseries.DomainDictionary.domain.model.domain;
 
 import org.apache.commons.csv.CSVParser;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
+import org.apache.commons.csv.CSVPrinter;
 
-import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 public interface DomainRepository {
@@ -21,7 +22,7 @@ public interface DomainRepository {
 
   void createTable();
 
-  void export(String exportFilePath) throws IOException;
+  void export(CSVPrinter printer) throws Exception;
 
-  void import_0_2_X(CSVParser parser) throws ApplicationException;
+  void import_0_2_X(CSVParser parser) throws Exception;
 }

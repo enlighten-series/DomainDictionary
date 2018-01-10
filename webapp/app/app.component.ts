@@ -62,8 +62,13 @@ export class AppComponent implements OnInit{
   }
 
   import() {
-    // エクスポートなので後処理なし
     let dialogRef = this.dialog.open(DataImportDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        alert('インポートが完了しました。アプリケーションをリロードします。');
+        window.location.href = '/';
+      }
+    });
   }
 
   license() {

@@ -1,12 +1,15 @@
 package org.enlightenseries.DomainDictionary.application.service;
 
+import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
 import org.enlightenseries.DomainDictionary.domain.model.domain.RelatedDomainSummary;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelation;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelationRepository;
+import org.enlightenseries.DomainDictionary.domain.model.relation.RelationRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +18,16 @@ import java.util.List;
 public class DomainService {
   DomainRepository domainRepository;
   DomainToRelationRepository domainToRelationRepository;
+  RelationRepository relationRepository;
 
   public DomainService(
     DomainRepository _domainRepository,
-    DomainToRelationRepository _domainToRelationRepository
+    DomainToRelationRepository _domainToRelationRepository,
+    RelationRepository _relationRepository
   ) {
     this.domainRepository = _domainRepository;
     this.domainToRelationRepository = _domainToRelationRepository;
+    this.relationRepository = _relationRepository;
   }
 
   public List<Domain> list() {
@@ -62,7 +68,16 @@ public class DomainService {
     this.domainRepository.update(id, domain);
   }
 
-  public void delete(Long id) {
+  @Transactional(rollbackFor = Exception.class)
+  public void delete(Long id) throws ApplicationException {
+    // 関連を削除
+    List<RelatedDomainSummary> relations = this.findRelatedDomains(id);
+    relations.forEach(relatedDomainSummary -> {
+      domainToRelationRepository.deleteRelationBy(relatedDomainSummary.getRelationId());
+      relationRepository.delete(relatedDomainSummary.getRelationId());
+    });
+
+    // ドメイン本体を削除
     this.domainRepository.delete(id);
   }
 }

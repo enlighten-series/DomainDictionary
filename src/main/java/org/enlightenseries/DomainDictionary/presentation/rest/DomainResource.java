@@ -56,7 +56,7 @@ public class DomainResource {
   }
 
   @DeleteMapping("/domains/{id}")
-  public ResponseEntity<Domain> deleteDomain(@PathVariable Long id) {
+  public ResponseEntity<Domain> deleteDomain(@PathVariable Long id) throws Exception {
     Domain domain = this.domainService.findBy(id);
 
     this.domainService.delete(id);

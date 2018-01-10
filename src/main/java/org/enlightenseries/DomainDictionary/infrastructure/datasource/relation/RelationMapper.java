@@ -15,4 +15,6 @@ public interface RelationMapper {
   void delete(UUID id);
 
   void createTable();
+
+  void deleteAllForImport();
 }

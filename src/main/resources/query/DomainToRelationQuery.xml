@@ -49,4 +49,8 @@
       relation_id VARCHAR
     )
   </insert>
+  <delete id="deleteAllForImport">
+    DELETE FROM
+      domain_to_relation
+  </delete>
 </mapper>

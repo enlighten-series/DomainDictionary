@@ -1,5 +1,6 @@
 package org.enlightenseries.DomainDictionary.infrastructure.datasource.relation;
 
+import org.apache.commons.csv.CSVParser;
 import org.enlightenseries.DomainDictionary.domain.model.relation.Relation;
 import org.enlightenseries.DomainDictionary.domain.model.relation.RelationRepository;
 import org.springframework.stereotype.Repository;
@@ -31,5 +32,11 @@ public class RelationDatasource implements RelationRepository {
 
   public void createTable() {
     this.relationMapper.createTable();
+  }
+
+  public void import_0_2_X(CSVParser parser) throws Exception {
+    relationMapper.deleteAllForImport();
+
+    // TODO: インポート実行
   }
 }

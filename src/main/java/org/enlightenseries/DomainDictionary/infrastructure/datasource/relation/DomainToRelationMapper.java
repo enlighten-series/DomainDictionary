@@ -16,4 +16,6 @@ public interface DomainToRelationMapper {
   void deleteRelationBy(UUID relationId);
 
   void createTable();
+
+  void deleteAllForImport();
 }
