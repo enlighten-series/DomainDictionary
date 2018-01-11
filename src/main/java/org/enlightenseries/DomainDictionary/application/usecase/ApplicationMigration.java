@@ -174,7 +174,7 @@ public class ApplicationMigration {
    */
   @Transactional(rollbackFor = Exception.class)
   public void startImport(MultipartFile importFile) throws Exception {
-    try (BufferedReader br = new BufferedReader(new InputStreamReader(importFile.getInputStream()))) {
+    try (BufferedReader br = new BufferedReader(new InputStreamReader(importFile.getInputStream(), StandardCharsets.UTF_8))) {
 
       CSVParser parser = CSVFormat
         .RFC4180
