@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class BusinessErrorDto {
+public class ApplicationErrorDto {
   private String message;
 }

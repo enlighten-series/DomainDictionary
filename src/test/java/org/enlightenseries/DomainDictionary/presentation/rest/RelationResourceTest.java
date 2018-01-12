@@ -5,6 +5,7 @@ import org.enlightenseries.DomainDictionary.application.service.RelationService;
 import org.enlightenseries.DomainDictionary.domain.model.relation.Relation;
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -52,15 +53,40 @@ public class RelationResourceTest {
 
     // do
     relationResourceMockMvc.perform(MockMvcRequestBuilders
-        .post("/api/relations")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(json)
-      )
-      .andExpect(status().isCreated())
-      .andExpect(header().string("Location", "/api/relations/" + assertData.getId().toString()))
-      .andExpect(jsonPath("$.id").value(Matchers.equalTo(assertData.getId().toString())));
+      .post("/api/relations")
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(json)
+    )
+    .andExpect(status().isCreated())
+    .andExpect(header().string("Location", "/api/relations/" + assertData.getId().toString()))
+    .andExpect(jsonPath("$.id").value(Matchers.equalTo(assertData.getId().toString())));
 
     verify(relationServiceMock, times(1)).createNewRelation(1L, 2L);
+  }
+
+  @Test
+  public void createRelationBadParameter() throws Exception {
+    // when
+    String json = "{" +
+      "\"sourceId\": 1," +
+      "\"destinationId\": 2" +
+      "}";
+    Relation assertData = new Relation();
+
+    when(relationServiceMock.createNewRelation(anyLong(), anyLong())).thenReturn(assertData);
+
+    // try
+    relationResourceMockMvc.perform(MockMvcRequestBuilders
+      .post("/api/relations")
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(json)
+    )
+    // expect
+    .andExpect(status().isBadRequest());
+
+    // TODO: jsonデータもassert
+
+    verify(relationServiceMock, times(0)).createNewRelation(1L, 2L);
   }
 
   @Test

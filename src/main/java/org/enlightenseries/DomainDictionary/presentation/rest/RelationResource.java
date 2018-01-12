@@ -6,6 +6,7 @@ import org.enlightenseries.DomainDictionary.presentation.rest.dto.RelationDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.xml.ws.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,7 +25,7 @@ public class RelationResource {
   }
 
   @PostMapping("/relations")
-  public ResponseEntity<Relation> addNewRelation(@RequestBody RelationDto relationDto) throws URISyntaxException {
+  public ResponseEntity<Relation> addNewRelation(@RequestBody @Valid RelationDto relationDto) throws Exception {
     Relation newRelation = relationService.createNewRelation(relationDto.getSource(), relationDto.getDestination());
 
     return ResponseEntity.created(new URI("/api/relations/" + newRelation.getId().toString())).body(newRelation);
