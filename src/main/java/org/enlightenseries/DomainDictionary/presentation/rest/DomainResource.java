@@ -7,6 +7,7 @@ import org.enlightenseries.DomainDictionary.presentation.rest.dto.DomainDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -40,11 +41,13 @@ public class DomainResource {
   }
 
   @PostMapping("/domains")
-  public ResponseEntity<Domain> createDomain(@RequestBody Domain domain) throws URISyntaxException {
-    this.domainService.register(domain);
+  public ResponseEntity<Domain> createDomain(@RequestBody @Valid DomainDto domainDto) throws Exception {
+    Domain newDomain = domainDto.getDomain();
 
-    return ResponseEntity.created(new URI("/api/domain/" + domain.getId()))
-      .body(domain);
+    this.domainService.register(newDomain);
+
+    return ResponseEntity.created(new URI("/api/domain/" + newDomain.getId()))
+      .body(newDomain);
   }
 
   @PutMapping("/domains/{id}")
