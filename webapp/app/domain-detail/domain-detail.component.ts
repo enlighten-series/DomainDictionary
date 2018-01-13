@@ -74,20 +74,11 @@ export class DeleteConfirmDialog {
 })
 export class DomainDetailComponent implements OnInit {
 
-  @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
+  // #reion インタフェース
 
-  id: number;
-  viewDomain: Domain = new Domain();
-  editFormInitialValue: Domain = new Domain();
-  relatedDomains: RelatedDomain[] = [];
+  // #endregion
 
-  private activeIndex = 0;
-  private idSubscription: Subscription;
-
-  private parsedName = '';
-  private parsedFormat = '';
-  private parsedDescription = '';
-  private parsedExistential = '';
+  // #region コンストラクタ・ライフサイクル
 
   constructor(
     private activateRoute: ActivatedRoute,
@@ -106,40 +97,21 @@ export class DomainDetailComponent implements OnInit {
     });
   }
 
-  loadDomainDetail() {
-    this.http.get('/api/domains/' + this.id)
-    .subscribe(
-      (domain: Domain) => {
-        this.viewDomain = domain;
-        this.editFormInitialValue = domain;
-
-        // markdown parse
-        this.parsedName = this.viewDomain.name;
-        marked(this.viewDomain.format, (err, content) => {
-          if (err) throw err;
-          this.parsedFormat = content;
-        });
-        marked(this.viewDomain.description, (err, content) => {
-          if (err) throw err;
-          this.parsedDescription = content;
-        });
-        marked(this.viewDomain.existential, (err, content) => {
-          if (err) throw err;
-          this.parsedExistential = content;
-        });
-
-        // related domain
-        this.relatedDomains = this.viewDomain.relatedDomains;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+  ngOnDestroy() {
+    this.idSubscription.unsubscribe();
   }
 
-  selectedIndexChanged(index) {
-    this.activeIndex = index;
-  }
+  // #endregion
+
+  // #region ビューバインド
+
+  @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
+
+  id: number;
+  viewDomain: Domain = new Domain();
+  editFormInitialValue: Domain = new Domain();
+  relatedDomains: RelatedDomain[] = [];
+
   isActiveDetail() {
     return this.activeIndex == 0;
   }
@@ -161,6 +133,14 @@ export class DomainDetailComponent implements OnInit {
   }
   innerHtmlOfExistential() {
     return this.parsedExistential;
+  }
+
+  // #endregion
+
+  // #region イベント
+
+  selectedIndexChanged(index) {
+    this.activeIndex = index;
   }
 
   emittedRegist(event) {
@@ -207,7 +187,50 @@ export class DomainDetailComponent implements OnInit {
     });
   }
 
-  executeDelete() {
+  // #endregion
+
+  // #region プライベート
+
+  private activeIndex = 0;
+  private idSubscription: Subscription;
+
+  private parsedName = '';
+  private parsedFormat = '';
+  private parsedDescription = '';
+  private parsedExistential = '';
+
+  private loadDomainDetail() {
+    this.http.get('/api/domains/' + this.id)
+    .subscribe(
+      (domain: Domain) => {
+        this.viewDomain = domain;
+        this.editFormInitialValue = domain;
+
+        // markdown parse
+        this.parsedName = this.viewDomain.name;
+        marked(this.viewDomain.format, (err, content) => {
+          if (err) throw err;
+          this.parsedFormat = content;
+        });
+        marked(this.viewDomain.description, (err, content) => {
+          if (err) throw err;
+          this.parsedDescription = content;
+        });
+        marked(this.viewDomain.existential, (err, content) => {
+          if (err) throw err;
+          this.parsedExistential = content;
+        });
+
+        // related domain
+        this.relatedDomains = this.viewDomain.relatedDomains;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  private executeDelete() {
     this.http.delete('/api/domains/' + this.id)
     .subscribe(
       (data: any) => {
@@ -230,8 +253,6 @@ export class DomainDetailComponent implements OnInit {
     );
   }
 
-  ngOnDestroy() {
-    this.idSubscription.unsubscribe();
-  }
+  // #endregion
 
 }
