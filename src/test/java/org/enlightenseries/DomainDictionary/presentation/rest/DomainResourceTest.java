@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -127,6 +128,27 @@ public class DomainResourceTest {
 
     domainResourceMockMvc.perform(get("/api/domains/2"))
       .andExpect(status().isNotFound());
+  }
+
+  @Test
+  public void createDomain() throws Exception {
+    // when
+    String json = "{" +
+      "\"name\": \"なまえです\"," +
+      "\"description\": \"説明です\"," +
+      "\"existential\": \"存在しています\"" +
+      "}";
+
+    // try
+    domainResourceMockMvc.perform(MockMvcRequestBuilders
+      .post("/api/domains")
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(json)
+    )
+      // expect
+      .andExpect(status().isCreated());
+
+    // TODO: jsonデータもassert
   }
 
   @Test

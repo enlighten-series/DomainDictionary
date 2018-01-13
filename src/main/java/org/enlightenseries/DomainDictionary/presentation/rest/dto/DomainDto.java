@@ -1,6 +1,7 @@
 package org.enlightenseries.DomainDictionary.presentation.rest.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
 import org.enlightenseries.DomainDictionary.domain.model.domain.RelatedDomainSummary;
@@ -10,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class DomainDto {
   private Long id;
   @NotNull
