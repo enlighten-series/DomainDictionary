@@ -1,15 +1,12 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, NgZone } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTabGroup } from '@angular/material';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { ActivatedRoute, ParamMap, Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import * as marked from 'marked';
 
-import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/switchMap';
 
 import { Domain } from '../models/domain';
 import { GrowlMessagerComponent } from '../widgets/growl-messager.component';
@@ -86,19 +83,33 @@ export class DomainDetailComponent implements OnInit {
     private snack: MatSnackBar,
     private router: Router,
     private dialog: MatDialog,
-  ) { }
+    private zone: NgZone,
+  ) {
+    // URLでidのみ変更される場合はコンポーネント再作成が行われないため、firstではなく継続的にsubscribeする。
+    this.subscriptions.push(
+      this.activateRoute.paramMap
+        .subscribe((param: ParamMap) => {
+          this.id = Number(param.get('id'));
+          this.loadDomainDetail();
+        })
+    );
+
+    // 遷移時にコンポーネント再作成が行われないためスクロール位置を先頭に移動する
+    this.subscriptions.push(
+      this.router.events.filter(e => e instanceof NavigationEnd)
+      .subscribe(e => {
+        this.goTop = true;
+      })
+    );
+  }
 
   ngOnInit() {
-    // URLでidのみ変更される場合はコンポーネント再作成が行われないため、firstではなく継続的にsubscribeする。
-    this.idSubscription = this.activateRoute.paramMap
-    .subscribe((param: ParamMap) => {
-      this.id = Number(param.get('id'));
-      this.loadDomainDetail();
-    });
   }
 
   ngOnDestroy() {
-    this.idSubscription.unsubscribe();
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    })
   }
 
   // #endregion
@@ -153,6 +164,7 @@ export class DomainDetailComponent implements OnInit {
           },
           duration: 1500,
         });
+        this.goTop = true;
         this.loadDomainDetail();
         this.matTabGroup.selectedIndex = 0;
       },
@@ -192,12 +204,14 @@ export class DomainDetailComponent implements OnInit {
   // #region プライベート
 
   private activeIndex = 0;
-  private idSubscription: Subscription;
+  private subscriptions: Subscription[] = [];
 
   private parsedName = '';
   private parsedFormat = '';
   private parsedDescription = '';
   private parsedExistential = '';
+
+  private goTop = false;
 
   private loadDomainDetail() {
     this.http.get('/api/domains/' + this.id)
@@ -223,6 +237,12 @@ export class DomainDetailComponent implements OnInit {
 
         // related domain
         this.relatedDomains = this.viewDomain.relatedDomains;
+        this.zone.onStable.first().subscribe(() => {
+          if (this.goTop) {
+            window.scrollTo(0, 0);
+            this.goTop = false;
+          }
+        });
       },
       (error) => {
         console.log(error);
