@@ -1,6 +1,7 @@
 package org.enlightenseries.DomainDictionary.application.service;
 
 import org.enlightenseries.DomainDictionary.DomainDictionaryApplication;
+import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelation;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelationRepository;
 import org.enlightenseries.DomainDictionary.domain.model.relation.Relation;
@@ -44,7 +45,7 @@ public class RelationServiceTest {
   }
 
   @Test
-  public void createNewRelation() {
+  public void createNewRelation() throws Exception {
     // when
     Long expectSourceId = 1L;
     Long expectDestinationId = 2L;
@@ -73,6 +74,30 @@ public class RelationServiceTest {
 
     assertThat(first.getRelationId().toString()).isEqualTo(relation.getId().toString());
     assertThat(second.getRelationId().toString()).isEqualTo(relation.getId().toString());
+  }
+
+  @Test
+  public void createNewRelationSameDomain() throws Exception {
+    // when
+    Long expectSourceId = 1L;
+    Long expectDestinationId = 1L;
+
+    try {
+
+      // do
+      relationService.createNewRelation(expectSourceId, expectDestinationId);
+
+    } catch (ApplicationException e) {
+
+      // expect
+      assertThat(e.getMessage()).isEqualTo("同一のドメイン間で関連を作成することはできません。");
+
+    }
+
+    // expect
+    verify(relationRepositoryMock, times(0)).register(relationCaptor.capture());
+    verify(domainToRelationRepositoryMock, times(0)).register(domainToRelationCaptor.capture());
+
   }
 
   @Test

@@ -1,5 +1,6 @@
 package org.enlightenseries.DomainDictionary.application.service;
 
+import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelation;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelationRepository;
 import org.enlightenseries.DomainDictionary.domain.model.relation.Relation;
@@ -31,10 +32,14 @@ public class RelationService {
    * @return 新しいRelation
    */
   @Transactional
-  public Relation createNewRelation(Long sourceDomainId, Long destinationDomainId) {
+  public Relation createNewRelation(Long sourceDomainId, Long destinationDomainId) throws ApplicationException {
     Relation newRelation = new Relation();
     DomainToRelation source = new DomainToRelation(sourceDomainId, newRelation.getId());
     DomainToRelation destination = new DomainToRelation(destinationDomainId, newRelation.getId());
+
+    if (sourceDomainId == destinationDomainId) {
+      throw new ApplicationException("同一のドメイン間で関連を作成することはできません。");
+    }
 
     relationRepository.register(newRelation);
     domainToRelationRepository.register(source);
