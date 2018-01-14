@@ -141,28 +141,28 @@ class ViewDomainListDataSource extends DataSource<Domain> {
   }
 
   connect(): Observable<Domain[]> {
-    const displayDataChanges = [
+    const listChangeCauses$ = [
       this.dataChange,
       this._nameFilterChange,
       this._descriptionFilterChange,
     ];
 
-    return merge(...displayDataChanges).pipe(
-      map(() => {
-        return this.dataChange.value.slice().filter((item: Domain) => {
-          let through = true;
-          // 項目名フィルタ適用
-          if (item.name.indexOf(this.nameFilter) == -1) {
-            through = false;
-          }
-          // 説明フィルタ適用
-          if (item.description && item.description.indexOf(this.descriptionFilter) == -1) {
-            through = false;
-          }
-          return through;
-        });
-      })
+    return merge(...listChangeCauses$).pipe(
+      map(() => this.dataChange.value.slice().filter(d =>  this.listFilter(d))),
     );
+  }
+
+  private listFilter(item: Domain): boolean {
+    let through = true;
+    // 項目名フィルタ適用
+    if (item.name.indexOf(this.nameFilter) == -1) {
+      through = false;
+    }
+    // 説明フィルタ適用
+    if (item.description && item.description.indexOf(this.descriptionFilter) == -1) {
+      through = false;
+    }
+    return through;
   }
 
   disconnect() {}
