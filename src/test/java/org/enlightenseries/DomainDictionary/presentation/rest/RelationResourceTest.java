@@ -59,13 +59,15 @@ public class RelationResourceTest {
     )
     .andExpect(status().isCreated())
     .andExpect(header().string("Location", "/api/relations/" + assertData.getId().toString()))
-    .andExpect(jsonPath("$.id").value(Matchers.equalTo(assertData.getId().toString())));
+    .andExpect(jsonPath("$.id").value(Matchers.equalTo(assertData.getId().toString())))
+    .andExpect(jsonPath("$.source").value(Matchers.equalTo(1)))
+    .andExpect(jsonPath("$.destination").value(Matchers.equalTo(2)));
 
     verify(relationServiceMock, times(1)).createNewRelation(1L, 2L);
   }
 
   @Test
-  public void createRelationBadParameter() throws Exception {
+  public void createRelationMissParameterName() throws Exception {
     // when
     String json = "{" +
       "\"sourceId\": 1," +

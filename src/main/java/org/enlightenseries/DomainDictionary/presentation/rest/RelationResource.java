@@ -25,10 +25,11 @@ public class RelationResource {
   }
 
   @PostMapping("/relations")
-  public ResponseEntity<Relation> addNewRelation(@RequestBody @Valid RelationDto relationDto) throws Exception {
+  public ResponseEntity<RelationDto> addNewRelation(@RequestBody @Valid RelationDto relationDto) throws Exception {
     Relation newRelation = relationService.createNewRelation(relationDto.getSource(), relationDto.getDestination());
+    relationDto.setId(newRelation.getId().toString());
 
-    return ResponseEntity.created(new URI("/api/relations/" + newRelation.getId().toString())).body(newRelation);
+    return ResponseEntity.created(new URI("/api/relations/" + relationDto.getId())).body(relationDto);
   }
 
   @DeleteMapping("/relations/{id}")

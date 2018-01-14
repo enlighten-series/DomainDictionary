@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class RelationDto {
+  private String id;
   @NotNull
   private Long source;
   @NotNull
