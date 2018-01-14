@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { NgForm } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { from } from 'rxjs/observable/from';
 
 import { Domain } from '../models/domain';
 
@@ -58,7 +58,7 @@ export class DomainEditFormComponent implements OnInit {
   clickedRegist(form: NgForm) {
     if (!form.valid) {
       // 入力項目をdirtyにしてエラーメッセージを表示する
-      Observable.from(Object.keys(form.controls))
+      from(Object.keys(form.controls))
       .subscribe(
         key => {
           form.controls[key].markAsDirty();

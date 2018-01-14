@@ -5,12 +5,10 @@ import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/map';
+
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { merge } from 'rxjs/observable/merge';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
 import { Domain } from '../models/domain';
 
@@ -75,28 +73,32 @@ export class DomainListComponent implements OnInit {
 
   // #region privates
 
-  private filterNameSubscription: Subscription;
-  private filterDescriptionSubscription: Subscription;
+  private subscriptions: Subscription[] = [];
   private allDomains$: BehaviorSubject<Domain[]> = new BehaviorSubject<Domain[]>([]);
 
   private setupSubscriptions() {
-    this.filterNameSubscription = Observable.fromEvent(this.filterName.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
-      .subscribe(() => {
+    this.subscriptions.push(
+      fromEvent(this.filterName.nativeElement, 'keyup').pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      ).subscribe(() => {
         this.filteredDomains.nameFilter = this.filterName.nativeElement.value;
-      });
-    this.filterDescriptionSubscription = Observable.fromEvent(this.filterDescription.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
-      .subscribe(() => {
+      })
+    );
+    this.subscriptions.push(
+      fromEvent(this.filterDescription.nativeElement, 'keyup').pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      ).subscribe(() => {
         this.filteredDomains.descriptionFilter = this.filterDescription.nativeElement.value;
-      });
+      })
+    );
   }
 
   private destroySubscriptions() {
-    this.filterNameSubscription.unsubscribe();
-    this.filterDescriptionSubscription.unsubscribe();
+    this.subscriptions.forEach(s => {
+      s.unsubscribe();
+    });
   }
 
   private reqGetAllDomains() {
@@ -145,20 +147,22 @@ class ViewDomainListDataSource extends DataSource<Domain> {
       this._descriptionFilterChange,
     ];
 
-    return Observable.merge(...displayDataChanges).map(() => {
-      return this.dataChange.value.slice().filter((item: Domain) => {
-        let through = true;
-        // 項目名フィルタ適用
-        if (item.name.indexOf(this.nameFilter) == -1) {
-          through = false;
-        }
-        // 説明フィルタ適用
-        if (item.description && item.description.indexOf(this.descriptionFilter) == -1) {
-          through = false;
-        }
-        return through;
-      });
-    });
+    return merge(...displayDataChanges).pipe(
+      map(() => {
+        return this.dataChange.value.slice().filter((item: Domain) => {
+          let through = true;
+          // 項目名フィルタ適用
+          if (item.name.indexOf(this.nameFilter) == -1) {
+            through = false;
+          }
+          // 説明フィルタ適用
+          if (item.description && item.description.indexOf(this.descriptionFilter) == -1) {
+            through = false;
+          }
+          return through;
+        });
+      })
+    );
   }
 
   disconnect() {}
