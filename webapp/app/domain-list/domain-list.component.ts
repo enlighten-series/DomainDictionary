@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
+
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
-
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { merge } from 'rxjs/observable/merge';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
@@ -119,25 +119,21 @@ export class DomainListComponent implements OnInit {
 }
 
 class ViewDomainListDataSource extends DataSource<Domain> {
-  _nameFilterChange = new BehaviorSubject('');
+
+  // #region interfaces
+  
   set nameFilter(filter: string) {
     this._nameFilterChange.next(filter);
   }
   get nameFilter() {
     return this._nameFilterChange.value;
   }
-  _descriptionFilterChange = new BehaviorSubject('');
+
   set descriptionFilter(filter: string) {
     this._descriptionFilterChange.next(filter);
   }
   get descriptionFilter() {
     return this._descriptionFilterChange.value;
-  }
-
-  constructor(
-    private dataChange: BehaviorSubject<Domain[]>
-  ) {
-    super();
   }
 
   connect(): Observable<Domain[]> {
@@ -152,6 +148,25 @@ class ViewDomainListDataSource extends DataSource<Domain> {
     );
   }
 
+  disconnect() {}
+
+  // #endregion
+
+  // #region constructor
+
+  constructor(
+    private dataChange: BehaviorSubject<Domain[]>
+  ) {
+    super();
+  }
+
+  // #endregion
+
+  // #region privates
+
+  private _nameFilterChange = new BehaviorSubject('');
+  private _descriptionFilterChange = new BehaviorSubject('');
+
   private listFilter(item: Domain): boolean {
     let through = true;
     // 項目名フィルタ適用
@@ -159,11 +174,12 @@ class ViewDomainListDataSource extends DataSource<Domain> {
       through = false;
     }
     // 説明フィルタ適用
-    if (item.description && item.description.indexOf(this.descriptionFilter) == -1) {
+    if (item.description.indexOf(this.descriptionFilter) == -1) {
       through = false;
     }
     return through;
   }
 
-  disconnect() {}
+  // #endregion
+
 }
