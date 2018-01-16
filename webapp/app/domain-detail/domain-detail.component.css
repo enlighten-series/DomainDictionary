@@ -41,14 +41,19 @@ mat-tab-group {
   font-size: 0.8em;
 }
 
-.markdown-contents ::ng-deep blockquote{
+.markdown-contents ::ng-deep blockquote {
   background-color: #f8f8f8;
+  border-left: 3px solid #ddd;
   color: #666;
-  margin: 0.2em;
-  padding: 1.0em 1.5em;
+  margin: 0.5em 0;
+  padding: 0.5em 1em;
 }
-.markdown-contents ::ng-deep blockquote p{
+.markdown-contents ::ng-deep blockquote p {
   margin: 0.2em 0;
+}
+.markdown-contents ::ng-deep pre {
+  border: 1px solid #ddd;
+  padding: 1.0em;
 }
 
 .related-domains {
