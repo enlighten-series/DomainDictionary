@@ -43,6 +43,7 @@ mat-tab-group {
 
 .markdown-contents ::ng-deep blockquote{
   background-color: #f8f8f8;
+  color: #666;
   margin: 0.2em;
   padding: 1.0em 1.5em;
 }
