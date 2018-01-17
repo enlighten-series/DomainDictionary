@@ -78,4 +78,8 @@ export class AppComponent implements OnInit{
   login() {
     alert('login!');
   }
+
+  jumpGithub() {
+    window.open('https://github.com/enlighten-series/DomainDictionary');
+  }
 }
