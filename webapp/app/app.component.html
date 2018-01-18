@@ -7,6 +7,10 @@
     <button mat-button class="app-menu-btn" (click)="toggleAppMenuVisible($event)">
       <mat-icon>menu</mat-icon>
     </button>
+
+    <button mat-button class="app-github-btn" (click)="jumpGithub()">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </button>
   </div>
 
   <button *ngIf="false" mat-fab class="user-menu-btn" (click)="toggleUserMenuVisible($event)">

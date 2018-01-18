@@ -29,10 +29,31 @@ mat-tab-group {
   grid-column: 2;
 }
 
+.domain-name {
+  font-size: 2.0em;
+  -webkit-margin-before: 0.5em;
+  -webkit-margin-after: 0.5em;
+}
+
 .data-title {
   border-bottom: 1px solid #eee;
   color: #aaa;
   font-size: 0.8em;
+}
+
+.markdown-contents ::ng-deep blockquote {
+  background-color: #f8f8f8;
+  border-left: 3px solid #ddd;
+  color: #666;
+  margin: 0.5em 0;
+  padding: 0.5em 1em;
+}
+.markdown-contents ::ng-deep blockquote p {
+  margin: 0.2em 0;
+}
+.markdown-contents ::ng-deep pre {
+  border: 1px solid #ddd;
+  padding: 1.0em;
 }
 
 .related-domains {

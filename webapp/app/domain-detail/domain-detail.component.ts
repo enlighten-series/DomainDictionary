@@ -4,6 +4,7 @@ import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTabGroup } fr
 import { ActivatedRoute, ParamMap, Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import * as marked from 'marked';
+import * as highlight from 'highlight.js';
 
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/filter';
@@ -101,6 +102,14 @@ export class DomainDetailComponent implements OnInit {
         this.goTop = true;
       })
     );
+
+    highlight.initHighlightingOnLoad();
+
+    marked.setOptions({
+      highlight: function (code) {
+        return highlight.highlightAuto(code).value;
+      }
+    });
   }
 
   ngOnInit() {
