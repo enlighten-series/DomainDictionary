@@ -1,6 +1,6 @@
 <form #form="ngForm">
   <mat-card class="form-grid">
-  
+
     <div class="form-block width-full">
       <mat-form-field>
         <input matInput placeholder="項目名"
@@ -22,10 +22,10 @@
           name="format"
           #formatForm="ngModel"
         ></textarea>
-        <mat-hint align="end"><a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/" target="blank">Markdown形式</a>で記述することができます。</mat-hint>
+        <mat-hint align="end"><a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/" target="blank" tabindex="-1">Markdown形式</a>で記述することができます。</mat-hint>
       </mat-form-field>
     </div>
-    
+
     <div class="form-block width-full">
       <mat-form-field>
         <textarea matInput matTextareaAutosize matAutosizeMinRows="3" placeholder="業務内容説明"
@@ -34,13 +34,13 @@
           #descriptionForm="ngModel"
           required
         ></textarea>
-        <mat-hint align="end"><a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/" target="blank">Markdown形式</a>で記述することができます。</mat-hint>
+        <mat-hint align="end"><a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/" target="blank" tabindex="-1">Markdown形式</a>で記述することができます。</mat-hint>
       </mat-form-field>
       <span class="form-error" [hidden]="descriptionForm.valid || descriptionForm.pristine">
         業務内容説明は必須です。
       </span>
     </div>
-    
+
     <div class="form-block width-full">
       <mat-form-field>
         <textarea matInput matTextareaAutosize matAutosizeMinRows="3" placeholder="存在理由・他との違い"
@@ -49,7 +49,7 @@
           #existentialForm="ngModel"
           required
         ></textarea>
-        <mat-hint align="end"><a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/" target="blank">Markdown形式</a>で記述することができます。</mat-hint>
+        <mat-hint align="end"><a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/" target="blank" tabindex="-1">Markdown形式</a>で記述することができます。</mat-hint>
       </mat-form-field>
       <span class="form-error" [hidden]="existentialForm.valid || existentialForm.pristine">
         存在理由・他との違いは必須です。
