@@ -1,6 +1,7 @@
 package org.enlightenseries.DomainDictionary.presentation.config;
 
 import org.enlightenseries.DomainDictionary.presentation.config.security.AuthenticationFailureHandler;
+import org.enlightenseries.DomainDictionary.presentation.config.security.AuthenticationLogoutSuccessHandler;
 import org.enlightenseries.DomainDictionary.presentation.config.security.AuthenticationSuccessHandler;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
@@ -57,6 +58,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   @Bean
+  public AuthenticationLogoutSuccessHandler authenticationLogoutSuccessHandler() {
+    return new AuthenticationLogoutSuccessHandler();
+  }
+
+  @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
@@ -65,30 +71,27 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   public void configure(WebSecurity web) throws Exception {
     web
       .ignoring()
-        .antMatchers("/")
         .antMatchers("/**.{js,html}")
         .antMatchers("/h2-console/**");
   }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http
-      .csrf()
-        .and()
-      .formLogin()
-        .loginProcessingUrl("/api/login")
-        .successHandler(authenticationSuccessHandler())
-        .failureHandler(authenticationFailureHandler())
-        .usernameParameter("username")
-        .passwordParameter("password")
-        .permitAll()
-        .and()
-      .authorizeRequests()
-        /*
-        .antMatchers(HttpMethod.GET).permitAll()
-        .antMatchers("/api/**").permitAll()
-        */
-        .anyRequest().permitAll()
-        .and();
+    http.formLogin()
+      .loginProcessingUrl("/api/login")
+      .successHandler(authenticationSuccessHandler())
+      .failureHandler(authenticationFailureHandler())
+      .usernameParameter("username")
+      .passwordParameter("password")
+      .permitAll();
+
+    http.logout()
+      .logoutUrl("/api/logout")
+      .logoutSuccessHandler(authenticationLogoutSuccessHandler())
+      .permitAll();
+
+    http.authorizeRequests()
+      .antMatchers(HttpMethod.GET).permitAll()
+      .antMatchers("/api/**").authenticated();
   }
 }
