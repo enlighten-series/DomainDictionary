@@ -1,0 +1,13 @@
+<mat-dialog-content>
+  <form #loginForm="ngForm">
+    <mat-form-field>
+      <input type="text" matInput placeholder="ユーザ" name="username" [(ngModel)]="username" required>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="password" matInput placeholder="パスワード" name="password" [(ngModel)]="password" required>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button class="import-button" color="primary" (click)="login(loginForm)">ログイン</button>
+</mat-dialog-actions>

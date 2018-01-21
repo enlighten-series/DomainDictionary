@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
-import { MatSidenav, MatDialog } from '@angular/material';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { MatSidenav, MatDialog, MatSnackBar } from '@angular/material';
 import { Router, NavigationStart } from '@angular/router';
 import { DataExportDialogComponent } from './data-export-dialog/data-export-dialog.component';
 import { DataImportDialogComponent } from './data-import-dialog/data-import-dialog.component';
+import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import { GrowlMessagerComponent } from './widgets/growl-messager.component';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +22,8 @@ export class AppComponent implements OnInit{
   constructor(
     private router: Router,
     private dialog: MatDialog,
+    private http: HttpClient,
+    private snack: MatSnackBar,
   ) {}
 
   ngOnInit() {
@@ -76,7 +81,21 @@ export class AppComponent implements OnInit{
   }
 
   login() {
-    alert('login!');
+    let dialogRef = this.dialog.open(LoginDialogComponent);
+  }
+
+  logout() {
+    this.http.post('/api/logout', {})
+    .subscribe(
+      data => {
+        this.snack.openFromComponent(GrowlMessagerComponent, {
+          data: {
+            message: 'ログアウトしました',
+          },
+          duration: 3000,
+        });
+      }
+    );
   }
 
   jumpGithub() {

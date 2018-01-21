@@ -13,7 +13,7 @@
     </button>
   </div>
 
-  <button *ngIf="false" mat-fab class="user-menu-btn" (click)="toggleUserMenuVisible($event)">
+  <button mat-fab class="user-menu-btn" (click)="toggleUserMenuVisible($event)">
     <mat-icon>person</mat-icon>
   </button>
 </header>
@@ -40,6 +40,9 @@
   <ul>
     <li>
       <button mat-button (click)="login()">ログイン</button>
+    </li>
+    <li>
+      <button mat-button (click)="logout()">ログアウト</button>
     </li>
   </ul>
 </div>
