@@ -36,6 +36,7 @@ import { DataExportDialogComponent } from './data-export-dialog/data-export-dial
 import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialog/edit-relation-dialog.component';
 import { DataImportDialogComponent, ImportConfirmDialog } from './data-import-dialog/data-import-dialog.component';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,8 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
+
+    CoreModule,
   ],
   entryComponents: [
     DataExportDialogComponent,

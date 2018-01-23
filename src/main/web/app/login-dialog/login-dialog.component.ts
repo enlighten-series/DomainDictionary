@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { NgForm } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { GrowlMessagerComponent } from '../widgets/growl-messager.component';
+import { AuthService } from '../core/auth/auth.service';
 
 @Component({
   selector: 'app-login-dialog',
@@ -22,6 +23,7 @@ export class LoginDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient,
     private snack: MatSnackBar,
+    private auth: AuthService,
   ) { }
 
   ngOnInit() {
@@ -60,6 +62,7 @@ export class LoginDialogComponent implements OnInit {
           },
           duration: 3000,
         });
+        this.auth.loadAuthentication();
         this.dialogRef.close(true);
       },
       (error: HttpErrorResponse) => {

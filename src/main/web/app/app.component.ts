@@ -6,6 +6,7 @@ import { DataExportDialogComponent } from './data-export-dialog/data-export-dial
 import { DataImportDialogComponent } from './data-import-dialog/data-import-dialog.component';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { GrowlMessagerComponent } from './widgets/growl-messager.component';
+import { AuthService } from './core/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit{
     private dialog: MatDialog,
     private http: HttpClient,
     private snack: MatSnackBar,
+    private auth: AuthService,
   ) {}
 
   ngOnInit() {
@@ -96,6 +98,10 @@ export class AppComponent implements OnInit{
         });
       }
     );
+  }
+
+  isAuthenticated() {
+    this.auth.isAuthenticated();
   }
 
   jumpGithub() {
