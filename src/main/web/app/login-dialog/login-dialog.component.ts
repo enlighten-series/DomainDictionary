@@ -45,14 +45,17 @@ export class LoginDialogComponent implements OnInit {
       return;
     }
 
-    console.log('login:' + this.username + "/" + this.password);
-
     const data = 'username=' + encodeURIComponent(this.username) +
       '&password=' + encodeURIComponent(this.password);
     const headers = new HttpHeaders ({
       'Content-Type': 'application/x-www-form-urlencoded'
     });
 
+    /**
+     * TODO: このへん治ったらerrorとして受け取りたい
+     * https://github.com/angular/angular/issues/19555
+     * https://github.com/angular/angular/issues/18680
+     */
     this.http.post('/api/login', data, { headers: headers })
     .subscribe(
       data => {
@@ -62,16 +65,8 @@ export class LoginDialogComponent implements OnInit {
           },
           duration: 3000,
         });
-        this.auth.loadAuthentication();
+        this.auth.updateAuthentication();
         this.dialogRef.close(true);
-      },
-      (error: HttpErrorResponse) => {
-        this.snack.openFromComponent(GrowlMessagerComponent, {
-          data: {
-            message: error,
-          },
-          duration: 3000,
-        });
       }
     );
   }

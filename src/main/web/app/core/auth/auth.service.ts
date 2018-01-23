@@ -9,10 +9,14 @@ export class AuthService {
 
   constructor() { }
 
-  loadAuthentication() {
+  updateAuthentication() {
     this.auth$.next(<Auth>{
       username: 'admin'
     });
+  }
+
+  clearAuthentication() {
+    this.auth$.next(<Auth>{});
   }
 
   getAuthData(): Auth {

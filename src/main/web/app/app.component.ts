@@ -96,12 +96,13 @@ export class AppComponent implements OnInit{
           },
           duration: 3000,
         });
+        this.auth.clearAuthentication();
       }
     );
   }
 
   isAuthenticated() {
-    this.auth.isAuthenticated();
+    return this.auth.isAuthenticated();
   }
 
   jumpGithub() {
