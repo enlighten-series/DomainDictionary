@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component("userDetailsService")
+@Component
 public class ApplicationUserDetailsService implements UserDetailsService {
 
   @Override
