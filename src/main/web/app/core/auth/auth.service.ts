@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Auth } from './auth';
 
@@ -7,12 +8,17 @@ export class AuthService {
 
   private auth$: BehaviorSubject<Auth> = new BehaviorSubject(<Auth>{});
 
-  constructor() { }
+  constructor(
+    private http: HttpClient,
+  ) { }
 
   updateAuthentication() {
-    this.auth$.next(<Auth>{
-      username: 'admin'
-    });
+    this.http.get('/api/authentication')
+    .subscribe(
+      data => {
+        this.auth$.next(<Auth>data);
+      }
+    )
   }
 
   clearAuthentication() {

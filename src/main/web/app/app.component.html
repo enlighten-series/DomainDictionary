@@ -13,7 +13,7 @@
     </button>
   </div>
 
-  <button mat-fab class="user-menu-btn" (click)="toggleUserMenuVisible($event)">
+  <button mat-fab class="user-menu-btn" [color]="bindUserButtonColor()" (click)="toggleUserMenuVisible($event)">
     <mat-icon>person</mat-icon>
   </button>
 </header>

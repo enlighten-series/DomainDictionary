@@ -29,6 +29,9 @@ export class AppComponent implements OnInit{
   ) {}
 
   ngOnInit() {
+    // 認証が残っている場合継続する
+    this.auth.updateAuthentication();
+
     // メニューからの画面遷移が行われた際にメニューを閉じる
     this.router.events
       .filter((e) => e instanceof NavigationStart)
@@ -107,5 +110,12 @@ export class AppComponent implements OnInit{
 
   jumpGithub() {
     window.open('https://github.com/enlighten-series/DomainDictionary');
+  }
+
+  bindUserButtonColor() {
+    if (this.isAuthenticated()) {
+      return '';
+    }
+    return 'accent';
   }
 }
