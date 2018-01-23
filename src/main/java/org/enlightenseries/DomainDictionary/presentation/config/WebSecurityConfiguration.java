@@ -15,6 +15,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import javax.annotation.PostConstruct;
@@ -79,6 +81,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.csrf()
       .disable();
       //.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+
+    http.exceptionHandling()
+      .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
+      .accessDeniedHandler(new AccessDeniedHandlerImpl());
 
     http.formLogin()
       .loginProcessingUrl("/api/login")
