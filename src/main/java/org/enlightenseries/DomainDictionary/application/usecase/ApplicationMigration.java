@@ -11,6 +11,7 @@ import org.enlightenseries.DomainDictionary.domain.model.metadata.Metadata;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.MetadataRepository;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelationRepository;
 import org.enlightenseries.DomainDictionary.domain.model.relation.RelationRepository;
+import org.enlightenseries.DomainDictionary.domain.model.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Async;
@@ -33,6 +34,7 @@ public class ApplicationMigration {
   private final String exportDomainFileName = "export.csv";
 
   private MetadataRepository metadataRepository;
+  private UserRepository userRepository;
   private DomainRepository domainRepository;
   private DomainToRelationRepository domainToRelationRepository;
   private RelationRepository relationRepository;
@@ -45,12 +47,14 @@ public class ApplicationMigration {
 
   public ApplicationMigration(
     MetadataRepository _metadataRepository,
+    UserRepository _userRepository,
     DomainRepository _domainRepository,
     DomainToRelationRepository _domainToRelationRepository,
     RelationRepository _relationRepository,
     ApplicationMigrationStatus _applicationMigrationStatus
   ) {
     this.metadataRepository = _metadataRepository;
+    this.userRepository = _userRepository;
     this.domainRepository = _domainRepository;
     this.domainToRelationRepository = _domainToRelationRepository;
     this.relationRepository = _relationRepository;
@@ -83,6 +87,7 @@ public class ApplicationMigration {
 
   private void createTables() {
     this.metadataRepository.createTable();
+    this.userRepository.createTable();
     this.domainRepository.createTable();
     this.domainToRelationRepository.createTable();
     this.relationRepository.createTable();

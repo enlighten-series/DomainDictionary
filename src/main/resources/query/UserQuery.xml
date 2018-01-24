@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.enlightenseries.DomainDictionary.infrastructure.datasource.user.UserMapper">
+  <select id="selectByUsername" parameterType="String" resultType="org.enlightenseries.DomainDictionary.domain.model.user.User">
+    SELECT
+      id,
+      username,
+      password
+    FROM
+      user
+    WHERE
+      username=#{username}
+  </select>
+  <insert id="insert" parameterType="org.enlightenseries.DomainDictionary.domain.model.user.User">
+    INSERT INTO user (
+      username,
+      password
+    ) values (
+      #{username},
+      #{password}
+    )
+  </insert>
+  <update id="update" parameterType="org.enlightenseries.DomainDictionary.domain.model.user.User">
+    UPDATE user
+    SET
+      password=#{password}
+    WHERE
+      id=#{id}
+  </update>
+  <delete id="delete" parameterType="Long">
+    DELETE FROM
+      user
+    WHERE
+      id=#{id}
+  </delete>
+  <insert id="createTable">
+    CREATE TABLE user (
+      id IDENTITY,
+      username VARCHAR(100) NOT NULL UNIQUE,
+      password CHAR(60) NOT NULL
+    )
+  </insert>
+</mapper>
