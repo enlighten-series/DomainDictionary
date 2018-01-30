@@ -8,6 +8,7 @@ import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,6 +20,9 @@ public class UserMapperTest {
   @Autowired
   private UserMapper userMapper;
 
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
   private String assertUsername = "saikou9901";
   private String assertPassword = "BCryptString";
   private String assertUsernameUpdate = assertUsername + "Update";
@@ -27,10 +31,9 @@ public class UserMapperTest {
   @Test
   public void insert() {
     // when
-    String encodedPassword = new BCryptPasswordEncoder().encode(assertPassword);
     User assertData = new User();
     assertData.setUsername(assertUsername);
-    assertData.setPassword(encodedPassword);
+    assertData.setPassword(passwordEncoder.encode(assertPassword));
 
     // try
     userMapper.insert(assertData);
@@ -38,24 +41,23 @@ public class UserMapperTest {
 
     // expect
     assertThat(subject.getUsername()).isEqualTo(assertUsername);
-    assertThat(subject.getPassword()).isEqualTo(encodedPassword);
+    assertThat(passwordEncoder.matches(assertPassword, subject.getPassword())).isTrue();
     assertThat(subject.getId()).isNotNull();
   }
 
   @Test
   public void update() {
     // when
-    String encodedPassword = new BCryptPasswordEncoder().encode(assertPasswordUpdate);
     User assertData = userMapper.selectByUsername(assertUsername);
 
     // try
-    assertData.setPassword(encodedPassword);
+    assertData.setPassword(passwordEncoder.encode(assertPasswordUpdate));
     userMapper.update(assertData);
     User subject = userMapper.selectByUsername(assertUsername);
 
     // expect
     assertThat(subject.getUsername()).isEqualTo(assertUsername);
-    assertThat(subject.getPassword()).isEqualTo(encodedPassword);
+    assertThat(passwordEncoder.matches(assertPasswordUpdate, subject.getPassword())).isTrue();
     assertThat(subject.getId()).isNotNull();
   }
 
