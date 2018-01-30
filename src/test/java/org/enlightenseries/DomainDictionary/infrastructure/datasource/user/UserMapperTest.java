@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,9 +27,10 @@ public class UserMapperTest {
   @Test
   public void insert() {
     // when
+    String encodedPassword = new BCryptPasswordEncoder().encode(assertPassword);
     User assertData = new User();
     assertData.setUsername(assertUsername);
-    assertData.setPassword(assertPassword);
+    assertData.setPassword(encodedPassword);
 
     // try
     userMapper.insert(assertData);
@@ -36,23 +38,24 @@ public class UserMapperTest {
 
     // expect
     assertThat(subject.getUsername()).isEqualTo(assertUsername);
-    assertThat(subject.getPassword()).isEqualTo(assertPassword);
+    assertThat(subject.getPassword()).isEqualTo(encodedPassword);
     assertThat(subject.getId()).isNotNull();
   }
 
   @Test
   public void update() {
     // when
+    String encodedPassword = new BCryptPasswordEncoder().encode(assertPasswordUpdate);
     User assertData = userMapper.selectByUsername(assertUsername);
 
     // try
-    assertData.setPassword(assertPasswordUpdate);
+    assertData.setPassword(encodedPassword);
     userMapper.update(assertData);
     User subject = userMapper.selectByUsername(assertUsername);
 
     // expect
     assertThat(subject.getUsername()).isEqualTo(assertUsername);
-    assertThat(subject.getPassword()).isEqualTo(assertPasswordUpdate);
+    assertThat(subject.getPassword()).isEqualTo(encodedPassword);
     assertThat(subject.getId()).isNotNull();
   }
 
@@ -63,7 +66,7 @@ public class UserMapperTest {
     String assertPassword = "BCryptStringdelete";
     User assertData = new User();
     assertData.setUsername(assertUsername);
-    assertData.setPassword(assertPassword);
+    assertData.setPassword(new BCryptPasswordEncoder().encode(assertPassword));
     userMapper.insert(assertData);
     assertData = userMapper.selectByUsername(assertUsername);
 
