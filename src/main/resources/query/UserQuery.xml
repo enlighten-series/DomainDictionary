@@ -11,7 +11,7 @@
     WHERE
       username=#{username}
   </select>
-  <insert id="insert" parameterType="org.enlightenseries.DomainDictionary.domain.model.user.User">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="org.enlightenseries.DomainDictionary.domain.model.user.User">
     INSERT INTO user (
       username,
       password
