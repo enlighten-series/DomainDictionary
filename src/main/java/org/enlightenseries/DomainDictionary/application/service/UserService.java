@@ -3,6 +3,7 @@ package org.enlightenseries.DomainDictionary.application.service;
 import org.enlightenseries.DomainDictionary.domain.model.user.User;
 import org.enlightenseries.DomainDictionary.domain.model.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,18 +30,18 @@ public class UserService {
    * ログイン中のユーザを取得する
    * @return
    */
-  public Optional<String> getLoginUser() {
+  public String getLoginUsername() {
     SecurityContext securityContext = SecurityContextHolder.getContext();
-    return Optional.ofNullable(securityContext.getAuthentication())
-      .map(authentication -> {
-        if (authentication.getPrincipal() instanceof UserDetails) {
-          UserDetails ud = (UserDetails) authentication.getPrincipal();
-          return ud.getUsername();
-        } else if (authentication.getPrincipal() instanceof String) {
-          return (String) authentication.getPrincipal();
-        }
-        return null;
-      });
+    Authentication authentication = securityContext.getAuthentication();
+
+    if (authentication.getPrincipal() instanceof UserDetails) {
+      UserDetails ud = (UserDetails) authentication.getPrincipal();
+      return ud.getUsername();
+    } else if (authentication.getPrincipal() instanceof String) {
+      return (String) authentication.getPrincipal();
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -55,5 +56,9 @@ public class UserService {
     this.userRepository.register(newUser);
 
     return newUser;
+  }
+
+  public User findByUsername(String username) {
+    return this.userRepository.findByUsername(username);
   }
 }

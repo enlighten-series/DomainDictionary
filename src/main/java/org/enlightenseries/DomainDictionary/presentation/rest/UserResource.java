@@ -4,11 +4,11 @@ import org.enlightenseries.DomainDictionary.application.exception.ApplicationExc
 import org.enlightenseries.DomainDictionary.application.service.UserService;
 import org.enlightenseries.DomainDictionary.domain.model.user.User;
 import org.enlightenseries.DomainDictionary.presentation.rest.dto.UserDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.xml.ws.Response;
 
 @RestController
 @RequestMapping("/api")
@@ -23,15 +23,15 @@ public class UserResource {
   }
 
   @GetMapping("/authentication")
-  public UserDto getLoginUserData() throws ApplicationException {
+  public ResponseEntity<UserDto> getLoginUserData() throws ApplicationException {
+    String loginUserName = userService.getLoginUsername();
+    User loginUser = userService.findByUsername(loginUserName);
 
-    return userService.getLoginUser().map(
-      username -> {
-        // TODO: anonymouseUser等がくるので、DBを確認する
-        UserDto ud = new UserDto(username);
-        return ud;
-      }
-    ).orElseThrow(() ->  new ApplicationException("User could not be found"));
+    if (loginUser == null) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    return ResponseEntity.ok().body(new UserDto(loginUser));
   }
 
   @PostMapping("/user")
