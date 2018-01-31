@@ -2,7 +2,7 @@ package org.enlightenseries.DomainDictionary.domain.model.user;
 
 public interface UserRepository {
 
-  void findByUsername(String username);
+  User findByUsername(String username);
 
   void register(User user);
 

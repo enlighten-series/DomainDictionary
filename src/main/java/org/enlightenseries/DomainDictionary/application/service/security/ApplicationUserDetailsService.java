@@ -1,5 +1,7 @@
 package org.enlightenseries.DomainDictionary.application.service.security;
 
+import org.enlightenseries.DomainDictionary.domain.model.user.User;
+import org.enlightenseries.DomainDictionary.domain.model.user.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,17 +15,26 @@ import java.util.List;
 @Component
 public class ApplicationUserDetailsService implements UserDetailsService {
 
+  private UserRepository userRepository;
+
+  public ApplicationUserDetailsService(
+    UserRepository _userRepository
+  ) {
+    this.userRepository = _userRepository;
+  }
+
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    if (!username.equals("admin")) {
+    User user = userRepository.findByUsername(username);
+    if (user == null) {
       return null;
     }
 
     List<GrantedAuthority> grantedAuthorities = AuthorityUtils.createAuthorityList("ADMIN");
 
     return new org.springframework.security.core.userdetails.User(
-      "admin",
-      new BCryptPasswordEncoder().encode("password"),
+      user.getUsername(),
+      user.getPassword(),
       grantedAuthorities
     );
   }
