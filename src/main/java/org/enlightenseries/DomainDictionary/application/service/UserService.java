@@ -44,12 +44,13 @@ public class UserService {
   }
 
   /**
+   * ユーザを新規登録する
    * TODO: テスト作成
    * @param newUser
    * @param plainPassword
    * @return
    */
-  public User register(User newUser, String plainPassword) {
+  public User createNewUser(User newUser, String plainPassword) {
     newUser.setPassword(passwordEncoder.encode(plainPassword));
     this.userRepository.register(newUser);
 

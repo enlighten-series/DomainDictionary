@@ -5,12 +5,14 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
+import org.enlightenseries.DomainDictionary.application.service.UserService;
 import org.enlightenseries.DomainDictionary.application.singleton.ApplicationMigrationStatus;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.Metadata;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.MetadataRepository;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelationRepository;
 import org.enlightenseries.DomainDictionary.domain.model.relation.RelationRepository;
+import org.enlightenseries.DomainDictionary.domain.model.user.User;
 import org.enlightenseries.DomainDictionary.domain.model.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
@@ -33,6 +35,8 @@ public class ApplicationMigration {
   private final String exportOutputDirectioryPath = "./data";
   private final String exportDomainFileName = "export.csv";
 
+  private UserService userService;
+
   private MetadataRepository metadataRepository;
   private UserRepository userRepository;
   private DomainRepository domainRepository;
@@ -46,6 +50,7 @@ public class ApplicationMigration {
   private String currentPatchVersion;
 
   public ApplicationMigration(
+    UserService _userService,
     MetadataRepository _metadataRepository,
     UserRepository _userRepository,
     DomainRepository _domainRepository,
@@ -53,6 +58,7 @@ public class ApplicationMigration {
     RelationRepository _relationRepository,
     ApplicationMigrationStatus _applicationMigrationStatus
   ) {
+    this.userService = _userService;
     this.metadataRepository = _metadataRepository;
     this.userRepository = _userRepository;
     this.domainRepository = _domainRepository;
@@ -108,6 +114,11 @@ public class ApplicationMigration {
     this.metadataRepository.register(majorVersion);
     this.metadataRepository.register(minorVersion);
     this.metadataRepository.register(patchVersion);
+
+    // デフォルトユーザ登録
+    User defaultUser = new User();
+    defaultUser.setUsername("admin");
+    this.userService.createNewUser(defaultUser, "admin");
   }
 
   /**

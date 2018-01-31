@@ -27,6 +27,7 @@ public class UserResource {
 
     return userService.getLoginUser().map(
       username -> {
+        // TODO: anonymouseUser等がくるので、DBを確認する
         UserDto ud = new UserDto(username);
         return ud;
       }
@@ -37,7 +38,7 @@ public class UserResource {
   private ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto newUser) throws Exception {
     User user = newUser.getUser();
 
-    user = this.userService.register(user, newUser.getPassword());
+    user = this.userService.createNewUser(user, newUser.getPassword());
     UserDto createdUserDto = new UserDto(user);
 
     return ResponseEntity.ok().body(createdUserDto);
