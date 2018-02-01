@@ -19,6 +19,7 @@ import {
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
+  MatTooltipModule,
 } from '@angular/material';
 
 import { ROUTES } from './app.route';
@@ -77,6 +78,7 @@ import { CoreModule } from './core/core.module';
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
+    MatTooltipModule,
 
     CoreModule,
   ],

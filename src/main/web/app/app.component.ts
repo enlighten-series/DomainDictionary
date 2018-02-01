@@ -54,6 +54,14 @@ export class AppComponent implements OnInit{
     return this.auth.isAuthenticated();
   }
 
+  userTooltipLabel() {
+    if (this.isAuthenticated()) {
+      return this.auth.getAuthData().username;
+    } else {
+      return "ログインしていません"
+    }
+  }
+
   bindUserButtonColor() {
     if (this.isAuthenticated()) {
       return '';

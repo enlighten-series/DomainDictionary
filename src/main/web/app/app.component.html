@@ -13,7 +13,9 @@
     </button>
   </div>
 
-  <button mat-fab class="user-menu-btn" [color]="bindUserButtonColor()" (click)="showUserDialog($event)">
+  <button mat-fab class="user-menu-btn" [color]="bindUserButtonColor()" (click)="showUserDialog($event)"
+    [matTooltip]="userTooltipLabel()" [matTooltipPosition]="'before'"
+  >
     <mat-icon>person</mat-icon>
   </button>
 </header>
