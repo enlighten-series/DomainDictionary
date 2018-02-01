@@ -11,6 +11,7 @@ import { merge } from 'rxjs/observable/merge';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
 import { Domain } from '../models/domain';
+import { AuthService } from '../core/auth/auth.service';
 
 @Component({
   selector: 'app-domain-list',
@@ -28,6 +29,7 @@ export class DomainListComponent implements OnInit {
   constructor(
     private router: Router,
     private http: HttpClient,
+    private auth: AuthService,
   ) {
     this.displayedColumns = [
       'name',
@@ -56,6 +58,10 @@ export class DomainListComponent implements OnInit {
 
   public displayedColumns: string[];
   public filteredDomains: ViewDomainListDataSource;
+
+  isAuthenticated() {
+    return this.auth.isAuthenticated();
+  }
 
   // #endregion
 

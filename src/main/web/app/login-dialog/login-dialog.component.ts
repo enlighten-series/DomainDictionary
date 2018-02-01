@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { GrowlMessagerComponent } from '../widgets/growl-messager.component';
 import { AuthService } from '../core/auth/auth.service';
@@ -24,6 +25,7 @@ export class LoginDialogComponent implements OnInit {
     private http: HttpClient,
     private snack: MatSnackBar,
     private auth: AuthService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -86,6 +88,7 @@ export class LoginDialogComponent implements OnInit {
           duration: 3000,
         });
         this.auth.clearAuthentication();
+        this.router.navigate(['/']);
       }
     );
   }

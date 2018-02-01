@@ -13,6 +13,7 @@ import { Domain } from '../models/domain';
 import { GrowlMessagerComponent } from '../widgets/growl-messager.component';
 import { EditRelationDialogComponent } from './edit-relation-dialog/edit-relation-dialog.component';
 import { RelatedDomain } from '../models/related-domain';
+import { AuthService } from '../core/auth/auth.service';
 
 @Component({
   selector: 'delete-confirm-dialog',
@@ -85,6 +86,7 @@ export class DomainDetailComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private zone: NgZone,
+    private auth: AuthService,
   ) {
     // URLでidのみ変更される場合はコンポーネント再作成が行われないため、firstではなく継続的にsubscribeする。
     this.subscriptions.push(
@@ -131,6 +133,10 @@ export class DomainDetailComponent implements OnInit {
   viewDomain: Domain = new Domain();
   editFormInitialValue: Domain = new Domain();
   relatedDomains: RelatedDomain[] = [];
+
+  isAuthenticated() {
+    return this.auth.isAuthenticated();
+  }
 
   isActiveDetail() {
     return this.activeIndex == 0;

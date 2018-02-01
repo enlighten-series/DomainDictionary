@@ -1,7 +1,7 @@
 <mat-tab-group (selectedIndexChange)="selectedIndexChanged($event)">
   <mat-tab label="詳細"></mat-tab>
-  <mat-tab label="項目の編集"></mat-tab>
-  <mat-tab label="その他"></mat-tab>
+  <mat-tab *ngIf="isAuthenticated()" label="項目の編集"></mat-tab>
+  <mat-tab *ngIf="isAuthenticated()" label="その他"></mat-tab>
 </mat-tab-group>
 
 <ng-container *ngIf="isActiveDetail()">
@@ -30,7 +30,7 @@
           </mat-chip>
         </mat-chip-list>
       </section>
-      <button mat-raised-button (click)="showAddRelationDialog()">関連項目を編集する</button>
+      <button mat-raised-button *ngIf="isAuthenticated()" (click)="showAddRelationDialog()">関連項目を編集する</button>
     </div>
   </mat-card>
 </ng-container>

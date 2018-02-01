@@ -1,7 +1,7 @@
 <mat-card>
 
   <div class="button-area">
-    <button mat-raised-button color="primary" (click)="create()">追加</button>
+    <button mat-raised-button *ngIf="isAuthenticated()" color="primary" (click)="create()">追加</button>
   </div>
   
   <div class="filter-area">
