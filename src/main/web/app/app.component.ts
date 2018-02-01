@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { MatSidenav, MatDialog, MatSnackBar } from '@angular/material';
 import { Router, NavigationStart } from '@angular/router';
 import { DataExportDialogComponent } from './data-export-dialog/data-export-dialog.component';
@@ -23,7 +22,6 @@ export class AppComponent implements OnInit{
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private http: HttpClient,
     private snack: MatSnackBar,
     private auth: AuthService,
   ) {}
@@ -53,11 +51,8 @@ export class AppComponent implements OnInit{
     e.stopPropagation();
   }
 
-  toggleUserMenuVisible(e: MouseEvent) {
-    this.userMenuVisible = !this.userMenuVisible;
-    this.appMenuVisible = false;
-    // window:clickでメニューを閉じるイベントまでエスカレーションするのを防止する
-    e.stopPropagation();
+  showUserDialog(e: MouseEvent) {
+    let dialogRef = this.dialog.open(LoginDialogComponent);
   }
 
   @HostListener('window:click')
@@ -83,25 +78,6 @@ export class AppComponent implements OnInit{
 
   license() {
     this.router.navigate(['/license']);
-  }
-
-  login() {
-    let dialogRef = this.dialog.open(LoginDialogComponent);
-  }
-
-  logout() {
-    this.http.post('/api/logout', {})
-    .subscribe(
-      data => {
-        this.snack.openFromComponent(GrowlMessagerComponent, {
-          data: {
-            message: 'ログアウトしました',
-          },
-          duration: 3000,
-        });
-        this.auth.clearAuthentication();
-      }
-    );
   }
 
   isAuthenticated() {

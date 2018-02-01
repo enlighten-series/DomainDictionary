@@ -36,6 +36,10 @@ export class LoginDialogComponent implements OnInit {
   username: string;
   password: string;
 
+  isAuthenticated() {
+    return this.auth.isAuthenticated();
+  }
+
   // #endregion
 
   // #region イベント
@@ -67,6 +71,21 @@ export class LoginDialogComponent implements OnInit {
         });
         this.auth.updateAuthentication();
         this.dialogRef.close(true);
+      }
+    );
+  }
+
+  logout() {
+    this.http.post('/api/logout', {})
+    .subscribe(
+      data => {
+        this.snack.openFromComponent(GrowlMessagerComponent, {
+          data: {
+            message: 'ログアウトしました',
+          },
+          duration: 3000,
+        });
+        this.auth.clearAuthentication();
       }
     );
   }

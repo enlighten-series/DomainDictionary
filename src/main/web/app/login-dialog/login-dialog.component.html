@@ -9,5 +9,6 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-raised-button color="primary" (click)="login(loginForm)">ログイン</button>
+  <button mat-raised-button color="primary" (click)="login(loginForm)" [disabled]="isAuthenticated()">ログイン</button>
+  <button mat-raised-button color="primary" (click)="logout()" [disabled]="!isAuthenticated()">ログアウト</button>
 </mat-dialog-actions>

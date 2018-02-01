@@ -13,7 +13,7 @@
     </button>
   </div>
 
-  <button mat-fab class="user-menu-btn" [color]="bindUserButtonColor()" (click)="toggleUserMenuVisible($event)">
+  <button mat-fab class="user-menu-btn" [color]="bindUserButtonColor()" (click)="showUserDialog($event)">
     <mat-icon>person</mat-icon>
   </button>
 </header>
@@ -32,17 +32,6 @@
     </li>
     <li *ngIf="false">
       <button mat-button (click)="license()">ライセンスの表示</button>
-    </li>
-  </ul>
-</div>
-
-<div class="user-menu" *ngIf="userMenuVisible">
-  <ul>
-    <li>
-      <button mat-button (click)="login()" *ngIf="!isAuthenticated()">ログイン</button>
-    </li>
-    <li>
-      <button mat-button (click)="logout()" *ngIf="isAuthenticated()">ログアウト</button>
     </li>
   </ul>
 </div>
