@@ -13,11 +13,12 @@ import { AuthService } from './core/auth/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  
-  @ViewChild(MatSidenav) sideNav: MatSidenav;
 
-  appMenuVisible = false;
-  userMenuVisible = false;
+  // #reion インタフェース
+
+  // #endregion
+
+  // #region コンストラクタ・ライフサイクル
 
   constructor(
     private router: Router,
@@ -39,6 +40,30 @@ export class AppComponent implements OnInit{
         }
       });
   }
+
+  // #endregion
+
+  // #region ビューバインド
+  
+  @ViewChild(MatSidenav) sideNav: MatSidenav;
+
+  appMenuVisible = false;
+  userMenuVisible = false;
+
+  isAuthenticated() {
+    return this.auth.isAuthenticated();
+  }
+
+  bindUserButtonColor() {
+    if (this.isAuthenticated()) {
+      return '';
+    }
+    return 'accent';
+  }
+
+  // #endregion
+
+  // #region イベント
 
   home() {
     this.router.navigate(['/']);
@@ -80,18 +105,13 @@ export class AppComponent implements OnInit{
     this.router.navigate(['/license']);
   }
 
-  isAuthenticated() {
-    return this.auth.isAuthenticated();
-  }
-
   jumpGithub() {
     window.open('https://github.com/enlighten-series/DomainDictionary');
   }
 
-  bindUserButtonColor() {
-    if (this.isAuthenticated()) {
-      return '';
-    }
-    return 'accent';
-  }
+  // #endregion
+
+  // #region プライベート
+
+  // #endregion
 }
