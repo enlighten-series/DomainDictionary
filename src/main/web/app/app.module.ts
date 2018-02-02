@@ -30,7 +30,6 @@ import { DomainDetailComponent, DeleteConfirmDialog } from './domain-detail/doma
 import { DomainEditFormComponent, RegistConfirmDialog } from './domain-edit-form/domain-edit-form.component';
 import { DomainCreateComponent } from './domain-create/domain-create.component';
 import { LicenseListComponent } from './license-list/license-list.component';
-import { HttpStatusInterceptor } from './services/http-status-interceptor';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { DataExportDialogComponent } from './data-export-dialog/data-export-dialog.component';
 import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialog/edit-relation-dialog.component';
@@ -91,11 +90,7 @@ import { SharedModule } from './shared/shared.module';
     ImportConfirmDialog,
     LoginDialogComponent,
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: HttpStatusInterceptor,
-    multi: true,
-  }],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
