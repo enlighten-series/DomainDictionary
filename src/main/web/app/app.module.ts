@@ -38,6 +38,7 @@ import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialo
 import { DataImportDialogComponent, ImportConfirmDialog } from './data-import-dialog/data-import-dialog.component';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { CoreModule } from './core/core.module';
+import { EqualValidator } from './directives/equal-validator.directive';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { CoreModule } from './core/core.module';
     DataImportDialogComponent,
     ImportConfirmDialog,
     LoginDialogComponent,
+    EqualValidator,
   ],
   imports: [
     BrowserModule,

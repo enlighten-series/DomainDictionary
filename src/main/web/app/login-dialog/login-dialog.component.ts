@@ -2,14 +2,14 @@ import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatTabGroup } from '@angular/material';
 import { GrowlMessagerComponent } from '../widgets/growl-messager.component';
 import { AuthService } from '../core/auth/auth.service';
 
 @Component({
   selector: 'app-login-dialog',
   templateUrl: './login-dialog.component.html',
-  styleUrls: ['./login-dialog.component.scss']
+  styleUrls: ['./login-dialog.component.scss'],
 })
 export class LoginDialogComponent implements OnInit {
 
@@ -35,19 +35,44 @@ export class LoginDialogComponent implements OnInit {
 
   // #region ビューバインド
 
+  @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
+
   username: string;
   password: string;
 
+  signupUsername: string;
+  signupPassword: string;
+  signupPasswordConfirm: string;
+
   isAuthenticated() {
     return this.auth.isAuthenticated();
+  }
+
+  isActiveAuth() {
+    return this.activeIndex == 0;
+  }
+  isActiveSignUp() {
+    return this.activeIndex == 1;
+  }
+
+  getAuthUserName(): string {
+    if (this.isAuthenticated()) {
+      return this.auth.getAuthData().username;
+    } else {
+      return '';
+    }
   }
 
   // #endregion
 
   // #region イベント
 
-  login(loginForm: NgForm) {
-    if (!loginForm.valid) {
+  selectedIndexChanged(index) {
+    this.activeIndex = index;
+  }
+
+  login(form: NgForm) {
+    if (form.invalid) {
       return;
     }
 
@@ -93,9 +118,34 @@ export class LoginDialogComponent implements OnInit {
     );
   }
 
+  signup(form: NgForm) {
+    if (form.invalid) {
+      return;
+    }
+
+    this.http.post('/api/user', {
+      username: this.signupUsername,
+      password: this.signupPassword,
+    })
+    .subscribe(
+      data => {
+        this.snack.openFromComponent(GrowlMessagerComponent, {
+          data: {
+            message: 'ユーザ:' + this.signupUsername + 'が作成されました！',
+          },
+          duration: 3000,
+        });
+        form.reset();
+        this.matTabGroup.selectedIndex = 0;
+      }
+    );
+  }
+
   // #endregion
 
   // #region プライベート
+
+  private activeIndex = 0;
 
   // #endregion
 

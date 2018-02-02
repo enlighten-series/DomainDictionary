@@ -1,0 +1,16 @@
+mat-dialog-content {
+  width: 600px;
+
+  .tabpanel {
+    padding: 0.5em;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .form-error {
+    color: #c00;
+    font-size: 0.7em;
+  }
+}

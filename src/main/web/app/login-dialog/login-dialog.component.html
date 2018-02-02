@@ -1,14 +1,59 @@
 <mat-dialog-content>
-  <form #loginForm="ngForm">
-    <mat-form-field>
-      <input type="text" matInput placeholder="ユーザ" name="username" [(ngModel)]="username" required>
-    </mat-form-field>
-    <mat-form-field>
-      <input type="password" matInput placeholder="パスワード" name="password" [(ngModel)]="password" required>
-    </mat-form-field>
-  </form>
+
+  <mat-tab-group (selectedIndexChange)="selectedIndexChanged($event)">
+    <mat-tab label="現在のユーザ"></mat-tab>
+    <mat-tab label="サインアップ"></mat-tab>
+  </mat-tab-group>
+
+  <div class="tabpanel" *ngIf="isActiveAuth()">
+    <ng-container *ngIf="!isAuthenticated()">
+      <p>
+        ログインしてください。
+      </p>
+      <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+        <mat-form-field>
+          <input type="text" matInput placeholder="ユーザ" name="username" [(ngModel)]="username" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="password" matInput placeholder="パスワード" name="password" [(ngModel)]="password" required>
+        </mat-form-field>
+        <p>
+          <button mat-raised-button type="submit" color="primary">ログイン</button>
+        </p>
+      </form>
+    </ng-container>
+      
+    <ng-container *ngIf="isAuthenticated()">
+      <p>
+        {{getAuthUserName()}} としてログインしています。
+      </p>
+      <p>
+        <button mat-raised-button color="primary" (click)="logout()">ログアウト</button>
+      </p>
+    </ng-container>
+  </div>
+
+  <div class="tabpanel" *ngIf="isActiveSignUp()">
+    <p>
+      ユーザを新規登録できます。
+    </p>
+    <form #signupForm="ngForm" (ngSubmit)="signup(signupForm)">
+      <mat-form-field>
+        <input type="text" matInput placeholder="ユーザ" name="username" [(ngModel)]="signupUsername" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input type="password" matInput placeholder="パスワード" name="password" [(ngModel)]="signupPassword" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input type="password" #confirm="ngModel" matInput [validateEqual]="signupPassword" placeholder="パスワードの確認" name="passwordConfirm" [(ngModel)]="signupPasswordConfirm" required>
+      </mat-form-field>
+      <span class="form-error" [hidden]="confirm.valid || confirm.pristine">
+        パスワードが一致しません
+      </span>
+      <p>
+        <button mat-raised-button type="submit" color="primary">登録</button>
+      </p>
+    </form>
+  </div>
+
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-raised-button color="primary" (click)="login(loginForm)" [disabled]="isAuthenticated()">ログイン</button>
-  <button mat-raised-button color="primary" (click)="logout()" [disabled]="!isAuthenticated()">ログアウト</button>
-</mat-dialog-actions>
