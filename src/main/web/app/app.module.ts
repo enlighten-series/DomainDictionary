@@ -29,7 +29,6 @@ import { DomainListComponent } from './domain-list/domain-list.component';
 import { DomainDetailComponent, DeleteConfirmDialog } from './domain-detail/domain-detail.component';
 import { DomainEditFormComponent, RegistConfirmDialog } from './domain-edit-form/domain-edit-form.component';
 import { DomainCreateComponent } from './domain-create/domain-create.component';
-import { LicenseListComponent } from './license-list/license-list.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { DataExportDialogComponent } from './data-export-dialog/data-export-dialog.component';
 import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialog/edit-relation-dialog.component';
@@ -37,6 +36,7 @@ import { DataImportDialogComponent, ImportConfirmDialog } from './data-import-di
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
+import { FeaturesModule } from './features/features.module';
 
 @NgModule({
   declarations: [
@@ -47,7 +47,6 @@ import { SharedModule } from './shared/shared.module';
     DomainEditFormComponent,
     RegistConfirmDialog,
     DomainCreateComponent,
-    LicenseListComponent,
     ErrorPageComponent,
     DataExportDialogComponent,
     EditRelationDialogComponent,
@@ -80,6 +79,7 @@ import { SharedModule } from './shared/shared.module';
 
     CoreModule,
     SharedModule,
+    FeaturesModule,
   ],
   entryComponents: [
     DataExportDialogComponent,
