@@ -30,7 +30,6 @@ import { DomainDetailComponent, DeleteConfirmDialog } from './domain-detail/doma
 import { DomainEditFormComponent, RegistConfirmDialog } from './domain-edit-form/domain-edit-form.component';
 import { DomainCreateComponent } from './domain-create/domain-create.component';
 import { LicenseListComponent } from './license-list/license-list.component';
-import { GrowlMessagerComponent } from './widgets/growl-messager.component';
 import { HttpStatusInterceptor } from './services/http-status-interceptor';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { DataExportDialogComponent } from './data-export-dialog/data-export-dialog.component';
@@ -39,6 +38,7 @@ import { DataImportDialogComponent, ImportConfirmDialog } from './data-import-di
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { CoreModule } from './core/core.module';
 import { EqualValidator } from './directives/equal-validator.directive';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -50,7 +50,6 @@ import { EqualValidator } from './directives/equal-validator.directive';
     RegistConfirmDialog,
     DomainCreateComponent,
     LicenseListComponent,
-    GrowlMessagerComponent,
     ErrorPageComponent,
     DataExportDialogComponent,
     EditRelationDialogComponent,
@@ -83,13 +82,13 @@ import { EqualValidator } from './directives/equal-validator.directive';
     MatTooltipModule,
 
     CoreModule,
+    SharedModule,
   ],
   entryComponents: [
     DataExportDialogComponent,
     DataImportDialogComponent,
     DeleteConfirmDialog,
     RegistConfirmDialog,
-    GrowlMessagerComponent,
     EditRelationDialogComponent,
     ImportConfirmDialog,
     LoginDialogComponent,

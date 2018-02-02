@@ -7,7 +7,7 @@ import { startWith, map } from 'rxjs/operators';
 
 import { DomainSummary } from '../../models/domain-summary';
 import { RelatedDomain } from '../../models/related-domain';
-import { GrowlMessagerComponent } from '../../widgets/growl-messager.component';
+import { GrowlMessagerComponent } from '../../shared/widgets/growl-messager.component';
 
 @Component({
   selector: 'app-edit-relation-dialog',

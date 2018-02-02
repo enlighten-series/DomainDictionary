@@ -4,7 +4,7 @@ import { Router, NavigationStart } from '@angular/router';
 import { DataExportDialogComponent } from './data-export-dialog/data-export-dialog.component';
 import { DataImportDialogComponent } from './data-import-dialog/data-import-dialog.component';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
-import { GrowlMessagerComponent } from './widgets/growl-messager.component';
+import { GrowlMessagerComponent } from './shared/widgets/growl-messager.component';
 import { AuthService } from './core/auth/auth.service';
 
 @Component({

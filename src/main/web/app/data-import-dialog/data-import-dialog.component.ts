@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-import { GrowlMessagerComponent } from '../widgets/growl-messager.component';
+import { GrowlMessagerComponent } from '../shared/widgets/growl-messager.component';
 
 @Component({
   selector: 'regist-confirm-dialog',

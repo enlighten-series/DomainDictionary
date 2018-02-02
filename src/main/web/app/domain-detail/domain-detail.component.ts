@@ -10,7 +10,7 @@ import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/filter';
 
 import { Domain } from '../models/domain';
-import { GrowlMessagerComponent } from '../widgets/growl-messager.component';
+import { GrowlMessagerComponent } from '../shared/widgets/growl-messager.component';
 import { EditRelationDialogComponent } from './edit-relation-dialog/edit-relation-dialog.component';
 import { RelatedDomain } from '../models/related-domain';
 import { AuthService } from '../core/auth/auth.service';
