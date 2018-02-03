@@ -98,6 +98,18 @@ export class LoginDialogComponent implements OnInit {
         });
         this.auth.updateAuthentication();
         this.dialogRef.close(true);
+      },
+      (error: HttpErrorResponse) => {
+        if (error.status == 401) {
+          this.snack.openFromComponent(GrowlMessagerComponent, {
+            data: {
+              message: 'ユーザまたはパスワードが違います。',
+            },
+            duration: 3000,
+          });
+        } else {
+          console.log(error);
+        }
       }
     );
   }
