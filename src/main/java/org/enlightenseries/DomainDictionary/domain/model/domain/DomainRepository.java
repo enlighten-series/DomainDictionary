@@ -12,6 +12,8 @@ public interface DomainRepository {
 
   Domain findBy(Long id);
 
+  DomainDetail findDomainDetailBy(Long id);
+
   DomainSummary findDomainSummaryBy(Long id);
 
   void register(Domain domain);

@@ -7,7 +7,9 @@ export class Domain {
   description: string;
   existential: string;
   created: Date;
+  createdBy: string;
   updated: Date;
+  updatedBy: string;
   relatedDomains: RelatedDomain[];
 
   constructor(

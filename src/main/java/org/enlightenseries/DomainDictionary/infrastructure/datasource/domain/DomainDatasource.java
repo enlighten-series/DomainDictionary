@@ -5,8 +5,10 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
+import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
+import org.enlightenseries.DomainDictionary.domain.model.user.User;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
@@ -32,6 +34,20 @@ public class DomainDatasource implements DomainRepository {
 
   public Domain findBy(Long id) {
     return this.domainMapper.select(id);
+  }
+
+  @Override
+  public DomainDetail findDomainDetailBy(Long id) {
+    Domain base = findBy(id);
+    if (base == null) {
+      return null;
+    }
+
+    DomainDetail domainDetail = new DomainDetail(base);
+    // TODO: 作成者・更新者を取得する
+    domainDetail.setCreatedBy(new User(1L, "taro", "taro"));
+    domainDetail.setUpdatedBy(new User(2L, "jiro", "jiro"));
+    return domainDetail;
   }
 
   public DomainSummary findDomainSummaryBy(Long id) {

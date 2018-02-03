@@ -1,10 +1,7 @@
 package org.enlightenseries.DomainDictionary.application.service;
 
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
-import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
-import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
-import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
-import org.enlightenseries.DomainDictionary.domain.model.domain.RelatedDomainSummary;
+import org.enlightenseries.DomainDictionary.domain.model.domain.*;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelation;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelationRepository;
 import org.enlightenseries.DomainDictionary.domain.model.relation.RelationRepository;
@@ -36,6 +33,10 @@ public class DomainService {
 
   public Domain findBy(Long id) {
     return this.domainRepository.findBy(id);
+  }
+
+  public DomainDetail findDomainDetailBy(Long id) {
+    return this.domainRepository.findDomainDetailBy(id);
   }
 
   public List<RelatedDomainSummary> findRelatedDomains(Long sourceDomainId) {

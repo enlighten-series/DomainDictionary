@@ -3,6 +3,7 @@ package org.enlightenseries.DomainDictionary.presentation.rest.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
+import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
 import org.enlightenseries.DomainDictionary.domain.model.domain.RelatedDomainSummary;
 
@@ -23,9 +24,11 @@ public class DomainDto {
   private String existential;
   private List<RelatedDomainSummary> relatedDomains;
   private Date created;
+  private String createdBy;
   private Date updated;
+  private String updatedBy;
 
-  public DomainDto(Domain primary, List<RelatedDomainSummary> relatedDomains) {
+  public DomainDto(DomainDetail primary, List<RelatedDomainSummary> relatedDomains) {
     this.id = primary.getId();
     this.name = primary.getName();
     this.format = primary.getFormat();
@@ -34,9 +37,12 @@ public class DomainDto {
     this.relatedDomains = relatedDomains;
     this.created = primary.getCreated();
     this.updated = primary.getUpdated();
+
+    this.createdBy = primary.getCreatedBy().getUsername();
+    this.updatedBy = primary.getUpdatedBy().getUsername();
   }
 
-  public Domain getDomain() {
+  public Domain convertToDomain() {
     Domain d = new Domain();
     d.setId(id);
     d.setName(name);
