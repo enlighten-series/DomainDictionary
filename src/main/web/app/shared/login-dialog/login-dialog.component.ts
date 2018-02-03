@@ -3,8 +3,8 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatTabGroup } from '@angular/material';
-import { GrowlMessagerComponent } from '../shared/widgets/growl-messager.component';
-import { AuthService } from '../core/auth/auth.service';
+import { GrowlMessagerComponent } from '../widgets/growl-messager.component';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-login-dialog',

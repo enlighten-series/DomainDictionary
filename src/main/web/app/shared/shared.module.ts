@@ -20,9 +20,13 @@ import {
 
 import { GrowlMessagerComponent } from './widgets/growl-messager.component';
 import { EqualValidatorDirective } from './directives/equal-validator.directive';
+import { ErrorPageComponent } from './error-page/error-page.component';
+import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
+    FormsModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
@@ -43,10 +47,13 @@ import { EqualValidatorDirective } from './directives/equal-validator.directive'
   ],
   declarations: [
     GrowlMessagerComponent,
+    ErrorPageComponent,
+    LoginDialogComponent,
     EqualValidatorDirective,
   ],
   entryComponents: [
     GrowlMessagerComponent,
+    LoginDialogComponent,
   ],
   exports: [
     MatAutocompleteModule,

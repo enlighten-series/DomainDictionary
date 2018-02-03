@@ -8,8 +8,6 @@ import { RouterModule } from '@angular/router';
 import { ROUTES } from './app.route';
 
 import { AppComponent } from './app.component';
-import { ErrorPageComponent } from './error-page/error-page.component';
-import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { FeaturesModule } from './features/features.module';
@@ -17,8 +15,6 @@ import { FeaturesModule } from './features/features.module';
 @NgModule({
   declarations: [
     AppComponent,
-    ErrorPageComponent,
-    LoginDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,9 +26,6 @@ import { FeaturesModule } from './features/features.module';
     CoreModule,
     SharedModule,
     FeaturesModule,
-  ],
-  entryComponents: [
-    LoginDialogComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

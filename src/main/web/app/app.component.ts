@@ -3,7 +3,7 @@ import { MatSidenav, MatDialog, MatSnackBar } from '@angular/material';
 import { Router, NavigationStart } from '@angular/router';
 import { DataExportDialogComponent } from './features/data-export-dialog/data-export-dialog.component';
 import { DataImportDialogComponent } from './features/data-import-dialog/data-import-dialog.component';
-import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import { LoginDialogComponent } from './shared/login-dialog/login-dialog.component';
 import { GrowlMessagerComponent } from './shared/widgets/growl-messager.component';
 import { AuthService } from './core/auth/auth.service';
 
