@@ -4,23 +4,6 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatCardModule,
-  MatChipsModule,
-  MatDialogModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSnackBarModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule,
-} from '@angular/material';
 
 import { ROUTES } from './app.route';
 
@@ -30,9 +13,7 @@ import { DomainDetailComponent, DeleteConfirmDialog } from './domain-detail/doma
 import { DomainEditFormComponent, RegistConfirmDialog } from './domain-edit-form/domain-edit-form.component';
 import { DomainCreateComponent } from './domain-create/domain-create.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
-import { DataExportDialogComponent } from './data-export-dialog/data-export-dialog.component';
 import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialog/edit-relation-dialog.component';
-import { DataImportDialogComponent, ImportConfirmDialog } from './data-import-dialog/data-import-dialog.component';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
@@ -48,10 +29,7 @@ import { FeaturesModule } from './features/features.module';
     RegistConfirmDialog,
     DomainCreateComponent,
     ErrorPageComponent,
-    DataExportDialogComponent,
     EditRelationDialogComponent,
-    DataImportDialogComponent,
-    ImportConfirmDialog,
     LoginDialogComponent,
   ],
   imports: [
@@ -61,33 +39,15 @@ import { FeaturesModule } from './features/features.module';
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot(ROUTES, {useHash: true}),
-    MatAutocompleteModule,
-    MatButtonModule,
-    MatCardModule,
-    MatChipsModule,
-    MatDialogModule,
-    MatGridListModule,
-    MatIconModule,
-    MatInputModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatSnackBarModule,
-    MatTableModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatTooltipModule,
 
     CoreModule,
     SharedModule,
     FeaturesModule,
   ],
   entryComponents: [
-    DataExportDialogComponent,
-    DataImportDialogComponent,
     DeleteConfirmDialog,
     RegistConfirmDialog,
     EditRelationDialogComponent,
-    ImportConfirmDialog,
     LoginDialogComponent,
   ],
   providers: [],

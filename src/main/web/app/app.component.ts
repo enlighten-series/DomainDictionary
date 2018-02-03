@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { MatSidenav, MatDialog, MatSnackBar } from '@angular/material';
 import { Router, NavigationStart } from '@angular/router';
-import { DataExportDialogComponent } from './data-export-dialog/data-export-dialog.component';
-import { DataImportDialogComponent } from './data-import-dialog/data-import-dialog.component';
+import { DataExportDialogComponent } from './features/data-export-dialog/data-export-dialog.component';
+import { DataImportDialogComponent } from './features/data-import-dialog/data-import-dialog.component';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { GrowlMessagerComponent } from './shared/widgets/growl-messager.component';
 import { AuthService } from './core/auth/auth.service';
