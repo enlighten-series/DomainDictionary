@@ -36,7 +36,7 @@ public class UserResource {
 
   @PostMapping("/user")
   private ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto newUser) throws Exception {
-    User user = newUser.getUser();
+    User user = newUser.convertToUser();
 
     user = this.userService.createNewUser(user, newUser.getPassword());
     UserDto createdUserDto = new UserDto(user);

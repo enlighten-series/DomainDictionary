@@ -22,7 +22,7 @@ public class UserDto {
     username = user.getUsername();
   }
 
-  public User getUser() {
+  public User convertToUser() {
     User newUser = new User();
     newUser.setUsername(username);
     newUser.setPassword(password);
