@@ -1,5 +1,6 @@
 package org.enlightenseries.DomainDictionary.application.service;
 
+import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.user.User;
 import org.enlightenseries.DomainDictionary.domain.model.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,12 @@ public class UserService {
    * @param plainPassword
    * @return
    */
-  public User createNewUser(User newUser, String plainPassword) {
+  public User createNewUser(User newUser, String plainPassword) throws ApplicationException {
+
+    if (findByUsername(newUser.getUsername()) != null) {
+      throw new ApplicationException("同じ名前のユーザがすでに存在しています。違う名前を指定してください。");
+    }
+
     newUser.setPassword(passwordEncoder.encode(plainPassword));
     this.userRepository.register(newUser);
 

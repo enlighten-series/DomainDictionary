@@ -99,8 +99,8 @@ export class LoginDialogComponent implements OnInit {
         this.auth.updateAuthentication();
         this.dialogRef.close(true);
       },
-      (error: HttpErrorResponse) => {
-        if (error.status == 401) {
+      (res: HttpErrorResponse) => {
+        if (res.status == 401) {
           this.snack.openFromComponent(GrowlMessagerComponent, {
             data: {
               message: 'ユーザまたはパスワードが違います。',
@@ -108,7 +108,7 @@ export class LoginDialogComponent implements OnInit {
             duration: 3000,
           });
         } else {
-          console.log(error);
+          console.log(res);
         }
       }
     );
@@ -149,6 +149,14 @@ export class LoginDialogComponent implements OnInit {
         });
         form.reset();
         this.matTabGroup.selectedIndex = 0;
+      },
+      (res: HttpErrorResponse) => {
+        this.snack.openFromComponent(GrowlMessagerComponent, {
+          data: {
+            message: res.error.message,
+          },
+          duration: 3000,
+        });
       }
     );
   }

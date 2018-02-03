@@ -87,8 +87,12 @@ public class ApplicationMigration {
   }
 
   private void initializeApplicationDatabase() {
-    createTables();
-    insertInitialData();
+    try {
+      createTables();
+      insertInitialData();
+    } catch (ApplicationException e) {
+      e.printStackTrace();
+    }
   }
 
   private void createTables() {
@@ -99,7 +103,7 @@ public class ApplicationMigration {
     this.relationRepository.createTable();
   }
 
-  private void insertInitialData() {
+  private void insertInitialData() throws ApplicationException {
     // TODO: バージョン番号を定数取得（Gradleとか）
     Metadata majorVersion = new Metadata();
     majorVersion.setKey("major_version");
