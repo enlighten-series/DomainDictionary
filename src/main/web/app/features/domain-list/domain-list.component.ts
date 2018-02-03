@@ -10,8 +10,8 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { merge } from 'rxjs/observable/merge';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
-import { Domain } from '../models/domain';
-import { AuthService } from '../core/auth/auth.service';
+import { Domain } from '../../models/domain';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-domain-list',

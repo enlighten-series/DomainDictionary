@@ -8,7 +8,6 @@ import { RouterModule } from '@angular/router';
 import { ROUTES } from './app.route';
 
 import { AppComponent } from './app.component';
-import { DomainListComponent } from './domain-list/domain-list.component';
 import { DomainDetailComponent, DeleteConfirmDialog } from './domain-detail/domain-detail.component';
 import { DomainEditFormComponent, RegistConfirmDialog } from './domain-edit-form/domain-edit-form.component';
 import { DomainCreateComponent } from './domain-create/domain-create.component';
@@ -22,7 +21,6 @@ import { FeaturesModule } from './features/features.module';
 @NgModule({
   declarations: [
     AppComponent,
-    DomainListComponent,
     DomainDetailComponent,
     DeleteConfirmDialog,
     DomainEditFormComponent,

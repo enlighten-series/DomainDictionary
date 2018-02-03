@@ -6,6 +6,7 @@ import { LicenseListComponent } from './license-list/license-list.component';
 import { DataImportDialogComponent, ImportConfirmDialog } from './data-import-dialog/data-import-dialog.component';
 import { DataExportDialogComponent } from './data-export-dialog/data-export-dialog.component';
 import { SharedModule } from '../shared/shared.module';
+import { DomainListComponent } from './domain-list/domain-list.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,8 @@ import { SharedModule } from '../shared/shared.module';
     SharedModule,
   ],
   declarations: [
+    DomainListComponent,
+    
     DataExportDialogComponent,
     DataImportDialogComponent,
     ImportConfirmDialog,

@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 
-import { DomainListComponent } from './domain-list/domain-list.component';
+import { DomainListComponent } from './features/domain-list/domain-list.component';
 import { DomainCreateComponent } from './domain-create/domain-create.component';
 import { DomainDetailComponent } from './domain-detail/domain-detail.component';
 import { LicenseListComponent } from './features/license-list/license-list.component';
