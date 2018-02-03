@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 
-import { GrowlMessagerComponent } from '../shared/widgets/growl-messager.component';
+import { GrowlMessagerComponent } from '../../shared/widgets/growl-messager.component';
 
 @Component({
   selector: 'app-domain-create',

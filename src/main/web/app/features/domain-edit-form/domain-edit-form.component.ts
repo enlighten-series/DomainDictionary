@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { NgForm } from '@angular/forms';
 import { from } from 'rxjs/observable/from';
 
-import { Domain } from '../models/domain';
+import { Domain } from '../../models/domain';
 
 @Component({
   selector: 'regist-confirm-dialog',

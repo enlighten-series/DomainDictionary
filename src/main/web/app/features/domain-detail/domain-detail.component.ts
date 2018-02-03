@@ -9,11 +9,11 @@ import * as highlight from 'highlight.js';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/filter';
 
-import { Domain } from '../models/domain';
-import { GrowlMessagerComponent } from '../shared/widgets/growl-messager.component';
+import { Domain } from '../../models/domain';
+import { GrowlMessagerComponent } from '../../shared/widgets/growl-messager.component';
 import { EditRelationDialogComponent } from './edit-relation-dialog/edit-relation-dialog.component';
-import { RelatedDomain } from '../models/related-domain';
-import { AuthService } from '../core/auth/auth.service';
+import { RelatedDomain } from '../../models/related-domain';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'delete-confirm-dialog',

@@ -5,9 +5,9 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { startWith, map } from 'rxjs/operators';
 
-import { DomainSummary } from '../../models/domain-summary';
-import { RelatedDomain } from '../../models/related-domain';
-import { GrowlMessagerComponent } from '../../shared/widgets/growl-messager.component';
+import { DomainSummary } from '../../../models/domain-summary';
+import { RelatedDomain } from '../../../models/related-domain';
+import { GrowlMessagerComponent } from '../../../shared/widgets/growl-messager.component';
 
 @Component({
   selector: 'app-edit-relation-dialog',
