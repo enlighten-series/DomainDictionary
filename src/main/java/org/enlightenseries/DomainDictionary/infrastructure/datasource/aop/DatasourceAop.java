@@ -14,6 +14,11 @@ import java.util.Date;
 @Component
 public class DatasourceAop {
 
+  /**
+   * TODO: 内容によって付加しきれないので各サービスに移譲したほうがいいかも？
+   * @param jp
+   * @throws Throwable
+   */
   @Before("execution(* org.enlightenseries.DomainDictionary.infrastructure.datasource.*.*Datasource.register(..)) ||"
     + "execution(* org.enlightenseries.DomainDictionary.infrastructure.datasource.*.*Datasource.update(..))")
   public void setDataSourceCommonMetadata(JoinPoint jp) throws Throwable {

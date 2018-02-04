@@ -41,4 +41,16 @@ public class DomainUsecase {
     this.domainRepository.registerDomainDetail(domainDetail);
   }
 
+  public void update(Long id, Domain domain) {
+    DomainDetail domainDetail = new DomainDetail(domain);
+
+    // メタ情報付加
+    Date now = new Date();
+    domainDetail.setUpdated(now);
+    User sessionUser = this.userService.findByUsername(this.userService.getLoginUsername());
+    domainDetail.setUpdatedBy(sessionUser);
+
+    this.domainRepository.updateDomainDetail(id, domainDetail);
+  }
+
 }

@@ -22,6 +22,8 @@ public interface DomainRepository {
 
   void update(Long id, Domain domain);
 
+  void updateDomainDetail(Long id, DomainDetail domainDetail);
+
   void delete(Long id);
 
   void createTable();

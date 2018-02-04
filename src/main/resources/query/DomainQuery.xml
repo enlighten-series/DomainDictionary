@@ -86,6 +86,14 @@
     WHERE
       id=#{id}
   </update>
+  <update id="updateMetaUser">
+    UPDATE
+      domain_meta_user
+    SET
+      updated_by=#{domainMetaUser.updatedBy}
+    WHERE
+      id=#{id}
+  </update>
   <delete id="delete">
     DELETE FROM
       domain

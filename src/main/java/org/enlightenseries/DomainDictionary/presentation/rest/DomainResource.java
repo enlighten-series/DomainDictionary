@@ -57,7 +57,7 @@ public class DomainResource {
 
   @PutMapping("/domains/{id}")
   public ResponseEntity<Domain> updateDomain(@PathVariable Long id, @RequestBody Domain domain) {
-    this.domainService.update(id, domain);
+    this.domainUsecase.update(id, domain);
 
     return ResponseEntity.ok()
       .body(domain);
