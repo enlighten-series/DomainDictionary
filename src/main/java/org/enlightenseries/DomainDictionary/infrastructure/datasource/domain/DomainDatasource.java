@@ -99,6 +99,7 @@ public class DomainDatasource implements DomainRepository {
   }
 
   public void delete(Long id) {
+    this.domainMapper.deleteMetaUser(id);
     this.domainMapper.delete(id);
   }
 

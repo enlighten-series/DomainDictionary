@@ -100,6 +100,12 @@
     WHERE
       id=#{id}
   </delete>
+  <delete id="deleteMetaUser">
+    DELETE FROM
+      domain_meta_user
+    WHERE
+      id=#{id}
+  </delete>
   <insert id="createTable">
     CREATE TABLE domain (
       id IDENTITY

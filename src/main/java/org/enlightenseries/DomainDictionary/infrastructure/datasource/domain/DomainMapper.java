@@ -29,6 +29,8 @@ public interface DomainMapper {
 
   void delete(Long id);
 
+  void deleteMetaUser(Long id);
+
   void createTable();
 
   void createTableMetaUser();
