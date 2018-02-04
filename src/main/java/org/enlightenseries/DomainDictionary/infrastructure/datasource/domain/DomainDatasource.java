@@ -9,6 +9,8 @@ import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
 import org.enlightenseries.DomainDictionary.domain.model.user.User;
+import org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.dao.DomainMetaUser;
+import org.enlightenseries.DomainDictionary.infrastructure.datasource.user.UserMapper;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
@@ -19,13 +21,18 @@ import java.util.List;
 
 @Repository
 public class DomainDatasource implements DomainRepository {
-  DomainMapper domainMapper;
+
+  private DomainMapper domainMapper;
+  private UserMapper userMapper;
+
   private final SimpleDateFormat importExportDateFormat = new SimpleDateFormat("yy/MM/dd hh:mm:ss");
 
   public DomainDatasource(
-    DomainMapper _domainMapper
+    DomainMapper _domainMapper,
+    UserMapper _userMapper
   ) {
     this.domainMapper = _domainMapper;
+    this.userMapper = _userMapper;
   }
 
   public List<Domain> list() {
@@ -44,9 +51,11 @@ public class DomainDatasource implements DomainRepository {
     }
 
     DomainDetail domainDetail = new DomainDetail(base);
-    // TODO: 作成者・更新者を取得する
-    domainDetail.setCreatedBy(new User(1L, "taro", "taro"));
-    domainDetail.setUpdatedBy(new User(2L, "jiro", "jiro"));
+    DomainMetaUser domainMetaUser = this.domainMapper.selectMetaUser(id);
+    if (domainMetaUser != null) {
+      domainDetail.setCreatedBy(this.userMapper.selectById(domainMetaUser.getCreatedBy()));
+      domainDetail.setUpdatedBy(this.userMapper.selectById(domainMetaUser.getUpdatedBy()));
+    }
     return domainDetail;
   }
 
@@ -68,6 +77,7 @@ public class DomainDatasource implements DomainRepository {
 
   public void createTable() {
     this.domainMapper.createTable();
+    this.domainMapper.createTableMetaUser();
   }
 
   /**

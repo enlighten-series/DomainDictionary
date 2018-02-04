@@ -38,8 +38,12 @@ public class DomainDto {
     this.created = primary.getCreated();
     this.updated = primary.getUpdated();
 
-    this.createdBy = primary.getCreatedBy().getUsername();
-    this.updatedBy = primary.getUpdatedBy().getUsername();
+    if (primary.getCreatedBy() != null) {
+      this.createdBy = primary.getCreatedBy().getUsername();
+    }
+    if (primary.getUpdatedBy() != null) {
+      this.updatedBy = primary.getUpdatedBy().getUsername();
+    }
   }
 
   public Domain convertToDomain() {

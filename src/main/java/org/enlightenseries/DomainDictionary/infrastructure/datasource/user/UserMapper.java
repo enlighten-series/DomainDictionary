@@ -8,6 +8,8 @@ public interface UserMapper {
 
   User selectByUsername(String username);
 
+  User selectById(Long id);
+
   void insert(User user);
 
   void update(User user);

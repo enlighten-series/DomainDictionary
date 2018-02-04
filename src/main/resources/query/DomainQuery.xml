@@ -27,6 +27,16 @@
     WHERE
       id=#{id}
   </select>
+  <select id="selectMetaUser" parameterType="Long" resultType="org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.dao.DomainMetaUser">
+    SELECT
+      id,
+      created_by,
+      updated_by
+    FROM
+      domain_meta_user
+    WHERE
+      id=#{id}
+  </select>
   <select id="selectSummary" parameterType="Long" resultType="org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary">
     SELECT
       id,
@@ -80,6 +90,13 @@
       ,existential TEXT
       ,created TIMESTAMP
       ,updated TIMESTAMP
+    )
+  </insert>
+  <insert id="createTableMetaUser">
+    CREATE TABLE domain_meta_user (
+      id IDENTITY,
+      created_by BIGINT,
+      updated_by BIGINT
     )
   </insert>
   <select id="exportAll" resultType="org.enlightenseries.DomainDictionary.domain.model.domain.Domain">
