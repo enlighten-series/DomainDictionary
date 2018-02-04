@@ -63,6 +63,17 @@
       #{updated}
     )
   </insert>
+  <insert id="insertMetaUser" parameterType="org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.dao.DomainMetaUser">
+    INSERT INTO domain_meta_user (
+      id,
+      created_by,
+      updated_by
+    ) values (
+      #{id},
+      #{createdBy},
+      #{updatedBy}
+    )
+  </insert>
   <update id="update">
     UPDATE
       domain

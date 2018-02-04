@@ -67,6 +67,21 @@ public class DomainDatasource implements DomainRepository {
     this.domainMapper.insert(domain);
   }
 
+  @Override
+  public void registerDomainDetail(DomainDetail domainDetail) {
+    this.register(domainDetail);
+
+    DomainMetaUser domainMetaUser = new DomainMetaUser();
+    domainMetaUser.setId(domainDetail.getId());
+    if (domainDetail.getCreatedBy() != null) {
+      domainMetaUser.setCreatedBy(domainDetail.getCreatedBy().getId());
+    }
+    if (domainDetail.getUpdatedBy() != null) {
+      domainMetaUser.setUpdatedBy(domainDetail.getUpdatedBy().getId());
+    }
+    this.domainMapper.insertMetaUser(domainMetaUser);
+  }
+
   public void update(Long id, Domain domain) {
     this.domainMapper.update(id, domain);
   }

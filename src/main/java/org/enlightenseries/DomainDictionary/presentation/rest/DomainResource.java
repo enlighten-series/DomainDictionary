@@ -1,6 +1,7 @@
 package org.enlightenseries.DomainDictionary.presentation.rest;
 
 import org.enlightenseries.DomainDictionary.application.service.DomainService;
+import org.enlightenseries.DomainDictionary.application.usecase.DomainUsecase;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
 import org.enlightenseries.DomainDictionary.domain.model.domain.RelatedDomainSummary;
@@ -15,12 +16,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class DomainResource {
+
   DomainService domainService;
+  DomainUsecase domainUsecase;
 
   public DomainResource(
-    DomainService _domainService
+    DomainService _domainService,
+    DomainUsecase _domainUsecase
   ) {
     this.domainService = _domainService;
+    this.domainUsecase = _domainUsecase;
   }
 
   @GetMapping("/domains")
@@ -44,7 +49,7 @@ public class DomainResource {
   public ResponseEntity<Domain> createDomain(@RequestBody @Valid DomainDto domainDto) throws Exception {
     Domain newDomain = domainDto.convertToDomain();
 
-    this.domainService.register(newDomain);
+    this.domainUsecase.register(newDomain);
 
     return ResponseEntity.created(new URI("/api/domain/" + newDomain.getId()))
       .body(newDomain);

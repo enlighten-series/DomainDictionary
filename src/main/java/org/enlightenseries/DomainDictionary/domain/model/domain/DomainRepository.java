@@ -18,6 +18,8 @@ public interface DomainRepository {
 
   void register(Domain domain);
 
+  void registerDomainDetail(DomainDetail domainDetail);
+
   void update(Long id, Domain domain);
 
   void delete(Long id);

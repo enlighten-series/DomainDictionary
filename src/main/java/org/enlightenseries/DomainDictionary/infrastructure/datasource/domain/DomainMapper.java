@@ -21,6 +21,8 @@ public interface DomainMapper {
 
   void insert(Domain domain);
 
+  void insertMetaUser(DomainMetaUser domainMetaUser);
+
   void update(@Param("id") Long id, @Param("domain") Domain domain);
 
   void delete(Long id);
