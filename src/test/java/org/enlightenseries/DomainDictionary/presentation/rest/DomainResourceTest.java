@@ -2,7 +2,9 @@ package org.enlightenseries.DomainDictionary.presentation.rest;
 
 import org.enlightenseries.DomainDictionary.DomainDictionaryApplication;
 import org.enlightenseries.DomainDictionary.application.service.DomainService;
+import org.enlightenseries.DomainDictionary.application.usecase.DomainUsecase;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
+import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
 import org.enlightenseries.DomainDictionary.domain.model.domain.RelatedDomainSummary;
 import org.enlightenseries.DomainDictionary.domain.model.relation.Relation;
@@ -36,19 +38,22 @@ public class DomainResourceTest {
   @MockBean
   private DomainService domainService;
 
+  @MockBean
+  private DomainUsecase domainUsecase;
+
   private MockMvc domainResourceMockMvc;
 
   /**
    * assert data
    */
   private int assertJsonDomainId;
-  private Domain assertDomain;
+  private DomainDetail assertDomain;
   private List<RelatedDomainSummary> assertRelatedDomains;
 
   @Before
   public void setup() {
     MockitoAnnotations.initMocks(this);
-    DomainResource domainResource = new DomainResource(domainService);
+    DomainResource domainResource = new DomainResource(domainService, domainUsecase);
     domainResourceMockMvc = MockMvcBuilders.standaloneSetup(domainResource).build();
   }
 
@@ -56,7 +61,7 @@ public class DomainResourceTest {
   public void createAssertData() {
     assertJsonDomainId = 1;
 
-    assertDomain = new Domain();
+    assertDomain = new DomainDetail(new Domain());
     assertDomain.setId(1L);
     assertDomain.setName("ドメイン名");
     assertDomain.setFormat("フォーマット");
@@ -87,7 +92,7 @@ public class DomainResourceTest {
   @Test
   public void getOneDomainExist() throws Exception {
     // when
-    when(domainService.findBy(1L)).thenReturn(assertDomain);
+    when(domainService.findDomainDetailBy(1L)).thenReturn(assertDomain);
     when(domainService.findRelatedDomains(1L)).thenReturn(assertRelatedDomains);
 
     // try
