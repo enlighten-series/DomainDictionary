@@ -68,7 +68,7 @@ public class ApplicationMigration {
     this.applicationMigrationStatus = _applicationMigrationStatus;
 
     this.currentMajorVersion = "0";
-    this.currentMinorVersion = "3";
+    this.currentMinorVersion = "4";
     this.currentPatchVersion = "0";
   }
 
