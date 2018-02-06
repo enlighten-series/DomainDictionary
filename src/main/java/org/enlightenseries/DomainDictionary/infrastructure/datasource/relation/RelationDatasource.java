@@ -80,7 +80,7 @@ public class RelationDatasource implements RelationRepository {
       }
 
       Relation _new = new Relation(
-        UUID.fromString(record.get(1))
+        UUID.fromString(record.get(0))
       );
       relationMapper.insertForImport(_new);
     }

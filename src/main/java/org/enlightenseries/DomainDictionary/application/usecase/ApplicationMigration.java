@@ -219,19 +219,20 @@ public class ApplicationMigration {
         && minorVersion.equals("2")
         && patchVersion.equals("2")) {
         import_0_2_X(parser);
+        return;
       }
 
       if (majorVersion.equals("0")
         && minorVersion.equals("3")
         && patchVersion.equals("4")) {
         import_0_3_X(parser);
+        return;
       }
 
       throw new ApplicationException("バージョン " +
         majorVersion + "." +
         minorVersion + "." +
-        patchVersion + "." +
-        " のエクスポートファイルをインポートすることはできません。Githubのバージョンアップ手順を確認してください。");
+        patchVersion + " のエクスポートファイルをインポートすることはできません。Githubのバージョンアップ手順を確認してください。");
 
     } catch (IOException e) {
       throw e;
