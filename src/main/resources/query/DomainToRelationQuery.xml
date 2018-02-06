@@ -49,6 +49,14 @@
       relation_id VARCHAR
     )
   </insert>
+  <select id="exportAll" resultType="org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelation">
+    SELECT
+      id,
+      domain_id,
+      relation_id
+    FROM
+      domain_to_relation
+  </select>
   <delete id="deleteAllForImport">
     DELETE FROM
       domain_to_relation

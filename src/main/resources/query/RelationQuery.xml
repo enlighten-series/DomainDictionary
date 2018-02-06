@@ -27,6 +27,12 @@
       id VARCHAR
     )
   </insert>
+  <select id="exportAll" resultType="org.enlightenseries.DomainDictionary.domain.model.relation.Relation">
+    SELECT
+      id
+    FROM
+      relation
+  </select>
   <delete id="deleteAllForImport">
     DELETE FROM
       relation
