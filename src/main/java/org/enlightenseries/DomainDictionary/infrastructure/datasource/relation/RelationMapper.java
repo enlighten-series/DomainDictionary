@@ -1,6 +1,7 @@
 package org.enlightenseries.DomainDictionary.infrastructure.datasource.relation;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.ResultHandler;
 import org.enlightenseries.DomainDictionary.domain.model.relation.Relation;
 
 import java.util.UUID;
@@ -15,6 +16,8 @@ public interface RelationMapper {
   void delete(UUID id);
 
   void createTable();
+
+  void exportAll(ResultHandler<Relation> resultHandler);
 
   void deleteAllForImport();
 }

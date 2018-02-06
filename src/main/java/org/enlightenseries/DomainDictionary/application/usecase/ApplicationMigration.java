@@ -149,6 +149,8 @@ public class ApplicationMigration {
 
       // 各Repositoryにファイルへのエクスポートを依頼する（大量データ処理はインフラに依存するため）
       domainRepository.export(printer);
+      domainToRelationRepository.export(printer);
+      relationRepository.export(printer);
 
     } catch (Exception e) {
       throw e;

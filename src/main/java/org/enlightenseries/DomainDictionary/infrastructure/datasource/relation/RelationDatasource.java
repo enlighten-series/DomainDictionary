@@ -1,10 +1,12 @@
 package org.enlightenseries.DomainDictionary.infrastructure.datasource.relation;
 
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
 import org.enlightenseries.DomainDictionary.domain.model.relation.Relation;
 import org.enlightenseries.DomainDictionary.domain.model.relation.RelationRepository;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @Repository
@@ -32,6 +34,24 @@ public class RelationDatasource implements RelationRepository {
 
   public void createTable() {
     this.relationMapper.createTable();
+  }
+
+  @Override
+  public void export(CSVPrinter printer) throws Exception {
+    printer.printRecord("DomainToRelation start");
+
+    relationMapper.exportAll(context -> {
+      Relation relation = context.getResultObject();
+      try {
+        printer.printRecord(
+          relation.getId()
+        );
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    });
+
+    printer.printRecord("DomainToRelation end");
   }
 
   public void import_0_2_X(CSVParser parser) throws Exception {
