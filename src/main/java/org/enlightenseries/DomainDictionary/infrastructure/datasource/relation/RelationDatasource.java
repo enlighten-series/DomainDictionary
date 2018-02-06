@@ -38,7 +38,7 @@ public class RelationDatasource implements RelationRepository {
 
   @Override
   public void export(CSVPrinter printer) throws Exception {
-    printer.printRecord("DomainToRelation start");
+    printer.printRecord("Relation start");
 
     relationMapper.exportAll(context -> {
       Relation relation = context.getResultObject();
@@ -51,7 +51,7 @@ public class RelationDatasource implements RelationRepository {
       }
     });
 
-    printer.printRecord("DomainToRelation end");
+    printer.printRecord("Relation end");
   }
 
   public void import_0_2_X(CSVParser parser) throws Exception {
