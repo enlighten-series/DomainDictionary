@@ -2,6 +2,8 @@ package org.enlightenseries.DomainDictionary.infrastructure.datasource.relation;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
+import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelation;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelationRepository;
 import org.springframework.stereotype.Repository;
@@ -60,6 +62,34 @@ public class DomainToRelationDatasource implements DomainToRelationRepository {
   public void import_0_2_X(CSVParser parser) throws Exception {
     domainToRelationMapper.deleteAllForImport();
 
-    // TODO: インポート実行
+    // インポートデータなし
+  }
+
+  @Override
+  public void import_0_3_X(CSVParser parser) throws ApplicationException {
+    domainToRelationMapper.deleteAllForImport();
+
+    boolean proceed = false;
+    for(CSVRecord record : parser) {
+      if (!proceed) {
+        if (record.get(0).equals("DomainToRelation start")) {
+          proceed = true;
+          continue;
+        }
+        throw new ApplicationException("DomainToRelationの開始位置が見つかりませんでした。");
+      }
+      if (record.get(0).equals("DomainToRelation end")) {
+        return;
+      }
+
+      DomainToRelation _new = new DomainToRelation(
+        UUID.fromString(record.get(0)),
+        Long.valueOf(record.get(1)),
+        UUID.fromString(record.get(2))
+      );
+      domainToRelationMapper.insertForImport(_new);
+    }
+
+    throw new ApplicationException("DomainToRelationの終了位置が見つかりませんでした。");
   }
 }

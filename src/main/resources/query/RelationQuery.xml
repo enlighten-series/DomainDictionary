@@ -37,4 +37,11 @@
     DELETE FROM
       relation
   </delete>
+  <insert id="insertForImport" parameterType="org.enlightenseries.DomainDictionary.domain.model.relation.Relation">
+    INSERT INTO relation (
+      id
+    ) values (
+      #{id}
+    )
+  </insert>
 </mapper>

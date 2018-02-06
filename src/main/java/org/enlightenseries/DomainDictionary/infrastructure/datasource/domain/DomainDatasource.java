@@ -170,4 +170,36 @@ public class DomainDatasource implements DomainRepository {
 
     throw new ApplicationException("Domainの終了位置が見つかりませんでした。");
   }
+
+  @Override
+  public void import_0_3_X(CSVParser parser) throws ApplicationException, ParseException {
+    domainMapper.deleteAllForImport();
+
+    boolean proceed = false;
+    for(CSVRecord record : parser) {
+      if (!proceed) {
+        if (record.get(0).equals("Domain start")) {
+          proceed = true;
+          continue;
+        }
+        throw new ApplicationException("Domainの開始位置が見つかりませんでした。");
+      }
+      if (record.get(0).equals("Domain end")) {
+        return;
+      }
+
+      Domain _new = new Domain(
+        Long.valueOf(record.get(0)),
+        record.get(1),
+        record.get(2),
+        record.get(3),
+        record.get(4),
+        importExportDateFormat.parse(record.get(5)),
+        importExportDateFormat.parse(record.get(6))
+      );
+      domainMapper.insertForImport(_new);
+    }
+
+    throw new ApplicationException("Domainの終了位置が見つかりませんでした。");
+  }
 }

@@ -2,6 +2,8 @@ package org.enlightenseries.DomainDictionary.infrastructure.datasource.relation;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
+import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.relation.Relation;
 import org.enlightenseries.DomainDictionary.domain.model.relation.RelationRepository;
 import org.springframework.stereotype.Repository;
@@ -57,6 +59,32 @@ public class RelationDatasource implements RelationRepository {
   public void import_0_2_X(CSVParser parser) throws Exception {
     relationMapper.deleteAllForImport();
 
-    // TODO: インポート実行
+    // インポートデータなし
+  }
+
+  @Override
+  public void import_0_3_X(CSVParser parser) throws ApplicationException {
+    relationMapper.deleteAllForImport();
+
+    boolean proceed = false;
+    for(CSVRecord record : parser) {
+      if (!proceed) {
+        if (record.get(0).equals("Relation start")) {
+          proceed = true;
+          continue;
+        }
+        throw new ApplicationException("Relationの開始位置が見つかりませんでした。");
+      }
+      if (record.get(0).equals("Relation end")) {
+        return;
+      }
+
+      Relation _new = new Relation(
+        UUID.fromString(record.get(1))
+      );
+      relationMapper.insertForImport(_new);
+    }
+
+    throw new ApplicationException("Relationの終了位置が見つかりませんでした。");
   }
 }

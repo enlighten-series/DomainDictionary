@@ -21,4 +21,6 @@ public interface DomainToRelationMapper {
   void exportAll(ResultHandler<DomainToRelation> resultHandler);
 
   void deleteAllForImport();
+
+  void insertForImport(DomainToRelation domainToRelation);
 }

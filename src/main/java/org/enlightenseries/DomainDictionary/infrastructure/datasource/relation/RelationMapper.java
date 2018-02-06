@@ -20,4 +20,6 @@ public interface RelationMapper {
   void exportAll(ResultHandler<Relation> resultHandler);
 
   void deleteAllForImport();
+
+  void insertForImport(Relation relation);
 }

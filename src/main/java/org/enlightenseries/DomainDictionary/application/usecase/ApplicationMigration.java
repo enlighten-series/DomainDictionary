@@ -215,14 +215,23 @@ public class ApplicationMigration {
         break;
       }
 
-      if (!majorVersion.equals("0")
-        || !minorVersion.equals("2")
-        || !patchVersion.equals("2")) {
-        throw new ApplicationException("現在、バージョン0.2.2以外のエクスポートファイルをインポートすることはできません");
+      if (majorVersion.equals("0")
+        && minorVersion.equals("2")
+        && patchVersion.equals("2")) {
+        import_0_2_X(parser);
       }
 
-      // バージョンに合わせたインポートを実行
-      import_0_2_X(parser);
+      if (majorVersion.equals("0")
+        && minorVersion.equals("3")
+        && patchVersion.equals("4")) {
+        import_0_3_X(parser);
+      }
+
+      throw new ApplicationException("バージョン " +
+        majorVersion + "." +
+        minorVersion + "." +
+        patchVersion + "." +
+        " のエクスポートファイルをインポートすることはできません。Githubのバージョンアップ手順を確認してください。");
 
     } catch (IOException e) {
       throw e;
@@ -233,6 +242,12 @@ public class ApplicationMigration {
     domainRepository.import_0_2_X(parser);
     relationRepository.import_0_2_X(parser);
     domainToRelationRepository.import_0_2_X(parser);
+  }
+
+  private void import_0_3_X(CSVParser parser) throws Exception {
+    domainRepository.import_0_3_X(parser);
+    relationRepository.import_0_3_X(parser);
+    domainToRelationRepository.import_0_3_X(parser);
   }
 
 }
