@@ -46,13 +46,13 @@ public class DomainResource {
   }
 
   @PostMapping("/domains")
-  public ResponseEntity<Domain> createDomain(@RequestBody @Valid DomainDto domainDto) throws Exception {
+  public ResponseEntity<DomainDto> createDomain(@RequestBody @Valid DomainDto domainDto) throws Exception {
     Domain newDomain = domainDto.convertToDomain();
 
-    this.domainUsecase.register(newDomain);
+    DomainDetail detail = this.domainUsecase.register(newDomain);
 
-    return ResponseEntity.created(new URI("/api/domain/" + newDomain.getId()))
-      .body(newDomain);
+    return ResponseEntity.created(new URI("/api/domain/" + detail.getId()))
+      .body(new DomainDto(detail, null));
   }
 
   @PutMapping("/domains/{id}")

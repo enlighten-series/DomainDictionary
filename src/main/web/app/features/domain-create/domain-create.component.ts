@@ -31,7 +31,7 @@ export class DomainCreateComponent implements OnInit {
           },
           duration: 1500,
         });
-        this.router.navigate(['/']);
+        this.router.navigate(['/detail', data.id]);
       },
       (error) => {
         console.log(error);

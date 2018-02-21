@@ -27,7 +27,7 @@ public class DomainUsecase {
     this.domainRepository = _domainRepository;
   }
 
-  public void register(Domain domain) {
+  public DomainDetail register(Domain domain) {
     DomainDetail domainDetail = new DomainDetail(domain);
 
     // メタ情報付加
@@ -39,6 +39,8 @@ public class DomainUsecase {
     domainDetail.setUpdatedBy(sessionUser);
 
     this.domainRepository.registerDomainDetail(domainDetail);
+
+    return domainDetail;
   }
 
   public void update(Long id, Domain domain) {
