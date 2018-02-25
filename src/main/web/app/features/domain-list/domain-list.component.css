@@ -1,12 +1,12 @@
 .button-area {
-    margin-bottom: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .filter-area {
-    background-color: #fafafa;
-    padding-top: 1.0em;
+  background-color: #fafafa;
+  padding-top: 1em;
 }
 
 .mat-column-description {
-    flex: 2;
+  flex: 2;
 }

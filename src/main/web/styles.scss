@@ -1,102 +1,102 @@
-@import '~@angular/material/theming';
+@import "~@angular/material/theming";
 @include mat-core();
 
 $dd-primary: mat-palette($mat-indigo);
-$dd-accent:  mat-palette($mat-yellow);
+$dd-accent: mat-palette($mat-yellow);
 $dd-theme: mat-light-theme($dd-primary, $dd-accent);
 @include angular-material-theme($dd-theme);
 
 body {
-    background-color: #f3f3f3;
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI","Noto Sans Japanese","ヒラギノ角ゴ ProN W3", Meiryo, sans-serif;
-    margin: 0;
+  background-color: #f3f3f3;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Noto Sans Japanese", "ヒラギノ角ゴ ProN W3", Meiryo, sans-serif;
+  margin: 0;
 }
 
 header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 header .left {
-    position: fixed;
-    left: 15px;
-    top: 15px;
+  position: fixed;
+  left: 15px;
+  top: 15px;
 }
 header .home-btn {
-    display: block;
+  display: block;
 }
 header .app-menu-btn {
-    display: block;
+  display: block;
 }
 header .user-menu-btn {
-    position: fixed;
-    right: 15px;
-    top: 15px;
+  position: fixed;
+  right: 15px;
+  top: 15px;
 }
 
 header .app-github-btn i {
-    font-size: 1.5em;
+  font-size: 1.5em;
 }
 
 .contents {
-    margin: 10px auto;
-    max-width: 940px;
+  margin: 10px auto;
+  max-width: 940px;
 }
 
 .app-menu {
-    background-color: #fff;
+  background-color: #fff;
+  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  position: fixed;
+  top: 90px;
+  left: 15px;
+  z-index: 1001;
+}
+.app-menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.app-menu li button {
+  display: block;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  header {
+    background-color: #ffd925;
     -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    overflow: hidden;
+    height: 70px;
+  }
+  header .left {
+    float: left;
+    position: relative;
+  }
+  header .home-btn {
+    display: inline-block;
+  }
+  header .app-menu-btn {
+    display: inline-block;
+  }
+
+  header .user-menu-btn {
+    position: relative;
+    float: right;
+    top: 7px;
+  }
+
+  .app-menu {
     position: fixed;
-    top: 90px;
-    left: 15px;
-    z-index: 1001;
-}
-.app-menu ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-.app-menu li button {
-    display: block;
-    width: 100%;
-}
+    top: 65px;
+    left: 108px;
+  }
 
-@media(max-width: 1200px) {
-    header {
-        background-color: #FFD925;
-        -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-        -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-        overflow: hidden;
-        height: 70px;
-    }
-    header .left {
-        float: left;
-        position: relative;
-    }
-    header .home-btn {
-        display: inline-block;
-    }
-    header .app-menu-btn {
-        display: inline-block;
-    }
-    
-    header .user-menu-btn {
-        position: relative;
-        float: right;
-        top: 7px;
-    }
-
-    .app-menu {
-        position: fixed;
-        top: 65px;
-        left: 108px;
-    }
-    
-    .contents {
-        padding: 75px;
-    }
+  .contents {
+    padding: 75px;
+  }
 }
