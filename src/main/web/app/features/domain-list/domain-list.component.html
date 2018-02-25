@@ -1,28 +1,41 @@
 <mat-card>
 
   <div class="button-area">
-    <button mat-raised-button *ngIf="isAuthenticated()" color="primary" (click)="create()">追加</button>
+    <button mat-raised-button
+            *ngIf="isAuthenticated()"
+            color="primary"
+            (click)="create()">追加</button>
   </div>
-  
+
   <div class="filter-area">
-    <mat-grid-list cols="2" rowHeight="70px">
-      <mat-grid-tile colspan="1" rowspan="1">
+    <mat-grid-list cols="2"
+                   rowHeight="70px">
+      <mat-grid-tile colspan="1"
+                     rowspan="1">
         <mat-form-field>
-          <input matInput #filterName placeholder="ドメイン名でフィルタ">
+          <input matInput
+                 #filterName
+                 placeholder="ドメイン名でフィルタ">
         </mat-form-field>
       </mat-grid-tile>
-      <mat-grid-tile colspan="1" rowspan="1">
+      <mat-grid-tile colspan="1"
+                     rowspan="1">
         <mat-form-field>
-          <input matInput #filterDescription placeholder="説明でフィルタ">
+          <input matInput
+                 #filterDescription
+                 placeholder="説明でフィルタ">
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>
   </div>
 
-  <mat-table #table [dataSource]="filteredDomains">
+  <mat-table #table
+             [dataSource]="filteredDomains">
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef>ドメイン名</mat-header-cell>
-      <mat-cell *matCellDef="let row"><a routerLink="/detail/{{row.id}}">{{row.name}}</a></mat-cell>
+      <mat-cell *matCellDef="let row">
+        <a routerLink="/detail/{{row.id}}">{{row.name}}</a>
+      </mat-cell>
     </ng-container>
     <ng-container matColumnDef="description">
       <mat-header-cell *matHeaderCellDef>説明</mat-header-cell>

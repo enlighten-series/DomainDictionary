@@ -1,17 +1,24 @@
 <mat-dialog-content>
   <div>
-      <p>
-        サーバでエクスポートファイルを生成したあと、ダウンロードできます。
-      </p>
-      <p>
-        最後にエクスポートファイルを生成した日時：{{getLatestGeneratedDate() | date:'yyyy-MM-dd HH:mm:ss'}}
-      </p>
     <p>
-      <button mat-raised-button color="accent" (click)="generateExportFile()" [disabled]="isNowGenerating()">エクスポートファイルを生成</button>
+      サーバでエクスポートファイルを生成したあと、ダウンロードできます。
+    </p>
+    <p>
+      最後にエクスポートファイルを生成した日時：{{getLatestGeneratedDate() | date:'yyyy-MM-dd HH:mm:ss'}}
+    </p>
+    <p>
+      <button mat-raised-button
+              color="accent"
+              (click)="generateExportFile()"
+              [disabled]="isNowGenerating()">エクスポートファイルを生成</button>
       <span *ngIf="isNowGenerating()">エクスポートファイル生成中です・・・</span>
     </p>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-raised-button class="download-button" color="primary" (click)="downloadExportFile()" [disabled]="!isEnableDownload()">エクスポートファイルをダウンロード</button>
+  <button mat-raised-button
+          class="download-button"
+          color="primary"
+          (click)="downloadExportFile()"
+          [disabled]="!isEnableDownload()">エクスポートファイルをダウンロード</button>
 </mat-dialog-actions>

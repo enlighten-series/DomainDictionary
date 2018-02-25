@@ -1,21 +1,32 @@
 <header>
   <div class="left">
-    <button mat-button class="home-btn" (click)="home()">
+    <button mat-button
+            class="home-btn"
+            (click)="home()">
       <mat-icon>home</mat-icon>
     </button>
 
-    <button mat-button *ngIf="isAuthenticated()" class="app-menu-btn" (click)="toggleAppMenuVisible($event)">
+    <button mat-button
+            *ngIf="isAuthenticated()"
+            class="app-menu-btn"
+            (click)="toggleAppMenuVisible($event)">
       <mat-icon>menu</mat-icon>
     </button>
 
-    <button mat-button class="app-github-btn" (click)="jumpGithub()">
-      <i class="fa fa-github" aria-hidden="true"></i>
+    <button mat-button
+            class="app-github-btn"
+            (click)="jumpGithub()">
+      <i class="fa fa-github"
+         aria-hidden="true"></i>
     </button>
   </div>
 
-  <button mat-fab class="user-menu-btn" [color]="bindUserButtonColor()" (click)="showUserDialog($event)"
-    [matTooltip]="userTooltipLabel()" [matTooltipPosition]="'before'"
-  >
+  <button mat-fab
+          class="user-menu-btn"
+          [color]="bindUserButtonColor()"
+          (click)="showUserDialog($event)"
+          [matTooltip]="userTooltipLabel()"
+          [matTooltipPosition]="'before'">
     <mat-icon>person</mat-icon>
   </button>
 </header>
@@ -24,16 +35,20 @@
   <router-outlet></router-outlet>
 </div>
 
-<div class="app-menu" *ngIf="appMenuVisible">
+<div class="app-menu"
+     *ngIf="appMenuVisible">
   <ul>
     <li>
-      <button mat-button (click)="export()">データエクスポート</button>
+      <button mat-button
+              (click)="export()">データエクスポート</button>
     </li>
     <li>
-      <button mat-button (click)="import()">データインポート</button>
+      <button mat-button
+              (click)="import()">データインポート</button>
     </li>
     <li *ngIf="false">
-      <button mat-button (click)="license()">ライセンスの表示</button>
+      <button mat-button
+              (click)="license()">ライセンスの表示</button>
     </li>
   </ul>
 </div>
