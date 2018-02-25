@@ -10,10 +10,6 @@
       <p class="domain-name" [innerHTML]="innerHtmlOfName()"></p>
     </div>
     <div class="form-block width-full">
-      <p class="data-title">フォーマット/情報の構成</p>
-      <p class="markdown-contents" [innerHTML]="innerHtmlOfFormat()"></p>
-    </div>
-    <div class="form-block width-full">
       <p class="data-title">業務内容説明</p>
       <p class="markdown-contents" [innerHTML]="innerHtmlOfDescription()"></p>
     </div>
@@ -31,6 +27,10 @@
         </mat-chip-list>
       </section>
       <button mat-raised-button *ngIf="isAuthenticated()" (click)="showAddRelationDialog()">関連項目を編集する</button>
+    </div>
+    <div class="form-block width-full">
+      <p class="data-title">フォーマット/情報の構成</p>
+      <p class="markdown-contents" [innerHTML]="innerHtmlOfFormat()"></p>
     </div>
   </mat-card>
 </ng-container>

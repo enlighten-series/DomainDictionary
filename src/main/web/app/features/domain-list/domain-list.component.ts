@@ -33,7 +33,6 @@ export class DomainListComponent implements OnInit {
   ) {
     this.displayedColumns = [
       'name',
-      'format',
       'description',
       'edit',
     ];

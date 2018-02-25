@@ -17,17 +17,6 @@
 
     <div class="form-block width-full">
       <mat-form-field>
-        <textarea matInput matTextareaAutosize matAutosizeMinRows="3" placeholder="フォーマット/情報の構成"
-          [(ngModel)]="editingDomain.format"
-          name="format"
-          #formatForm="ngModel"
-        ></textarea>
-        <mat-hint align="end"><a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/" target="blank" tabindex="-1">Markdown形式</a>で記述することができます。</mat-hint>
-      </mat-form-field>
-    </div>
-
-    <div class="form-block width-full">
-      <mat-form-field>
         <textarea matInput matTextareaAutosize matAutosizeMinRows="3" placeholder="業務内容説明"
           [(ngModel)]="editingDomain.description"
           name="description"
@@ -54,6 +43,17 @@
       <span class="form-error" [hidden]="existentialForm.valid || existentialForm.pristine">
         存在理由・他との違いは必須です。
       </span>
+    </div>
+
+    <div class="form-block width-full">
+      <mat-form-field>
+        <textarea matInput matTextareaAutosize matAutosizeMinRows="3" placeholder="フォーマット/情報の構成"
+          [(ngModel)]="editingDomain.format"
+          name="format"
+          #formatForm="ngModel"
+        ></textarea>
+        <mat-hint align="end"><a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/" target="blank" tabindex="-1">Markdown形式</a>で記述することができます。</mat-hint>
+      </mat-form-field>
     </div>
 
     <div class="form-block width-full">
