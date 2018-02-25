@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.when;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -138,11 +139,23 @@ public class DomainResourceTest {
   @Test
   public void createDomain() throws Exception {
     // when
+    Long expectId = 1L;
+    String expectName = "なまえです";
+    String expectDescription = "説明です";
+    String expectExistential = "存在しています";
     String json = "{" +
-      "\"name\": \"なまえです\"," +
-      "\"description\": \"説明です\"," +
-      "\"existential\": \"存在しています\"" +
+      "\"name\": \"" + expectName + "\"," +
+      "\"description\": \"" + expectDescription + "\"," +
+      "\"existential\": \"" + expectExistential + "\"" +
       "}";
+    Domain expectDomain = new Domain();
+    expectDomain.setId(expectId);
+    expectDomain.setName(expectName);
+    expectDomain.setDescription(expectDescription);
+    expectDomain.setExistential(expectExistential);
+    DomainDetail expectDetail = new DomainDetail(expectDomain);
+
+    when(domainUsecase.register(anyObject())).thenReturn(expectDetail);
 
     // try
     domainResourceMockMvc.perform(MockMvcRequestBuilders
