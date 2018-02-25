@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, NgZone } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTabGroup } from '@angular/material';
+import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTabGroup, MatRadioButton } from '@angular/material';
 import { ActivatedRoute, ParamMap, Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import * as marked from 'marked';
@@ -112,6 +112,10 @@ export class DomainDetailComponent implements OnInit {
         return highlight.highlightAuto(code).value;
       }
     });
+    // anchorに常にtarget=blankを付与する
+    this.myMarkedRenderer.link = function( href, title, text ) {
+      return '<a target="_blank" href="' + href + '" title="' + title + '">' + text + '</a>';
+    };
   }
 
   ngOnInit() {
@@ -228,6 +232,8 @@ export class DomainDetailComponent implements OnInit {
 
   private goTop = false;
 
+  private myMarkedRenderer = new marked.Renderer();
+
   private loadDomainDetail() {
     this.http.get('/api/domains/' + this.id)
     .subscribe(
@@ -237,18 +243,30 @@ export class DomainDetailComponent implements OnInit {
 
         // markdown parse
         this.parsedName = this.viewDomain.name;
-        marked(this.viewDomain.format, (err, content) => {
-          if (err) throw err;
-          this.parsedFormat = content;
-        });
-        marked(this.viewDomain.description, (err, content) => {
-          if (err) throw err;
-          this.parsedDescription = content;
-        });
-        marked(this.viewDomain.existential, (err, content) => {
-          if (err) throw err;
-          this.parsedExistential = content;
-        });
+        marked(this.viewDomain.format, { renderer: this.myMarkedRenderer },
+          (err, content) => {
+            if (err) {
+              throw err;
+            }
+            this.parsedFormat = content;
+          }
+        );
+        marked(this.viewDomain.description, { renderer: this.myMarkedRenderer },
+          (err, content) => {
+            if (err) {
+              throw err;
+            }
+            this.parsedDescription = content;
+          }
+        );
+        marked(this.viewDomain.existential, { renderer: this.myMarkedRenderer },
+          (err, content) => {
+            if (err) {
+              throw err;
+            }
+            this.parsedExistential = content;
+          }
+        );
 
         // related domain
         this.relatedDomains = this.viewDomain.relatedDomains;
