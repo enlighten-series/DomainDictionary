@@ -34,7 +34,6 @@ export class DomainListComponent implements OnInit {
     this.displayedColumns = [
       'name',
       'description',
-      'edit',
     ];
     this.filteredDomains = new ViewDomainListDataSource(this.allDomains$);
   }

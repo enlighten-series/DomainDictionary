@@ -22,15 +22,11 @@
   <mat-table #table [dataSource]="filteredDomains">
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef>項目名</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+      <mat-cell *matCellDef="let row"><a routerLink="/detail/{{row.id}}">{{row.name}}</a></mat-cell>
     </ng-container>
     <ng-container matColumnDef="description">
       <mat-header-cell *matHeaderCellDef>説明</mat-header-cell>
       <mat-cell *matCellDef="let row">{{row.description | slice:0:40 }}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="edit">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let row"><button mat-raised-button class="detail-btn" (click)="detail(row.id)">詳細</button></mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
