@@ -103,7 +103,7 @@ export class EditRelationDialogComponent implements OnInit {
     }
 
     if (targetDomain == null) {
-      alert('該当する項目が見つかりません');
+      alert('該当すドメインが見つかりません');
       return;
     }
     if (targetDomain.id == this.sourceId) {

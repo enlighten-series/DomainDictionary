@@ -173,7 +173,7 @@ class ViewDomainListDataSource extends DataSource<Domain> {
 
   private listFilter(item: Domain): boolean {
     let through = true;
-    // 項目名フィルタ適用
+    // ドメイン名フィルタ適用
     if (item.name.indexOf(this.nameFilter) == -1) {
       through = false;
     }

@@ -3,7 +3,7 @@
 
     <div class="form-block width-full">
       <mat-form-field>
-        <input matInput placeholder="項目名"
+        <input matInput placeholder="ドメイン名"
           [(ngModel)]="editingDomain.name"
           name="name"
           #nameForm="ngModel"
@@ -11,7 +11,7 @@
         >
       </mat-form-field>
       <span class="form-error" [hidden]="nameForm.valid || nameForm.pristine">
-        項目名は必須です。
+        ドメイン名は必須です。
       </span>
     </div>
 

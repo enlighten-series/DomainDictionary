@@ -8,7 +8,7 @@
     <mat-grid-list cols="2" rowHeight="70px">
       <mat-grid-tile colspan="1" rowspan="1">
         <mat-form-field>
-          <input matInput #filterName placeholder="項目名でフィルタ">
+          <input matInput #filterName placeholder="ドメイン名でフィルタ">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile colspan="1" rowspan="1">
@@ -21,7 +21,7 @@
 
   <mat-table #table [dataSource]="filteredDomains">
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef>項目名</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>ドメイン名</mat-header-cell>
       <mat-cell *matCellDef="let row"><a routerLink="/detail/{{row.id}}">{{row.name}}</a></mat-cell>
     </ng-container>
     <ng-container matColumnDef="description">
