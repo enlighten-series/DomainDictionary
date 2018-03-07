@@ -7,10 +7,14 @@ import org.apache.commons.csv.CSVRecord;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.application.service.UserService;
 import org.enlightenseries.DomainDictionary.application.singleton.ApplicationMigrationStatus;
+import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
+import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.Metadata;
 import org.enlightenseries.DomainDictionary.domain.model.metadata.MetadataRepository;
+import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelation;
 import org.enlightenseries.DomainDictionary.domain.model.relation.DomainToRelationRepository;
+import org.enlightenseries.DomainDictionary.domain.model.relation.Relation;
 import org.enlightenseries.DomainDictionary.domain.model.relation.RelationRepository;
 import org.enlightenseries.DomainDictionary.domain.model.user.User;
 import org.enlightenseries.DomainDictionary.domain.model.user.UserRepository;
@@ -129,8 +133,77 @@ public class ApplicationMigration {
     this.userService.createNewUser(defaultUser, "admin");
 
     if (SPRING_PROFILES_ACTIVE.equals("demo")) {
-      System.out.println("------------- initial demo data --------------------");
+      insertDemoData();
     }
+  }
+
+  private void insertDemoData() {
+    User demoRegistUser = this.userService.findByUsername("admin");
+
+    Domain sample00 = new Domain();
+    sample00.setName("★DomainDictionaryのつかいかた");
+    sample00.setDescription("# 基本\n" +
+      "業務用語・情報・ドメインを項目として登録したり、関連づけたりすることができます。\r\n" +
+      "# 使い方\n" +
+      "ログインしない場合は、閲覧のみ可能です。ドメインを追加したり、関連づけたりするには、ログインを行います。\n" +
+      "# ログイン\n" +
+      "画面右上のまるいボタンからログインメニューが表示できます。\n\n" +
+      "デフォルトユーザは `admin`/`admin` です。\n\n" +
+      "「サインアップ」から新規ユーザを作成することもできます。");
+    sample00.setExistential("# なぜこれを作ったか\n" +
+      "我が社のような伝統的オフラインSIerにおいて、その担当業務の情報をチーム内で維持管理し、育てていくために使用します。\n\n" +
+      "うちのような会社で働く人は、なんでもできるような道具を効率的に使用することが難しいです。そのため、できることを制限することによってそれを使用する人の意識を育てる意味で機能設計をしています。");
+    sample00.setFormat("");
+    DomainDetail sample00Detail = new DomainDetail(sample00);
+    sample00Detail.setCreatedBy(demoRegistUser);
+    sample00Detail.setUpdatedBy(demoRegistUser);
+
+    Domain sample01 = new Domain();
+    sample01.setName("要件定義");
+    sample01.setDescription("システムの要件を定義する。だいたい要件は固まらない。");
+    sample01.setExistential("ウォーターフォール開発プロセスにおける工程の１つ。");
+    sample01.setFormat("");
+    DomainDetail sample01Detail = new DomainDetail(sample01);
+    sample01Detail.setCreatedBy(demoRegistUser);
+    sample01Detail.setUpdatedBy(demoRegistUser);
+
+    Domain sample02 = new Domain();
+    sample02.setName("外部設計");
+    sample02.setDescription("データモデル、業務画面設計などをする。この段階でも要件は固まらない。");
+    sample02.setExistential("ウォーターフォール開発プロセスにおける工程の１つ。");
+    sample02.setFormat("");
+    DomainDetail sample02Detail = new DomainDetail(sample02);
+    sample02Detail.setCreatedBy(demoRegistUser);
+    sample02Detail.setUpdatedBy(demoRegistUser);
+
+    Domain sample03 = new Domain();
+    sample03.setName("ウォーターフォール");
+    sample03.setDescription("システム開発プロセスとして良く知られる要件");
+    sample03.setExistential("ウォーターフォール開発プロセスにおける工程の１つ。");
+    sample03.setFormat("");
+    DomainDetail sample03Detail = new DomainDetail(sample03);
+    sample03Detail.setCreatedBy(demoRegistUser);
+    sample03Detail.setUpdatedBy(demoRegistUser);
+
+    domainRepository.registerDomainDetail(sample00Detail);
+    domainRepository.registerDomainDetail(sample01Detail);
+    domainRepository.registerDomainDetail(sample02Detail);
+    domainRepository.registerDomainDetail(sample03Detail);
+
+    Relation relation1_3 = new Relation();
+    DomainToRelation dr1_3_1 = new DomainToRelation(sample01Detail.getId(), relation1_3.getId());
+    DomainToRelation dr1_3_3 = new DomainToRelation(sample03Detail.getId(), relation1_3.getId());
+
+    Relation relation2_3 = new Relation();
+    DomainToRelation dr2_3_2 = new DomainToRelation(sample02Detail.getId(), relation2_3.getId());
+    DomainToRelation dr2_3_3 = new DomainToRelation(sample03Detail.getId(), relation2_3.getId());
+
+    relationRepository.register(relation1_3);
+    domainToRelationRepository.register(dr1_3_1);
+    domainToRelationRepository.register(dr1_3_3);
+    relationRepository.register(relation2_3);
+    domainToRelationRepository.register(dr2_3_2);
+    domainToRelationRepository.register(dr2_3_3);
   }
 
   /**
