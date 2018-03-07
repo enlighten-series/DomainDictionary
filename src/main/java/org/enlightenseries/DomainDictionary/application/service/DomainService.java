@@ -61,10 +61,21 @@ public class DomainService {
     return this.domainRepository.findDomainSummaryBy(id);
   }
 
+  /**
+   * @deprecated Detail作成したので不要
+   *
+   * @param domain
+   */
   public void register(Domain domain) {
     this.domainRepository.register(domain);
   }
 
+  /**
+   * @deprecated Detail作成したので不要
+   *
+   * @param id
+   * @param domain
+   */
   public void update(Long id, Domain domain) {
     this.domainRepository.update(id, domain);
   }
