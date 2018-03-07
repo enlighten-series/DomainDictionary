@@ -75,7 +75,9 @@ task buildClientProd(type: NpmTask, dependsOn: 'npmInstall') {
 }
 
 def activeProfiles = 'dev'
-if (project.hasProperty('prod')) {
+if (project.hasProperty('demo')) {
+  activeProfiles = 'demo'
+} else if (project.hasProperty('prod')) {
   activeProfiles = 'prod'
 }
 processResources {
@@ -95,5 +97,4 @@ processResources.dependsOn clean
 
 bootRun.dependsOn(buildClientDev)
 
-// TODO: パッケージ時は本番ビルドになるようにする
 bootRepackage.dependsOn(buildClientProd)

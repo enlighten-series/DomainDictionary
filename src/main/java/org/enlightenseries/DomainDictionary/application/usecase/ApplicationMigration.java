@@ -15,6 +15,7 @@ import org.enlightenseries.DomainDictionary.domain.model.relation.RelationReposi
 import org.enlightenseries.DomainDictionary.domain.model.user.User;
 import org.enlightenseries.DomainDictionary.domain.model.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,9 @@ import java.util.Date;
 
 @Service
 public class ApplicationMigration {
+
+  @Value( "${spring.profiles.active:dev}" )
+  private String SPRING_PROFILES_ACTIVE;
 
   private final String exportOutputDirectioryPath = "./data";
   private final String exportDomainFileName = "export.csv";
@@ -123,6 +127,10 @@ public class ApplicationMigration {
     User defaultUser = new User();
     defaultUser.setUsername("admin");
     this.userService.createNewUser(defaultUser, "admin");
+
+    if (SPRING_PROFILES_ACTIVE.equals("demo")) {
+      System.out.println("------------- initial demo data --------------------");
+    }
   }
 
   /**
