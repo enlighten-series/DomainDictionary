@@ -61,11 +61,12 @@ node
  * Application profiles
  */
 
-def activeProfiles = 'dev'
-if (project.hasProperty('prod')) {
-  activeProfiles = 'prod'
-}
 processResources {
+  def activeProfiles = 'dev'
+  if (project.hasProperty('prod')) {
+    activeProfiles = 'prod'
+  }
+
   filesMatching('**/application.yml') {
     filter {
       it.replace('#spring.profiles.active#', activeProfiles)
@@ -76,7 +77,7 @@ processResources {
 /**
  * Tasks
  */
-defaultTasks 'clean', 'bootRepackage'
+defaultTasks 'bootRun'
 
 task buildClientDev(type: NpmTask, dependsOn: 'npmInstall') {
   group = 'build'
@@ -89,6 +90,9 @@ task buildClientProd(type: NpmTask, dependsOn: 'npmInstall') {
   description = 'Compile client side folder for production packaging'
   args = ['run','buildProd']
 }
+
+task stage
+stage.dependsOn bootRepackage
 
 compileJava.dependsOn processResources
 processResources.dependsOn clean

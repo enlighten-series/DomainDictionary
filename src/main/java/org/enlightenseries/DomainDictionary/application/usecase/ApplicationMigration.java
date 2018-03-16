@@ -4,6 +4,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
+import org.enlightenseries.DomainDictionary.application.config.ApplicationDemoProperties;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.application.service.UserService;
 import org.enlightenseries.DomainDictionary.application.singleton.ApplicationMigrationStatus;
@@ -37,8 +38,8 @@ import java.util.Date;
 @Service
 public class ApplicationMigration {
 
-  @Value( "${spring.profiles.active:dev}" )
-  private String SPRING_PROFILES_ACTIVE;
+  @Autowired
+  private ApplicationDemoProperties applicationDemoProperties;
 
   private final String exportOutputDirectioryPath = "./data";
   private final String exportDomainFileName = "export.csv";
@@ -132,8 +133,11 @@ public class ApplicationMigration {
     defaultUser.setUsername("admin");
     this.userService.createNewUser(defaultUser, "admin");
 
-    if (SPRING_PROFILES_ACTIVE.equals("dev")) {
+    if (applicationDemoProperties.isInitdata()) {
+      System.out.println("initdata!");
       insertDemoData();
+    } else {
+      System.out.println("dont!");
     }
   }
 
