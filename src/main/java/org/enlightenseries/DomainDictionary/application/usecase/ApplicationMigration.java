@@ -132,7 +132,7 @@ public class ApplicationMigration {
     defaultUser.setUsername("admin");
     this.userService.createNewUser(defaultUser, "admin");
 
-    if (SPRING_PROFILES_ACTIVE.equals("demo")) {
+    if (SPRING_PROFILES_ACTIVE.equals("dev")) {
       insertDemoData();
     }
   }
