@@ -1,1 +1,1 @@
-web: java -jar build/libs/DomainDictionary.jar --demo.initdata=true
+web: java -jar build/libs/*.jar --demo.initdata=true
