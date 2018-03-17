@@ -58,6 +58,23 @@ node
 }
 
 /**
+ * Application profiles
+ */
+
+processResources {
+  def activeProfiles = 'dev'
+  if (project.hasProperty('prod')) {
+    activeProfiles = 'prod'
+  }
+
+  filesMatching('**/application.yml') {
+    filter {
+      it.replace('#spring.profiles.active#', activeProfiles)
+    }
+  }
+}
+
+/**
  * Tasks
  */
 defaultTasks 'bootRun'
@@ -74,26 +91,12 @@ task buildClientProd(type: NpmTask, dependsOn: 'npmInstall') {
   args = ['run','buildProd']
 }
 
-def activeProfiles = 'dev'
-if (project.hasProperty('prod')) {
-  activeProfiles = 'prod'
-}
-processResources {
-  filesMatching('**/application.yml') {
-    filter {
-      it.replace('#spring.profiles.active#', activeProfiles)
-    }
-  }
-}
-
-/**
- * Task dependencies
- */
+task stage
+stage.dependsOn bootRepackage
 
 compileJava.dependsOn processResources
 processResources.dependsOn clean
 
 bootRun.dependsOn(buildClientDev)
 
-// TODO: パッケージ時は本番ビルドになるようにする
 bootRepackage.dependsOn(buildClientProd)
