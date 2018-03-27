@@ -15,12 +15,21 @@ import java.nio.file.FileSystems;
 @Configuration
 public class LuceneConfiguration {
 
+  /**
+   * TODO: Directoryはストレージと考えられるため、インフラ層のほうが適しているかもしれない
+   * @return
+   * @throws IOException
+   */
   @Bean(name="directory")
   @ConditionalOnProperty(name="spring.profiles.active", havingValue = "prod", matchIfMissing=false)
   public Directory useFileSystemDirectory() throws IOException {
     return FSDirectory.open(FileSystems.getDefault().getPath("data", "lucene-index"));
   }
 
+  /**
+   * TODO: Directoryはストレージと考えられるため、インフラ層のほうが適しているかもしれない
+   * @return
+   */
   @Bean(name="directory")
   @ConditionalOnProperty(name="spring.profiles.active", havingValue = "dev", matchIfMissing=true)
   public Directory useInMemoryDirectory() {

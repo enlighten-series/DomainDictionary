@@ -1,0 +1,119 @@
+package org.enlightenseries.DomainDictionary.application.service;
+
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.*;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexableField;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.*;
+import org.apache.lucene.store.Directory;
+import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
+import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
+import org.springframework.stereotype.Service;
+import sun.jvm.hotspot.oops.LongField;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class LuceneService {
+
+  private Directory directory;
+  private Analyzer analyzer;
+
+  public LuceneService(
+    Directory directory,
+    Analyzer analyzer
+  ) {
+    this.directory = directory;
+    this.analyzer = analyzer;
+  }
+
+  private static String DOC_FIELD_ID = "id";
+  private static String DOC_FIELD_NAME = "name";
+  private static String DOC_FIELD_DESCRIPTION = "description";
+  private static String DOC_FIELD_EXISTENTIAL = "existential";
+  private static String DOC_FIELD_FORMAT = "format";
+
+  public void regist(Domain newdata) throws IOException {
+    IndexWriter iwriter = new IndexWriter(directory, new IndexWriterConfig(analyzer));
+
+    Document doc = new Document();
+    doc.add(new StoredField(DOC_FIELD_ID, newdata.getId()));
+    doc.add(new Field(DOC_FIELD_NAME, newdata.getName(), TextField.TYPE_STORED));
+    doc.add(new Field(DOC_FIELD_DESCRIPTION, newdata.getDescription(), TextField.TYPE_STORED));
+    doc.add(new Field(DOC_FIELD_EXISTENTIAL, newdata.getExistential(), TextField.TYPE_STORED));
+    doc.add(new Field(DOC_FIELD_FORMAT, newdata.getFormat(), TextField.TYPE_STORED));
+    iwriter.addDocument(doc);
+
+    iwriter.close();
+  }
+
+  public List<Long> search(String keyword) throws IOException, ParseException {
+
+    DirectoryReader ireader = DirectoryReader.open(directory);
+    IndexSearcher isearcher = new IndexSearcher(ireader);
+
+    // クエリの組み立て
+    Query query = structQuery(keyword);
+
+    // 検索実行
+    ScoreDoc[] hits = isearcher.search(query, 1000).scoreDocs;
+    List<Long> domainIds = new ArrayList();
+
+    for (int i = 0; i < hits.length; i++) {
+      Document hitDoc = isearcher.doc(hits[i].doc);
+      IndexableField id = hitDoc.getField(DOC_FIELD_ID);
+      if (id != null) {
+        domainIds.add(id.numericValue().longValue());
+      }
+    }
+
+    ireader.close();
+
+    return domainIds;
+  }
+
+  /**
+   * 複数のフィールドに対して検索するQueryを形成する
+   * @param keyword
+   * @return
+   * @throws ParseException
+   */
+  private Query structQuery(String keyword) throws ParseException {
+
+    // 複数フィールドに対して検索するには、フィールド毎に生成したQueryをBooleanQueryに集める
+    BooleanQuery.Builder container = new BooleanQuery.Builder();
+
+    QueryParser parser;
+    Query query;
+
+    // ドメイン名に対するQuery
+    parser = new QueryParser(DOC_FIELD_NAME, analyzer);
+    query = parser.parse(keyword);
+    container.add(query, BooleanClause.Occur.SHOULD);
+
+    // 説明に対するQuery
+    parser = new QueryParser(DOC_FIELD_DESCRIPTION, analyzer);
+    query = parser.parse(keyword);
+    container.add(query, BooleanClause.Occur.SHOULD);
+
+    // 存在理由に対するQuery
+    parser = new QueryParser(DOC_FIELD_EXISTENTIAL, analyzer);
+    query = parser.parse(keyword);
+    container.add(query, BooleanClause.Occur.SHOULD);
+
+    // フォーマットに対するQuery
+    parser = new QueryParser(DOC_FIELD_FORMAT, analyzer);
+    query = parser.parse(keyword);
+    container.add(query, BooleanClause.Occur.SHOULD);
+
+    return container.build();
+  }
+
+}
