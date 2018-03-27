@@ -134,10 +134,7 @@ public class ApplicationMigration {
     this.userService.createNewUser(defaultUser, "admin");
 
     if (applicationDemoProperties.isInitdata()) {
-      System.out.println("initdata!");
       insertDemoData();
-    } else {
-      System.out.println("dont!");
     }
   }
 
