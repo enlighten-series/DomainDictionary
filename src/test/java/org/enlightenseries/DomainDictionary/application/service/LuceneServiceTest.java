@@ -1,12 +1,11 @@
 package org.enlightenseries.DomainDictionary.application.service;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.ja.JapaneseAnalyzer;
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.store.*;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
-import org.enlightenseries.DomainDictionary.domain.model.user.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +17,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,15 +25,15 @@ public class LuceneServiceTest {
   private LuceneService luceneService;
 
   @Before
-  public void setup() {
-    luceneService = new LuceneService(
-      new RAMDirectory(),
-      new JapaneseAnalyzer()
-    );
+  public void setup() throws IOException {
+    Directory directory = new RAMDirectory();
+    Analyzer analyzer = new JapaneseAnalyzer();
+
+    luceneService = new LuceneService(directory, analyzer);
   }
 
   @Test
-  public void registOne() throws IOException {
+  public void registOne() throws Exception {
     // when
     Domain domain = new Domain(
       1L,
@@ -55,7 +53,7 @@ public class LuceneServiceTest {
   }
 
   @Test
-  public void registSame() throws IOException {
+  public void registSame() throws Exception {
     // when
     Domain domain = new Domain(
       1L,
@@ -80,11 +78,11 @@ public class LuceneServiceTest {
     // expect
     assertThat(occured).isNotNull();
     assertThat(occured instanceof ApplicationException).isTrue();
-    assertThat(occured.getMessage()).isEqualTo("このドキュメントはすでに登録されています。");
+    assertThat(occured.getMessage()).isEqualTo("このドメインはすでにインデックスに登録されています。");
   }
 
   @Test
-  public void search() throws IOException, ParseException {
+  public void search() throws Exception {
     // when
     Domain domain = new Domain(
       1L,
@@ -110,5 +108,42 @@ public class LuceneServiceTest {
     assertThat(existentialResult.get(0)).isEqualTo(1L);
     assertThat(formatResult.get(0)).isEqualTo(1L);
     assertThat(nohitResult.size()).isEqualTo(0);
+  }
+
+  @Test
+  public void firstRead() throws Exception {
+    // when
+    // no-op
+
+    // do
+    boolean first = luceneService.existDomain(1L);
+
+    // expect
+    assertThat(first).isFalse();
+  }
+
+  @Test
+  public void existDomain() throws Exception {
+    // when
+    Domain domain = new Domain(
+      1L,
+      "ドメイン名",
+      "フォーマット",
+      "説明",
+      "存在理由",
+      new Date(),
+      new Date()
+    );
+
+    // do
+    boolean before = luceneService.existDomain(domain.getId());
+    luceneService.regist(domain);
+    List<Long> nameResult = luceneService.search("ドメイン");
+    boolean after = luceneService.existDomain(domain.getId());
+
+    // expect
+    assertThat(before).isFalse();
+    assertThat(nameResult.get(0)).isEqualTo(1L);
+    assertThat(after).isTrue();
   }
 }

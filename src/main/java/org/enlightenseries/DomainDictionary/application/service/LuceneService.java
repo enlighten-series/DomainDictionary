@@ -2,23 +2,18 @@ package org.enlightenseries.DomainDictionary.application.service;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.*;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.IndexableField;
+import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
+import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
-import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
 import org.springframework.stereotype.Service;
-import sun.jvm.hotspot.oops.LongField;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class LuceneService {
@@ -40,11 +35,18 @@ public class LuceneService {
   private static String DOC_FIELD_EXISTENTIAL = "existential";
   private static String DOC_FIELD_FORMAT = "format";
 
-  public void regist(Domain newdata) throws IOException {
+  public void regist(Domain newdata) throws Exception {
+    if (this.existDomain(newdata.getId())) {
+      throw new ApplicationException("このドメインはすでにインデックスに登録されています。");
+    }
+    registOne(newdata);
+  }
+
+  private void registOne(Domain newdata) throws IOException {
     IndexWriter iwriter = new IndexWriter(directory, new IndexWriterConfig(analyzer));
 
     Document doc = new Document();
-    doc.add(new StoredField(DOC_FIELD_ID, newdata.getId()));
+    doc.add(new Field(DOC_FIELD_ID, newdata.getId().toString(), StringField.TYPE_STORED));
     doc.add(new Field(DOC_FIELD_NAME, newdata.getName(), TextField.TYPE_STORED));
     doc.add(new Field(DOC_FIELD_DESCRIPTION, newdata.getDescription(), TextField.TYPE_STORED));
     doc.add(new Field(DOC_FIELD_EXISTENTIAL, newdata.getExistential(), TextField.TYPE_STORED));
@@ -54,9 +56,16 @@ public class LuceneService {
     iwriter.close();
   }
 
-  public List<Long> search(String keyword) throws IOException, ParseException {
+  public List<Long> search(String keyword) throws Exception {
 
-    DirectoryReader ireader = DirectoryReader.open(directory);
+    DirectoryReader ireader;
+    try {
+      ireader = DirectoryReader.open(directory);
+    } catch(IndexNotFoundException e) {
+      // インデックスは空であるため、ドキュメントなしと同等
+      return new ArrayList<>();
+    }
+
     IndexSearcher isearcher = new IndexSearcher(ireader);
 
     // クエリの組み立て
@@ -70,7 +79,7 @@ public class LuceneService {
       Document hitDoc = isearcher.doc(hits[i].doc);
       IndexableField id = hitDoc.getField(DOC_FIELD_ID);
       if (id != null) {
-        domainIds.add(id.numericValue().longValue());
+        domainIds.add(Long.parseLong(id.stringValue()));
       }
     }
 
@@ -114,6 +123,24 @@ public class LuceneService {
     container.add(query, BooleanClause.Occur.SHOULD);
 
     return container.build();
+  }
+
+  public boolean existDomain(Long id) throws Exception {
+    DirectoryReader ireader;
+    try {
+      ireader = DirectoryReader.open(directory);
+    } catch(IndexNotFoundException e) {
+      // インデックスは空であるため、ドキュメントなしと同等
+      return false;
+    }
+
+    IndexSearcher isearcher = new IndexSearcher(ireader);
+
+    // クエリの組み立て
+    Query query = new TermQuery(new Term(DOC_FIELD_ID, id.toString()));
+
+    // 検索実行
+    return isearcher.count(query) > 0;
   }
 
 }
