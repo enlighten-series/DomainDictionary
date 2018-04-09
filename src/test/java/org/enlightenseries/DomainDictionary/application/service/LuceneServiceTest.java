@@ -148,7 +148,7 @@ public class LuceneServiceTest {
   }
 
   @Test
-  public void udpate() throws Exception {
+  public void update() throws Exception {
     // when
     Domain domain = new Domain(
       1L,
@@ -181,5 +181,29 @@ public class LuceneServiceTest {
     assertThat(existentialResult.get(0)).isEqualTo(1L);
     assertThat(formatResult.get(0)).isEqualTo(1L);
     assertThat(nohitResult.size()).isEqualTo(0);
+  }
+
+  @Test
+  public void delete() throws Exception {
+    // when
+    Domain domain = new Domain(
+      1L,
+      "ドメイン名",
+      "フォーマット",
+      "説明",
+      "存在理由",
+      new Date(),
+      new Date()
+    );
+    luceneService.regist(domain);
+
+    // do
+    List<Long> beforeResult = luceneService.search("ドメイン");
+    luceneService.delete(1L);
+    List<Long> afterResult = luceneService.search("ドメイン");
+
+    // expect
+    assertThat(beforeResult.get(0)).isEqualTo(1L);
+    assertThat(afterResult.size()).isEqualTo(0);
   }
 }

@@ -181,4 +181,17 @@ public class LuceneService {
     }
   }
 
+  public void delete(Long id) throws Exception {
+    try {
+      Term target = new Term(DOC_FIELD_ID, id.toString());
+
+      IndexWriter iwriter = new IndexWriter(directory, new IndexWriterConfig(analyzer));
+      iwriter.deleteDocuments(target);
+
+      iwriter.close();
+    } catch (IOException e) {
+      throw e;
+    }
+  }
+
 }
