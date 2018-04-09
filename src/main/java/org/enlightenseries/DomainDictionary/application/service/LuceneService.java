@@ -143,4 +143,42 @@ public class LuceneService {
     return isearcher.count(query) > 0;
   }
 
+  public void update(Domain newdata) throws Exception {
+
+    DirectoryReader ireader;
+    try {
+      ireader = DirectoryReader.open(directory);
+    } catch(IndexNotFoundException e) {
+      // インデックスは空であるため、ドキュメントなしと同等
+      throw new ApplicationException("このドメインはまだインデックスに登録されていません。");
+    }
+
+    try {
+      Term target = new Term(DOC_FIELD_ID, newdata.getId().toString());
+
+      IndexSearcher isearcher = new IndexSearcher(ireader);
+      ScoreDoc[] hits = isearcher.search(new TermQuery(target), 1).scoreDocs;
+      Document subject = isearcher.doc(hits[0].doc);
+
+      IndexWriter iwriter = new IndexWriter(directory, new IndexWriterConfig(analyzer));
+
+      subject.removeField(DOC_FIELD_NAME);
+      subject.removeField(DOC_FIELD_DESCRIPTION);
+      subject.removeField(DOC_FIELD_EXISTENTIAL);
+      subject.removeField(DOC_FIELD_FORMAT);
+      subject.add(new Field(DOC_FIELD_NAME, newdata.getName(), TextField.TYPE_STORED));
+      subject.add(new Field(DOC_FIELD_DESCRIPTION, newdata.getDescription(), TextField.TYPE_STORED));
+      subject.add(new Field(DOC_FIELD_EXISTENTIAL, newdata.getExistential(), TextField.TYPE_STORED));
+      subject.add(new Field(DOC_FIELD_FORMAT, newdata.getFormat(), TextField.TYPE_STORED));
+
+      iwriter.updateDocument(target, subject);
+
+      iwriter.close();
+    } catch (IOException e) {
+      throw e;
+    } finally {
+      ireader.close();
+    }
+  }
+
 }

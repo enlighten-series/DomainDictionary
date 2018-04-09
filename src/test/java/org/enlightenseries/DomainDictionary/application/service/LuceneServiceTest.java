@@ -146,4 +146,40 @@ public class LuceneServiceTest {
     assertThat(nameResult.get(0)).isEqualTo(1L);
     assertThat(after).isTrue();
   }
+
+  @Test
+  public void udpate() throws Exception {
+    // when
+    Domain domain = new Domain(
+      1L,
+      "ドメイン名",
+      "フォーマット",
+      "説明",
+      "存在理由",
+      new Date(),
+      new Date()
+    );
+    luceneService.regist(domain);
+
+    // do
+    domain.setName("新しいドメイン");
+    domain.setFormat("新しいフォーマット");
+    domain.setDescription("新しい説明");
+    domain.setExistential("新しい理由");
+    luceneService.update(domain);
+    List<Long> newResult = luceneService.search("新しい");
+    List<Long> nameResult = luceneService.search("ドメイン");
+    List<Long> descriptionResult = luceneService.search("フォーマット");
+    List<Long> existentialResult = luceneService.search("説明");
+    List<Long> formatResult = luceneService.search("理由");
+    List<Long> nohitResult = luceneService.search("マット");
+
+    // expect
+    assertThat(newResult.get(0)).isEqualTo(1L);
+    assertThat(nameResult.get(0)).isEqualTo(1L);
+    assertThat(descriptionResult.get(0)).isEqualTo(1L);
+    assertThat(existentialResult.get(0)).isEqualTo(1L);
+    assertThat(formatResult.get(0)).isEqualTo(1L);
+    assertThat(nohitResult.size()).isEqualTo(0);
+  }
 }
