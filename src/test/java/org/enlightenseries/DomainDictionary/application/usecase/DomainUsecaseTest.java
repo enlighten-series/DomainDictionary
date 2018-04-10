@@ -5,6 +5,7 @@ import org.enlightenseries.DomainDictionary.application.service.LuceneService;
 import org.enlightenseries.DomainDictionary.application.service.UserService;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
+import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
 import org.enlightenseries.DomainDictionary.domain.model.user.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,8 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
@@ -109,6 +113,7 @@ public class DomainUsecaseTest {
   @Test
   public void delete() throws Exception {
     // then
+    // no-op
 
     // do
     domainUsecase.delete(1L);
@@ -116,5 +121,35 @@ public class DomainUsecaseTest {
     // expect
     verify(domainServiceMock, times(1)).delete(1L);
     verify(luceneServiceMock, times(1)).delete(1L);
+  }
+
+  @Test
+  public void search() throws Exception {
+    // then
+    String keyword = "キーワード";
+    List<Long> searchedIds = new ArrayList<>();
+    searchedIds.add(1L);
+    searchedIds.add(2L);
+    when(luceneServiceMock.search(keyword)).thenReturn(searchedIds);
+
+    DomainSummary summary1 = new DomainSummary(1L, "ドメイン１");
+    DomainSummary summary2 = new DomainSummary(2L, "ドメイン２");
+    when(domainRepositoryMock.findDomainSummaryBy(summary1.getId())).thenReturn(summary1);
+    when(domainRepositoryMock.findDomainSummaryBy(summary2.getId())).thenReturn(summary2);
+
+    // do
+    List<DomainSummary> subject = domainUsecase.keywordSearch(keyword);
+
+    // expect method call
+    verify(luceneServiceMock, times(1)).search(keyword);
+    verify(domainRepositoryMock, times(1)).findDomainSummaryBy(summary1.getId());
+    verify(domainRepositoryMock, times(1)).findDomainSummaryBy(summary2.getId());
+
+    // expect result
+    assertThat(subject.size()).isEqualTo(2);
+    assertThat(subject.get(0).getId()).isEqualTo(summary1.getId());
+    assertThat(subject.get(0).getName()).isEqualTo(summary1.getName());
+    assertThat(subject.get(1).getId()).isEqualTo(summary2.getId());
+    assertThat(subject.get(1).getName()).isEqualTo(summary2.getName());
   }
 }

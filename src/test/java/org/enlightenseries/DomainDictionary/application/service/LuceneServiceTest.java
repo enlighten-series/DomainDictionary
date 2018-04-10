@@ -3,12 +3,14 @@ package org.enlightenseries.DomainDictionary.application.service;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.ja.JapaneseAnalyzer;
 import org.apache.lucene.store.*;
+import org.enlightenseries.DomainDictionary.application.config.LuceneProperties;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -24,12 +26,15 @@ public class LuceneServiceTest {
 
   private LuceneService luceneService;
 
+  @Autowired
+  private LuceneProperties luceneProperties;
+
   @Before
   public void setup() throws IOException {
     Directory directory = new RAMDirectory();
     Analyzer analyzer = new JapaneseAnalyzer();
 
-    luceneService = new LuceneService(directory, analyzer);
+    luceneService = new LuceneService(directory, analyzer, luceneProperties);
   }
 
   @Test

@@ -4,6 +4,7 @@ import org.enlightenseries.DomainDictionary.application.service.DomainService;
 import org.enlightenseries.DomainDictionary.application.usecase.DomainUsecase;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
+import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
 import org.enlightenseries.DomainDictionary.domain.model.domain.RelatedDomainSummary;
 import org.enlightenseries.DomainDictionary.presentation.rest.dto.DomainDto;
 import org.springframework.http.ResponseEntity;
@@ -71,5 +72,12 @@ public class DomainResource {
 
     return ResponseEntity.ok()
       .body(domain);
+  }
+
+  @GetMapping("/domains/_search")
+  public ResponseEntity<List<DomainSummary>> fullTextSearch(@RequestParam String keyword) throws Exception {
+    List<DomainSummary> result = domainUsecase.keywordSearch(keyword);
+
+    return ResponseEntity.ok().body(result);
   }
 }

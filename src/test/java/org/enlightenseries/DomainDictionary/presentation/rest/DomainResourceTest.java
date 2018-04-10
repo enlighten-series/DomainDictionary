@@ -26,7 +26,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -187,6 +190,41 @@ public class DomainResourceTest {
     .andExpect(status().isBadRequest());
 
     // TODO: jsonデータもassert
+  }
+
+  @Test
+  public void keywordSearch() throws Exception {
+    // when
+    List<DomainSummary> assertData = new ArrayList<>();
+    assertData.add(new DomainSummary(1L, "お客様名称"));
+    assertData.add(new DomainSummary(2L, "お客様住所"));
+    String subjectKeyword = "お客様";
+    when(domainUsecase.keywordSearch(subjectKeyword)).thenReturn(assertData);
+
+    // try
+    domainResourceMockMvc.perform(
+      get("/api/domains/_search")
+        .param("keyword", subjectKeyword)
+    )
+
+      // expect
+      .andExpect(status().isOk())
+
+      .andExpect(jsonPath("$[0].id").value(Matchers.anyOf(
+        Matchers.equalTo((Number) assertData.get(0).getId()),
+        Matchers.equalTo((Number) assertData.get(0).getId().intValue())
+      )))
+      .andExpect(jsonPath("$[0].name").value(Matchers.equalTo(assertData.get(0).getName())))
+
+      .andExpect(jsonPath("$[1].id").value(Matchers.anyOf(
+        Matchers.equalTo((Number) assertData.get(1).getId()),
+        Matchers.equalTo((Number) assertData.get(1).getId().intValue())
+      )))
+      .andExpect(jsonPath("$[1].name").value(Matchers.equalTo(assertData.get(1).getName())))
+    ;
+
+    // expect method call
+    verify(domainUsecase, times(1)).keywordSearch(subjectKeyword);
   }
 
 }

@@ -7,6 +7,7 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
+import org.enlightenseries.DomainDictionary.application.config.LuceneProperties;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,16 @@ public class LuceneService {
 
   private Directory directory;
   private Analyzer analyzer;
+  private LuceneProperties luceneProperties;
 
   public LuceneService(
     Directory directory,
-    Analyzer analyzer
+    Analyzer analyzer,
+    LuceneProperties luceneProperties
   ) {
     this.directory = directory;
     this.analyzer = analyzer;
+    this.luceneProperties = luceneProperties;
   }
 
   private static String DOC_FIELD_ID = "id";
@@ -72,7 +76,7 @@ public class LuceneService {
     Query query = structQuery(keyword);
 
     // 検索実行
-    ScoreDoc[] hits = isearcher.search(query, 1000).scoreDocs;
+    ScoreDoc[] hits = isearcher.search(query, luceneProperties.getMaxSearchCound()).scoreDocs;
     List<Long> domainIds = new ArrayList();
 
     for (int i = 0; i < hits.length; i++) {

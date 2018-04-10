@@ -7,10 +7,13 @@ import org.enlightenseries.DomainDictionary.application.service.UserService;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
+import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
 import org.enlightenseries.DomainDictionary.domain.model.user.User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class DomainUsecase {
@@ -76,6 +79,18 @@ public class DomainUsecase {
 
     // 全文検索から削除
     this.luceneService.delete(id);
+  }
+
+  public List<DomainSummary> keywordSearch(String keyword) throws Exception {
+    List<DomainSummary> result = new ArrayList<>();
+
+    List<Long> searchedIds = luceneService.search(keyword);
+
+    searchedIds.forEach(id -> {
+      result.add(domainRepository.findDomainSummaryBy(id));
+    });
+
+    return result;
   }
 
 }
