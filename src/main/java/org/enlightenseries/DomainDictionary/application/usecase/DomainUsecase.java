@@ -49,7 +49,7 @@ public class DomainUsecase {
     this.domainRepository.registerDomainDetail(domainDetail);
 
     // ドメインIDが付与されたあと、全文検索に追加
-    this.luceneService.regist(domain);
+    this.luceneService.regist(domainDetail);
 
     return domainDetail;
   }
@@ -67,9 +67,9 @@ public class DomainUsecase {
 
     // 全文検索に更新、更新対象がない場合は追加
     try {
-      this.luceneService.update(domain);
+      this.luceneService.update(domainDetail);
     } catch (Exception e) {
-      this.luceneService.regist(domain);
+      this.luceneService.regist(domainDetail);
     }
 
   }
