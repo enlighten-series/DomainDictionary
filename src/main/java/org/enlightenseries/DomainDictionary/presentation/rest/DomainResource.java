@@ -56,7 +56,7 @@ public class DomainResource {
   }
 
   @PutMapping("/domains/{id}")
-  public ResponseEntity<Domain> updateDomain(@PathVariable Long id, @RequestBody Domain domain) {
+  public ResponseEntity<Domain> updateDomain(@PathVariable Long id, @RequestBody Domain domain) throws Exception {
     this.domainUsecase.update(id, domain);
 
     return ResponseEntity.ok()
