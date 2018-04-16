@@ -1,4 +1,5 @@
-<div class="view" *ngIf="isBlockVisible()">
+<div class="view"
+     *ngIf="isBlockVisible()">
   <div class="results">
     <mat-chip-list class="mat-chip-list-stacked">
       <mat-chip *ngFor="let _domain of searchResult$ | async">

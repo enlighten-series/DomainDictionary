@@ -23,10 +23,10 @@
 
   <div class="right">
     <button mat-fab
-      class="create-btn"
-      color="primary"
-      *ngIf="isAuthenticated()"
-      (click)="create()">
+            class="create-btn"
+            color="primary"
+            *ngIf="isAuthenticated()"
+            (click)="create()">
       <mat-icon>note_add</mat-icon>
     </button>
 
@@ -41,12 +41,13 @@
   </div>
 
   <div class="search">
-    <form ngForm (ngSubmit)="onSearch()">
+    <form ngForm
+          (ngSubmit)="onSearch()">
       <mat-form-field>
         <input matInput
-              placeholder="検索キーワード"
-              [(ngModel)]="searchKeyword"
-              name="domainSearchKeyword">
+               placeholder="検索キーワード"
+               [(ngModel)]="searchKeyword"
+               name="domainSearchKeyword">
       </mat-form-field>
     </form>
   </div>
