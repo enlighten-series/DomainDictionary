@@ -1,0 +1,16 @@
+.view {
+  background-color: rgba(0, 0, 0, .6);
+  min-height: 4em;
+  overflow: hidden;
+  padding: 1em;
+
+  .results {
+    margin: 0 auto;
+    width: 80%;
+
+    .mat-chip-list-stacked /deep/ .mat-chip-list-wrapper .mat-chip:not(.mat-basic-chip) {
+      float: left;
+      margin: 0.3em;
+    }
+  }
+}

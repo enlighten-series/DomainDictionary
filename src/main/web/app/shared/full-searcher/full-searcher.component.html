@@ -1,0 +1,9 @@
+<div class="view" *ngIf="isBlockVisible()">
+  <div class="results">
+    <mat-chip-list class="mat-chip-list-stacked">
+      <mat-chip *ngFor="let _domain of searchResult$ | async">
+        <a [routerLink]="'/detail/' + _domain.id">{{_domain.name}}</a>
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+</div>

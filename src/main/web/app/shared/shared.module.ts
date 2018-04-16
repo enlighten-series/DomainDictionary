@@ -23,10 +23,13 @@ import { EqualValidatorDirective } from './directives/equal-validator.directive'
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { FormsModule } from '@angular/forms';
+import { FullSearcherComponent } from './full-searcher/full-searcher.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
     FormsModule,
+    RouterModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
@@ -50,6 +53,7 @@ import { FormsModule } from '@angular/forms';
     ErrorPageComponent,
     LoginDialogComponent,
     EqualValidatorDirective,
+    FullSearcherComponent,
   ],
   entryComponents: [
     GrowlMessagerComponent,
@@ -71,8 +75,9 @@ import { FormsModule } from '@angular/forms';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    
+
     EqualValidatorDirective,
+    FullSearcherComponent,
   ]
 })
 export class SharedModule { }

@@ -1,0 +1,90 @@
+$zindexHeader: 1000;
+$zindexSearchComponent: 1001;
+$zindexAppMenu: 1002;
+
+header {
+  background-color: #ffd925;
+  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  height: 70px;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: $zindexHeader;
+}
+header {
+  overflow: hidden;
+
+  .left {
+    float: left;
+    left: 15px;
+    position: relative;
+    top: 15px;
+
+    .home-btn {
+      display: inline-block;
+    }
+    .app-menu-btn {
+      display: inline-block;
+    }
+    .app-github-btn i {
+      font-size: 1.5em;
+    }
+  }
+
+  .right {
+    float: right;
+    position: relative;
+    right: 15px;
+    top: 7px;
+
+    .create-btn {
+      margin-right: 10px;
+    }
+  }
+
+  .search {
+    margin: 0.625em auto 0 auto;
+    max-width: 400px;
+    width: 50%;
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+}
+
+.app-menu {
+  background-color: #fff;
+  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  left: 108px;
+  position: fixed;
+  top: 65px;
+  z-index: $zindexAppMenu;
+}
+.app-menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.app-menu li button {
+  display: block;
+  width: 100%;
+}
+
+app-full-searcher {
+  position: absolute;
+  top: 70px;
+  width: 100%;
+  z-index: $zindexSearchComponent;
+}
+
+.contents {
+  margin: 10px auto;
+  max-width: 940px;
+  padding: 75px;
+}

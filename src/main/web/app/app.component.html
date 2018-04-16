@@ -21,15 +21,38 @@
     </button>
   </div>
 
-  <button mat-fab
-          class="user-menu-btn"
-          [color]="bindUserButtonColor()"
-          (click)="showUserDialog($event)"
-          [matTooltip]="userTooltipLabel()"
-          [matTooltipPosition]="'before'">
-    <mat-icon>person</mat-icon>
-  </button>
+  <div class="right">
+    <button mat-fab
+      class="create-btn"
+      color="primary"
+      *ngIf="isAuthenticated()"
+      (click)="create()">
+      <mat-icon>note_add</mat-icon>
+    </button>
+
+    <button mat-fab
+            class="user-menu-btn"
+            [color]="bindUserButtonColor()"
+            (click)="showUserDialog($event)"
+            [matTooltip]="userTooltipLabel()"
+            [matTooltipPosition]="'before'">
+      <mat-icon>person</mat-icon>
+    </button>
+  </div>
+
+  <div class="search">
+    <form ngForm (ngSubmit)="onSearch()">
+      <mat-form-field>
+        <input matInput
+              placeholder="検索キーワード"
+              [(ngModel)]="searchKeyword"
+              name="domainSearchKeyword">
+      </mat-form-field>
+    </form>
+  </div>
 </header>
+
+<app-full-searcher #searcher></app-full-searcher>
 
 <div class="contents">
   <router-outlet></router-outlet>

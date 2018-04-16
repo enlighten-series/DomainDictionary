@@ -4,7 +4,10 @@
     <button mat-raised-button
             *ngIf="isAuthenticated()"
             color="primary"
-            (click)="create()">追加</button>
+            (click)="create()">
+      <mat-icon>note_add</mat-icon>
+      追加
+    </button>
   </div>
 
   <div class="filter-area">

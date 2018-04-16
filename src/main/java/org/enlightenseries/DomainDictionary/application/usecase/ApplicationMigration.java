@@ -6,6 +6,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.enlightenseries.DomainDictionary.application.config.ApplicationDemoProperties;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
+import org.enlightenseries.DomainDictionary.application.service.LuceneService;
 import org.enlightenseries.DomainDictionary.application.service.UserService;
 import org.enlightenseries.DomainDictionary.application.singleton.ApplicationMigrationStatus;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
@@ -45,6 +46,7 @@ public class ApplicationMigration {
   private final String exportDomainFileName = "export.csv";
 
   private UserService userService;
+  private LuceneService luceneService;
 
   private MetadataRepository metadataRepository;
   private UserRepository userRepository;
@@ -60,6 +62,7 @@ public class ApplicationMigration {
 
   public ApplicationMigration(
     UserService _userService,
+    LuceneService _luceneService,
     MetadataRepository _metadataRepository,
     UserRepository _userRepository,
     DomainRepository _domainRepository,
@@ -68,6 +71,7 @@ public class ApplicationMigration {
     ApplicationMigrationStatus _applicationMigrationStatus
   ) {
     this.userService = _userService;
+    this.luceneService = _luceneService;
     this.metadataRepository = _metadataRepository;
     this.userRepository = _userRepository;
     this.domainRepository = _domainRepository;
@@ -190,6 +194,15 @@ public class ApplicationMigration {
     domainRepository.registerDomainDetail(sample01Detail);
     domainRepository.registerDomainDetail(sample02Detail);
     domainRepository.registerDomainDetail(sample03Detail);
+    try {
+      luceneService.regist(sample00Detail);
+      luceneService.regist(sample01Detail);
+      luceneService.regist(sample02Detail);
+      luceneService.regist(sample03Detail);
+    } catch(Exception e) {
+      System.out.println("デモデータのインデックス登録に失敗しました");
+      e.printStackTrace();
+    }
 
     Relation relation1_3 = new Relation();
     DomainToRelation dr1_3_1 = new DomainToRelation(sample01Detail.getId(), relation1_3.getId());

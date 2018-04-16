@@ -6,13 +6,19 @@ import { DataImportDialogComponent } from './features/data-import-dialog/data-im
 import { LoginDialogComponent } from './shared/login-dialog/login-dialog.component';
 import { GrowlMessagerComponent } from './shared/widgets/growl-messager.component';
 import { AuthService } from './core/auth/auth.service';
+import { Subject } from 'rxjs/Subject';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { debounceTime, distinctUntilChanged, takeUntil, merge } from 'rxjs/operators';
+import { EventEmitter } from 'events';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { FullSearcherComponent } from './shared/full-searcher/full-searcher.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
 
   // #reion インタフェース
 
@@ -24,7 +30,7 @@ export class AppComponent implements OnInit{
     private router: Router,
     private dialog: MatDialog,
     private snack: MatSnackBar,
-    private auth: AuthService,
+    private auth: AuthService
   ) {}
 
   ngOnInit() {
@@ -38,14 +44,27 @@ export class AppComponent implements OnInit{
         if (this.appMenuVisible) {
           this.appMenuVisible = false;
         }
+
+        this.searchKeyword = '';
       });
+
+    // 検索窓の監視（アプリ全体で１つなので破棄処理なし）
+    this.keywordChange$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      merge(this.searchSubmit$),
+    ).subscribe((keyword: string) => {
+      this.search(keyword);
+    });
   }
 
   // #endregion
 
   // #region ビューバインド
-  
+
   @ViewChild(MatSidenav) sideNav: MatSidenav;
+
+  @ViewChild('searcher') searcher: FullSearcherComponent;
 
   appMenuVisible = false;
   userMenuVisible = false;
@@ -58,7 +77,7 @@ export class AppComponent implements OnInit{
     if (this.isAuthenticated()) {
       return this.auth.getAuthData().username;
     } else {
-      return "ログインしていません"
+      return "ログインしていません";
     }
   }
 
@@ -67,6 +86,14 @@ export class AppComponent implements OnInit{
       return '';
     }
     return 'accent';
+  }
+
+  set searchKeyword(s: string) {
+    this._searchKeyword = s;
+    this.keywordChange$.next(s);
+  }
+  get searchKeyword() {
+    return this._searchKeyword;
   }
 
   // #endregion
@@ -117,9 +144,25 @@ export class AppComponent implements OnInit{
     window.open('https://github.com/enlighten-series/DomainDictionary');
   }
 
+  onSearch() {
+    this.searchSubmit$.next(this._searchKeyword);
+  }
+
+  create() {
+    this.router.navigate(['/create']);
+  }
+
   // #endregion
 
   // #region プライベート
+
+  private _searchKeyword = '';
+  private keywordChange$ = new Subject<string>();
+  private searchSubmit$ = new Subject<string>();
+
+  private search(keyword: string) {
+    this.searcher.search(keyword);
+  }
 
   // #endregion
 }
