@@ -1,11 +1,20 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { NgForm } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatSnackBar,
+} from '@angular/material';
 import { GrowlMessagerComponent } from '../../shared/widgets/growl-messager.component';
 
 @Component({
-  selector: 'regist-confirm-dialog',
+  selector: 'app-regist-confirm-dialog',
   template: `
   <mat-dialog-content>インポートを行うと、関連を含む全てのデータが削除されます。実行しますか？</mat-dialog-content>
   <mat-dialog-actions>
@@ -14,20 +23,19 @@ import { GrowlMessagerComponent } from '../../shared/widgets/growl-messager.comp
   </mat-dialog-actions>
   `,
 })
-export class ImportConfirmDialog {
+export class ImportConfirmDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<ImportConfirmDialog>,
+    public dialogRef: MatDialogRef<ImportConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  ) { }
+  ) {}
 }
 
 @Component({
   selector: 'app-data-import-dialog',
   templateUrl: './data-import-dialog.component.html',
-  styleUrls: ['./data-import-dialog.component.scss']
+  styleUrls: ['./data-import-dialog.component.scss'],
 })
 export class DataImportDialogComponent implements OnInit {
-
   // #reion インタフェース
 
   // #endregion
@@ -40,10 +48,9 @@ export class DataImportDialogComponent implements OnInit {
     private http: HttpClient,
     private snack: MatSnackBar,
     private dialog: MatDialog,
-  ) { }
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   // #endregion
 
@@ -63,13 +70,13 @@ export class DataImportDialogComponent implements OnInit {
 
   importFileChange(event) {
     const fileList: FileList = event.target.files;
-    if(fileList.length > 0) {
+    if (fileList.length > 0) {
       this.selectedImportFile = fileList[0];
     }
   }
 
   import() {
-    let dialogRef = this.dialog.open(ImportConfirmDialog);
+    const dialogRef = this.dialog.open(ImportConfirmDialogComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.executeImport();
@@ -85,36 +92,40 @@ export class DataImportDialogComponent implements OnInit {
 
   private executeImport() {
     const formData: FormData = new FormData();
-    formData.append('importFile', this.selectedImportFile, this.selectedImportFile.name);
+    formData.append(
+      'importFile',
+      this.selectedImportFile,
+      this.selectedImportFile.name,
+    );
 
     const headers = new HttpHeaders();
     headers.set('Accept', 'application/json');
 
-    this.http.post('/api/application-migration/import', formData, {
-      headers: headers,
-    })
-    .subscribe(
-      data => {
-        this.snack.openFromComponent(GrowlMessagerComponent, {
-          data: {
-            message: 'インポートが完了しました。',
-          },
-          duration: 3000,
-        });
-        this.dialogRef.close(true);
-      },
-      (error: HttpErrorResponse) => {
-        this.snack.openFromComponent(GrowlMessagerComponent, {
-          data: {
-            message: error.error.message,
-          },
-          duration: 3000,
-        });
-      }
-    );
+    this.http
+      .post('/api/application-migration/import', formData, {
+        headers: headers,
+      })
+      .subscribe(
+        data => {
+          this.snack.openFromComponent(GrowlMessagerComponent, {
+            data: {
+              message: 'インポートが完了しました。',
+            },
+            duration: 3000,
+          });
+          this.dialogRef.close(true);
+        },
+        (error: HttpErrorResponse) => {
+          this.snack.openFromComponent(GrowlMessagerComponent, {
+            data: {
+              message: error.error.message,
+            },
+            duration: 3000,
+          });
+        },
+      );
     this.form.reset();
   }
 
   // #endregion
-
 }

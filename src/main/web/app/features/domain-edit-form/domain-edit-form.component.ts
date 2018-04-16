@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  Inject,
+} from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { NgForm } from '@angular/forms';
 import { from } from 'rxjs/observable/from';
@@ -6,7 +13,7 @@ import { from } from 'rxjs/observable/from';
 import { Domain } from '../../models/domain';
 
 @Component({
-  selector: 'regist-confirm-dialog',
+  selector: 'app-regist-confirm-dialog',
   template: `
   <mat-dialog-content>登録しますか？</mat-dialog-content>
   <mat-dialog-actions>
@@ -15,13 +22,11 @@ import { Domain } from '../../models/domain';
   </mat-dialog-actions>
   `,
 })
-export class RegistConfirmDialog {
-
+export class RegistConfirmDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<RegistConfirmDialog>,
+    public dialogRef: MatDialogRef<RegistConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  ) { }
-
+  ) {}
 }
 
 @Component({
@@ -30,7 +35,6 @@ export class RegistConfirmDialog {
   styleUrls: ['./domain-edit-form.component.css'],
 })
 export class DomainEditFormComponent implements OnInit {
-
   @Input()
   set initialValue(d: Domain) {
     this.editingDomain.name = d.name;
@@ -48,31 +52,26 @@ export class DomainEditFormComponent implements OnInit {
     existential: '',
   };
 
-  constructor(
-    private registConfirmDialog: MatDialog,
-  ) { }
+  constructor(private registConfirmDialog: MatDialog) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   clickedRegist(form: NgForm) {
     if (!form.valid) {
       // 入力項目をdirtyにしてエラーメッセージを表示する
-      from(Object.keys(form.controls))
-      .subscribe(
-        key => {
-          form.controls[key].markAsDirty();
-        }
-      )
+      from(Object.keys(form.controls)).subscribe(key => {
+        form.controls[key].markAsDirty();
+      });
       return;
     }
 
-    let dialogRef = this.registConfirmDialog.open(RegistConfirmDialog);
+    const dialogRef = this.registConfirmDialog.open(
+      RegistConfirmDialogComponent,
+    );
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.regist.emit(this.editingDomain);
       }
     });
   }
-
 }

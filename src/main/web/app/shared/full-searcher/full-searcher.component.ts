@@ -7,20 +7,16 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Component({
   selector: 'app-full-searcher',
   templateUrl: './full-searcher.component.html',
-  styleUrls: ['./full-searcher.component.scss']
+  styleUrls: ['./full-searcher.component.scss'],
 })
 export class FullSearcherComponent implements OnInit {
-
   // #reion インタフェース
 
   // #endregion
 
   // #region コンストラクタ・ライフサイクル
 
-  constructor(
-    private snack: MatSnackBar,
-    private http: HttpClient,
-  ) {}
+  constructor(private snack: MatSnackBar, private http: HttpClient) {}
 
   ngOnInit() {
     // no-op
@@ -55,21 +51,21 @@ export class FullSearcherComponent implements OnInit {
       return;
     }
 
-    const _params = new HttpParams()
-      .set('keyword', keyword);
+    const _params = new HttpParams().set('keyword', keyword);
 
     // 検索実行
-    this.http.get('/api/domains/_search', {
-      params: _params
-    })
-    .subscribe(
-      (data: any) => {
-        this.searchResult$.next(data);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.http
+      .get('/api/domains/_search', {
+        params: _params,
+      })
+      .subscribe(
+        (data: any) => {
+          this.searchResult$.next(data);
+        },
+        error => {
+          console.log(error);
+        },
+      );
   }
 
   // #endregion
@@ -77,5 +73,4 @@ export class FullSearcherComponent implements OnInit {
   // #region プライベート
 
   // #endregion
-
 }

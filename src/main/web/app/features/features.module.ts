@@ -4,13 +4,22 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { LicenseListComponent } from './license-list/license-list.component';
-import { DataImportDialogComponent, ImportConfirmDialog } from './data-import-dialog/data-import-dialog.component';
+import {
+  DataImportDialogComponent,
+  ImportConfirmDialogComponent,
+} from './data-import-dialog/data-import-dialog.component';
 import { DataExportDialogComponent } from './data-export-dialog/data-export-dialog.component';
 import { SharedModule } from '../shared/shared.module';
 import { DomainListComponent } from './domain-list/domain-list.component';
 import { DomainCreateComponent } from './domain-create/domain-create.component';
-import { DomainEditFormComponent, RegistConfirmDialog } from './domain-edit-form/domain-edit-form.component';
-import { DomainDetailComponent, DeleteConfirmDialog } from './domain-detail/domain-detail.component';
+import {
+  DomainEditFormComponent,
+  RegistConfirmDialogComponent,
+} from './domain-edit-form/domain-edit-form.component';
+import {
+  DomainDetailComponent,
+  DeleteConfirmDialogComponent,
+} from './domain-detail/domain-detail.component';
 import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialog/edit-relation-dialog.component';
 
 @NgModule({
@@ -26,23 +35,23 @@ import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialo
     DomainListComponent,
     DomainCreateComponent,
     DomainEditFormComponent,
-    RegistConfirmDialog,
+    RegistConfirmDialogComponent,
     DomainDetailComponent,
-    DeleteConfirmDialog,
+    DeleteConfirmDialogComponent,
     EditRelationDialogComponent,
-    
+
     DataExportDialogComponent,
     DataImportDialogComponent,
-    ImportConfirmDialog,
+    ImportConfirmDialogComponent,
     LicenseListComponent,
   ],
   entryComponents: [
-    DeleteConfirmDialog,
-    RegistConfirmDialog,
+    DeleteConfirmDialogComponent,
+    RegistConfirmDialogComponent,
     EditRelationDialogComponent,
     DataExportDialogComponent,
     DataImportDialogComponent,
-    ImportConfirmDialog,
-  ]
+    ImportConfirmDialogComponent,
+  ],
 })
-export class FeaturesModule { }
+export class FeaturesModule {}

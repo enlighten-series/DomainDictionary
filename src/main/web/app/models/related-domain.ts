@@ -3,6 +3,5 @@ export class RelatedDomain {
     public relationId: string,
     public domainId: number,
     public name: string,
-  ) {
-  }
+  ) {}
 }

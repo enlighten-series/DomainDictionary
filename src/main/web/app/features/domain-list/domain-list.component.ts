@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
@@ -16,10 +16,9 @@ import { AuthService } from '../../core/auth/auth.service';
 @Component({
   selector: 'app-domain-list',
   templateUrl: './domain-list.component.html',
-  styleUrls: ['./domain-list.component.css']
+  styleUrls: ['./domain-list.component.css'],
 })
-export class DomainListComponent implements OnInit {
-
+export class DomainListComponent implements OnInit, OnDestroy {
   // #region interfaces
 
   // #endregion
@@ -31,10 +30,7 @@ export class DomainListComponent implements OnInit {
     private http: HttpClient,
     private auth: AuthService,
   ) {
-    this.displayedColumns = [
-      'name',
-      'description',
-    ];
+    this.displayedColumns = ['name', 'description'];
     this.filteredDomains = new ViewDomainListDataSource(this.allDomains$);
   }
 
@@ -42,7 +38,7 @@ export class DomainListComponent implements OnInit {
     this.setupSubscriptions();
     this.reqGetAllDomains();
   }
-  
+
   ngOnDestroy() {
     this.destroySubscriptions();
   }
@@ -78,24 +74,24 @@ export class DomainListComponent implements OnInit {
   // #region privates
 
   private subscriptions: Subscription[] = [];
-  private allDomains$: BehaviorSubject<Domain[]> = new BehaviorSubject<Domain[]>([]);
+  private allDomains$: BehaviorSubject<Domain[]> = new BehaviorSubject<
+    Domain[]
+  >([]);
 
   private setupSubscriptions() {
     this.subscriptions.push(
-      fromEvent(this.filterName.nativeElement, 'keyup').pipe(
-        debounceTime(150),
-        distinctUntilChanged()
-      ).subscribe(() => {
-        this.filteredDomains.nameFilter = this.filterName.nativeElement.value;
-      })
+      fromEvent(this.filterName.nativeElement, 'keyup')
+        .pipe(debounceTime(150), distinctUntilChanged())
+        .subscribe(() => {
+          this.filteredDomains.nameFilter = this.filterName.nativeElement.value;
+        }),
     );
     this.subscriptions.push(
-      fromEvent(this.filterDescription.nativeElement, 'keyup').pipe(
-        debounceTime(150),
-        distinctUntilChanged()
-      ).subscribe(() => {
-        this.filteredDomains.descriptionFilter = this.filterDescription.nativeElement.value;
-      })
+      fromEvent(this.filterDescription.nativeElement, 'keyup')
+        .pipe(debounceTime(150), distinctUntilChanged())
+        .subscribe(() => {
+          this.filteredDomains.descriptionFilter = this.filterDescription.nativeElement.value;
+        }),
     );
   }
 
@@ -106,26 +102,23 @@ export class DomainListComponent implements OnInit {
   }
 
   private reqGetAllDomains() {
-    this.http.get('/api/domains')
-      .subscribe(
-        (data: any) => {
-          this.allDomains$.next(data);
-        },
-        (error) => {
-          console.log(error);
-          this.allDomains$.next([]);
-        }
-      );
+    this.http.get('/api/domains').subscribe(
+      (data: any) => {
+        this.allDomains$.next(data);
+      },
+      error => {
+        console.log(error);
+        this.allDomains$.next([]);
+      },
+    );
   }
 
   // #endregion
-
 }
 
 class ViewDomainListDataSource extends DataSource<Domain> {
-
   // #region interfaces
-  
+
   set nameFilter(filter: string) {
     this._nameFilterChange.next(filter);
   }
@@ -148,7 +141,7 @@ class ViewDomainListDataSource extends DataSource<Domain> {
     ];
 
     return merge(...listChangeCauses$).pipe(
-      map(() => this.dataChange.value.slice().filter(d =>  this.listFilter(d))),
+      map(() => this.dataChange.value.slice().filter(d => this.listFilter(d))),
     );
   }
 
@@ -158,9 +151,7 @@ class ViewDomainListDataSource extends DataSource<Domain> {
 
   // #region constructor
 
-  constructor(
-    private dataChange: BehaviorSubject<Domain[]>
-  ) {
+  constructor(private dataChange: BehaviorSubject<Domain[]>) {
     super();
   }
 
@@ -174,16 +165,15 @@ class ViewDomainListDataSource extends DataSource<Domain> {
   private listFilter(item: Domain): boolean {
     let through = true;
     // ドメイン名フィルタ適用
-    if (item.name.indexOf(this.nameFilter) == -1) {
+    if (item.name.indexOf(this.nameFilter) === -1) {
       through = false;
     }
     // 説明フィルタ適用
-    if (item.description.indexOf(this.descriptionFilter) == -1) {
+    if (item.description.indexOf(this.descriptionFilter) === -1) {
       through = false;
     }
     return through;
   }
 
   // #endregion
-
 }

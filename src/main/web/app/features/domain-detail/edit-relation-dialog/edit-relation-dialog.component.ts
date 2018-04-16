@@ -12,10 +12,9 @@ import { GrowlMessagerComponent } from '../../../shared/widgets/growl-messager.c
 @Component({
   selector: 'app-edit-relation-dialog',
   templateUrl: './edit-relation-dialog.component.html',
-  styleUrls: ['./edit-relation-dialog.component.scss']
+  styleUrls: ['./edit-relation-dialog.component.scss'],
 })
 export class EditRelationDialogComponent implements OnInit {
-
   // #reion interface
 
   // #endregion
@@ -48,7 +47,7 @@ export class EditRelationDialogComponent implements OnInit {
 
   filteredOptions$: Observable<DomainSummary[]>;
   relatedDomains: RelatedDomain[] = [];
-  
+
   displayFn(option: DomainSummary) {
     return option ? option.name : option;
   }
@@ -58,11 +57,10 @@ export class EditRelationDialogComponent implements OnInit {
   // #region event
 
   remove(domain: RelatedDomain): void {
-    let index = this.relatedDomains.indexOf(domain);
+    const index = this.relatedDomains.indexOf(domain);
 
     if (index >= 0) {
-      this.http.delete('/api/relations/' + domain.relationId)
-      .subscribe(
+      this.http.delete('/api/relations/' + domain.relationId).subscribe(
         (data: any) => {
           this.relatedDomains.splice(index, 1);
           this.snack.openFromComponent(GrowlMessagerComponent, {
@@ -79,7 +77,7 @@ export class EditRelationDialogComponent implements OnInit {
             },
             duration: 3000,
           });
-        }
+        },
       );
     }
   }
@@ -106,35 +104,34 @@ export class EditRelationDialogComponent implements OnInit {
       alert('該当すドメインが見つかりません');
       return;
     }
-    if (targetDomain.id == this.sourceId) {
+    if (targetDomain.id === this.sourceId) {
       alert('同一ドメインを関連づけることはできません');
       this.domainAddFormGroup.reset();
       return;
     }
 
-    this.http.post('/api/relations', {
-      source: this.sourceId,
-      destination: targetDomain.id,
-    })
-    .subscribe(
-      (data: any) => {
-        this.relatedDomains.push(new RelatedDomain(
-          data.id,
-          targetDomain.id,
-          targetDomain.name,
-        ));
-        this.snack.openFromComponent(GrowlMessagerComponent, {
-          data: {
-            message: '関連を追加しました',
-          },
-          duration: 800,
-        });
-      },
-      (error) => {
-        alert('エラーがありました。コンソールログを確認してください。');
-        console.log(error);
-      }
-    );
+    this.http
+      .post('/api/relations', {
+        source: this.sourceId,
+        destination: targetDomain.id,
+      })
+      .subscribe(
+        (data: any) => {
+          this.relatedDomains.push(
+            new RelatedDomain(data.id, targetDomain.id, targetDomain.name),
+          );
+          this.snack.openFromComponent(GrowlMessagerComponent, {
+            data: {
+              message: '関連を追加しました',
+            },
+            duration: 800,
+          });
+        },
+        error => {
+          alert('エラーがありました。コンソールログを確認してください。');
+          console.log(error);
+        },
+      );
 
     // 送信したらフォームはクリア
     this.domainAddFormGroup.reset();
@@ -148,32 +145,35 @@ export class EditRelationDialogComponent implements OnInit {
   private sourceId: number;
 
   private setupFilter() {
-    this.filteredOptions$ = this.domainAddFormGroup.controls['addDomain'].valueChanges
-      .pipe(
-        startWith({} as DomainSummary),
-        map((input: string|DomainSummary) => input && typeof input === 'object' ? input.name : input),
-        map((input: string) => input ? this.filter(input) : []),
-      );
+    this.filteredOptions$ = this.domainAddFormGroup.controls[
+      'addDomain'
+    ].valueChanges.pipe(
+      startWith({} as DomainSummary),
+      map(
+        (input: string | DomainSummary) =>
+          input && typeof input === 'object' ? input.name : input,
+      ),
+      map((input: string) => (input ? this.filter(input) : [])),
+    );
   }
 
   private requestAllDomainSummary() {
-    this.http.get('/api/domains')
-      .subscribe(
-        (data: DomainSummary[]) => {
-          this.domainSummaryOptions = data;
-        },
-        (error) => {
-          console.log(error);
-          this.domainSummaryOptions = [];
-        }
-      );
+    this.http.get('/api/domains').subscribe(
+      (data: DomainSummary[]) => {
+        this.domainSummaryOptions = data;
+      },
+      error => {
+        console.log(error);
+        this.domainSummaryOptions = [];
+      },
+    );
   }
-  
+
   private filter(name: string): DomainSummary[] {
-    return this.domainSummaryOptions.filter(option =>
-      option.name.indexOf(name) >= 0);
+    return this.domainSummaryOptions.filter(
+      option => option.name.indexOf(name) >= 0,
+    );
   }
 
   // #endregion
-
 }

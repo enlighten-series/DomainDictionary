@@ -55,10 +55,7 @@ import { RouterModule } from '@angular/router';
     EqualValidatorDirective,
     FullSearcherComponent,
   ],
-  entryComponents: [
-    GrowlMessagerComponent,
-    LoginDialogComponent,
-  ],
+  entryComponents: [GrowlMessagerComponent, LoginDialogComponent],
   exports: [
     MatAutocompleteModule,
     MatButtonModule,
@@ -78,6 +75,6 @@ import { RouterModule } from '@angular/router';
 
     EqualValidatorDirective,
     FullSearcherComponent,
-  ]
+  ],
 })
-export class SharedModule { }
+export class SharedModule {}

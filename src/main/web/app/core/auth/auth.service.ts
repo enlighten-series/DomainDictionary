@@ -5,20 +5,14 @@ import { Auth } from './auth';
 
 @Injectable()
 export class AuthService {
-
   private auth$: BehaviorSubject<Auth> = new BehaviorSubject(<Auth>{});
 
-  constructor(
-    private http: HttpClient,
-  ) { }
+  constructor(private http: HttpClient) {}
 
   updateAuthentication() {
-    this.http.get('/api/authentication')
-    .subscribe(
-      data => {
-        this.auth$.next(<Auth>data);
-      }
-    )
+    this.http.get('/api/authentication').subscribe(data => {
+      this.auth$.next(<Auth>data);
+    });
   }
 
   clearAuthentication() {
@@ -35,5 +29,4 @@ export class AuthService {
     }
     return false;
   }
-
 }

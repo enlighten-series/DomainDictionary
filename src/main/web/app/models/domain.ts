@@ -1,4 +1,4 @@
-import { RelatedDomain } from "./related-domain";
+import { RelatedDomain } from './related-domain';
 
 export class Domain {
   id: number;
@@ -20,7 +20,7 @@ export class Domain {
     existential?,
     created?,
     updated?,
-    relatedDomains?
+    relatedDomains?,
   ) {
     this.id = id ? id : 1;
     this.name = name ? name : '';

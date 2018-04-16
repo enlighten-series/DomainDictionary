@@ -8,22 +8,19 @@ import { GrowlMessagerComponent } from '../../shared/widgets/growl-messager.comp
 @Component({
   selector: 'app-domain-create',
   templateUrl: './domain-create.component.html',
-  styleUrls: ['./domain-create.component.css']
+  styleUrls: ['./domain-create.component.css'],
 })
 export class DomainCreateComponent implements OnInit {
-
   constructor(
     private router: Router,
     private http: HttpClient,
     public snack: MatSnackBar,
-  ) { }
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   emittedRegist(event) {
-    this.http.post('/api/domains', event)
-    .subscribe(
+    this.http.post('/api/domains', event).subscribe(
       (data: any) => {
         this.snack.openFromComponent(GrowlMessagerComponent, {
           data: {
@@ -33,10 +30,9 @@ export class DomainCreateComponent implements OnInit {
         });
         this.router.navigate(['/detail', data.id]);
       },
-      (error) => {
+      error => {
         console.log(error);
-      }
+      },
     );
   }
-
 }

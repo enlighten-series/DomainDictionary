@@ -1,7 +1,26 @@
-import { Component, OnInit, Inject, ViewChild, NgZone } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Inject,
+  ViewChild,
+  NgZone,
+  OnDestroy,
+} from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTabGroup, MatRadioButton } from '@angular/material';
-import { ActivatedRoute, ParamMap, Router, NavigationEnd } from '@angular/router';
+import {
+  MatSnackBar,
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatTabGroup,
+  MatRadioButton,
+} from '@angular/material';
+import {
+  ActivatedRoute,
+  ParamMap,
+  Router,
+  NavigationEnd,
+} from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import * as marked from 'marked';
 import * as highlight from 'highlight.js';
@@ -16,7 +35,7 @@ import { RelatedDomain } from '../../models/related-domain';
 import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
-  selector: 'delete-confirm-dialog',
+  selector: 'app-delete-confirm-dialog',
   template: `
   <mat-dialog-content>
   削除するには、以下にドメイン名<span class="delete-domain-name">{{domainName}}</span>を入力してください。
@@ -42,15 +61,14 @@ import { AuthService } from '../../core/auth/auth.service';
       margin: 0 0.1em;
       padding: 0.15em;
     }`,
-  ]
+  ],
 })
-export class DeleteConfirmDialog {
-
+export class DeleteConfirmDialogComponent {
   domainName: string;
   enterName: string;
 
   constructor(
-    public dialogRef: MatDialogRef<DeleteConfirmDialog>,
+    public dialogRef: MatDialogRef<DeleteConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.domainName = data.name;
@@ -63,16 +81,14 @@ export class DeleteConfirmDialog {
   delete() {
     this.dialogRef.close(true);
   }
-
 }
 
 @Component({
   selector: 'app-domain-detail',
   templateUrl: './domain-detail.component.html',
-  styleUrls: ['./domain-detail.component.css']
+  styleUrls: ['./domain-detail.component.css'],
 })
-export class DomainDetailComponent implements OnInit {
-
+export class DomainDetailComponent implements OnInit, OnDestroy {
   // #reion インタフェース
 
   // #endregion
@@ -90,41 +106,48 @@ export class DomainDetailComponent implements OnInit {
   ) {
     // URLでidのみ変更される場合はコンポーネント再作成が行われないため、firstではなく継続的にsubscribeする。
     this.subscriptions.push(
-      this.activateRoute.paramMap
-        .subscribe((param: ParamMap) => {
-          this.id = Number(param.get('id'));
-          this.loadDomainDetail();
-        })
+      this.activateRoute.paramMap.subscribe((param: ParamMap) => {
+        this.id = Number(param.get('id'));
+        this.loadDomainDetail();
+      }),
     );
 
     // 遷移時にコンポーネント再作成が行われないためスクロール位置を先頭に移動する
     this.subscriptions.push(
-      this.router.events.filter(e => e instanceof NavigationEnd)
-      .subscribe(e => {
-        this.goTop = true;
-      })
+      this.router.events
+        .filter(e => e instanceof NavigationEnd)
+        .subscribe(e => {
+          this.goTop = true;
+        }),
     );
 
     highlight.initHighlightingOnLoad();
 
     marked.setOptions({
-      highlight: function (code) {
+      highlight: function(code) {
         return highlight.highlightAuto(code).value;
-      }
+      },
     });
     // anchorに常にtarget=blankを付与する
-    this.myMarkedRenderer.link = function( href, title, text ) {
-      return '<a target="_blank" href="' + href + '" title="' + title + '">' + text + '</a>';
+    this.myMarkedRenderer.link = function(href, title, text) {
+      return (
+        '<a target="_blank" href="' +
+        href +
+        '" title="' +
+        title +
+        '">' +
+        text +
+        '</a>'
+      );
     };
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
-    })
+    });
   }
 
   // #endregion
@@ -143,13 +166,13 @@ export class DomainDetailComponent implements OnInit {
   }
 
   isActiveDetail() {
-    return this.activeIndex == 0;
+    return this.activeIndex === 0;
   }
   isActiveEdit() {
-    return this.activeIndex == 1;
+    return this.activeIndex === 1;
   }
   isActiveOther() {
-    return this.activeIndex == 2;
+    return this.activeIndex === 2;
   }
 
   innerHtmlOfName() {
@@ -174,8 +197,7 @@ export class DomainDetailComponent implements OnInit {
   }
 
   emittedRegist(event) {
-    this.http.put('/api/domains/' + this.id, event)
-    .subscribe(
+    this.http.put('/api/domains/' + this.id, event).subscribe(
       (data: any) => {
         this.snack.openFromComponent(GrowlMessagerComponent, {
           data: {
@@ -187,14 +209,14 @@ export class DomainDetailComponent implements OnInit {
         this.loadDomainDetail();
         this.matTabGroup.selectedIndex = 0;
       },
-      (error) => {
+      error => {
         console.log(error);
-      }
+      },
     );
   }
 
   showAddRelationDialog() {
-    let dialogRef = this.dialog.open(EditRelationDialogComponent, {
+    const dialogRef = this.dialog.open(EditRelationDialogComponent, {
       data: {
         sourceId: this.id,
         currentRelatedDomains: this.relatedDomains,
@@ -206,7 +228,7 @@ export class DomainDetailComponent implements OnInit {
   }
 
   clickedDelete() {
-    let dialogRef = this.dialog.open(DeleteConfirmDialog, {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
       data: {
         name: this.viewDomain.name,
       },
@@ -235,37 +257,42 @@ export class DomainDetailComponent implements OnInit {
   private myMarkedRenderer = new marked.Renderer();
 
   private loadDomainDetail() {
-    this.http.get('/api/domains/' + this.id)
-    .subscribe(
+    this.http.get('/api/domains/' + this.id).subscribe(
       (domain: Domain) => {
         this.viewDomain = domain;
         this.editFormInitialValue = domain;
 
         // markdown parse
         this.parsedName = this.viewDomain.name;
-        marked(this.viewDomain.format, { renderer: this.myMarkedRenderer },
+        marked(
+          this.viewDomain.format,
+          { renderer: this.myMarkedRenderer },
           (err, content) => {
             if (err) {
               throw err;
             }
             this.parsedFormat = content;
-          }
+          },
         );
-        marked(this.viewDomain.description, { renderer: this.myMarkedRenderer },
+        marked(
+          this.viewDomain.description,
+          { renderer: this.myMarkedRenderer },
           (err, content) => {
             if (err) {
               throw err;
             }
             this.parsedDescription = content;
-          }
+          },
         );
-        marked(this.viewDomain.existential, { renderer: this.myMarkedRenderer },
+        marked(
+          this.viewDomain.existential,
+          { renderer: this.myMarkedRenderer },
           (err, content) => {
             if (err) {
               throw err;
             }
             this.parsedExistential = content;
-          }
+          },
         );
 
         // related domain
@@ -277,15 +304,14 @@ export class DomainDetailComponent implements OnInit {
           }
         });
       },
-      (error) => {
+      error => {
         console.log(error);
-      }
+      },
     );
   }
 
   private executeDelete() {
-    this.http.delete('/api/domains/' + this.id)
-    .subscribe(
+    this.http.delete('/api/domains/' + this.id).subscribe(
       (data: any) => {
         this.snack.openFromComponent(GrowlMessagerComponent, {
           data: {
@@ -302,10 +328,9 @@ export class DomainDetailComponent implements OnInit {
           },
           duration: 3000,
         });
-      }
+      },
     );
   }
 
   // #endregion
-
 }

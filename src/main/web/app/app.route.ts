@@ -7,31 +7,31 @@ import { LicenseListComponent } from './features/license-list/license-list.compo
 import { ErrorPageComponent } from './shared/error-page/error-page.component';
 
 export const ROUTES: Route[] = [
-    {
-        path: '',
-        component: DomainListComponent,
+  {
+    path: '',
+    component: DomainListComponent,
+  },
+  {
+    path: 'create',
+    component: DomainCreateComponent,
+  },
+  {
+    path: 'detail/:id',
+    component: DomainDetailComponent,
+  },
+  {
+    path: 'license',
+    component: LicenseListComponent,
+  },
+  {
+    path: '404',
+    component: ErrorPageComponent,
+    data: {
+      status: '404',
     },
-    {
-        path: 'create',
-        component: DomainCreateComponent,
-    },
-    {
-        path: 'detail/:id',
-        component: DomainDetailComponent,
-    },
-    {
-        path: 'license',
-        component: LicenseListComponent,
-    },
-    {
-        path: '404',
-        component: ErrorPageComponent,
-        data: {
-            status: '404'
-        },
-    },
-    {
-        path: '**',
-        component: ErrorPageComponent,
-    },
+  },
+  {
+    path: '**',
+    component: ErrorPageComponent,
+  },
 ];

@@ -13,21 +13,19 @@ import { SharedModule } from './shared/shared.module';
 import { FeaturesModule } from './features/features.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot(ROUTES, {useHash: true}),
+    RouterModule.forRoot(ROUTES, { useHash: true }),
 
     CoreModule,
     SharedModule,
     FeaturesModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

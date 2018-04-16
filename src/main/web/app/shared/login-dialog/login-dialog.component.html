@@ -76,7 +76,7 @@
         <input type="password"
                #confirm="ngModel"
                matInput
-               [validateEqual]="signupPassword"
+               [appValidateEqual]="signupPassword"
                placeholder="パスワードの確認"
                name="passwordConfirm"
                [(ngModel)]="signupPasswordConfirm"

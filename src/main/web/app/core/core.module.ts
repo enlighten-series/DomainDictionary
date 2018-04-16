@@ -7,9 +7,7 @@ import { EmptyResponseBodyInterceptor } from './interceptor/empty-response-body-
 import { HttpStatusInterceptor } from './interceptor/http-status-interceptor';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   declarations: [],
   providers: [
     AuthService,
@@ -25,4 +23,4 @@ import { HttpStatusInterceptor } from './interceptor/http-status-interceptor';
     },
   ],
 })
-export class CoreModule { }
+export class CoreModule {}

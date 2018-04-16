@@ -1,8 +1,18 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatTabGroup } from '@angular/material';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatSnackBar,
+  MatTabGroup,
+} from '@angular/material';
 import { GrowlMessagerComponent } from '../widgets/growl-messager.component';
 import { AuthService } from '../../core/auth/auth.service';
 
@@ -12,7 +22,6 @@ import { AuthService } from '../../core/auth/auth.service';
   styleUrls: ['./login-dialog.component.scss'],
 })
 export class LoginDialogComponent implements OnInit {
-
   // #reion インタフェース
 
   // #endregion
@@ -26,10 +35,9 @@ export class LoginDialogComponent implements OnInit {
     private snack: MatSnackBar,
     private auth: AuthService,
     private router: Router,
-  ) { }
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   // #endregion
 
@@ -49,10 +57,10 @@ export class LoginDialogComponent implements OnInit {
   }
 
   isActiveAuth() {
-    return this.activeIndex == 0;
+    return this.activeIndex === 0;
   }
   isActiveSignUp() {
-    return this.activeIndex == 1;
+    return this.activeIndex === 1;
   }
 
   getAuthUserName(): string {
@@ -76,10 +84,13 @@ export class LoginDialogComponent implements OnInit {
       return;
     }
 
-    const data = 'username=' + encodeURIComponent(this.username) +
-      '&password=' + encodeURIComponent(this.password);
-    const headers = new HttpHeaders ({
-      'Content-Type': 'application/x-www-form-urlencoded'
+    const data =
+      'username=' +
+      encodeURIComponent(this.username) +
+      '&password=' +
+      encodeURIComponent(this.password);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
     });
 
     /**
@@ -87,9 +98,8 @@ export class LoginDialogComponent implements OnInit {
      * https://github.com/angular/angular/issues/19555
      * https://github.com/angular/angular/issues/18680
      */
-    this.http.post('/api/login', data, { headers: headers })
-    .subscribe(
-      data => {
+    this.http.post('/api/login', data, { headers: headers }).subscribe(
+      (res: any) => {
         this.snack.openFromComponent(GrowlMessagerComponent, {
           data: {
             message: 'ログインしました',
@@ -99,8 +109,8 @@ export class LoginDialogComponent implements OnInit {
         this.auth.updateAuthentication();
         this.dialogRef.close(true);
       },
-      (res: HttpErrorResponse) => {
-        if (res.status == 401) {
+      (err: HttpErrorResponse) => {
+        if (err.status === 401) {
           this.snack.openFromComponent(GrowlMessagerComponent, {
             data: {
               message: 'ユーザまたはパスワードが違います。',
@@ -108,26 +118,23 @@ export class LoginDialogComponent implements OnInit {
             duration: 3000,
           });
         } else {
-          console.log(res);
+          console.log(err);
         }
-      }
+      },
     );
   }
 
   logout() {
-    this.http.post('/api/logout', {})
-    .subscribe(
-      data => {
-        this.snack.openFromComponent(GrowlMessagerComponent, {
-          data: {
-            message: 'ログアウトしました',
-          },
-          duration: 3000,
-        });
-        this.auth.clearAuthentication();
-        this.router.navigate(['/']);
-      }
-    );
+    this.http.post('/api/logout', {}).subscribe(data => {
+      this.snack.openFromComponent(GrowlMessagerComponent, {
+        data: {
+          message: 'ログアウトしました',
+        },
+        duration: 3000,
+      });
+      this.auth.clearAuthentication();
+      this.router.navigate(['/']);
+    });
   }
 
   signup(form: NgForm) {
@@ -135,30 +142,31 @@ export class LoginDialogComponent implements OnInit {
       return;
     }
 
-    this.http.post('/api/user', {
-      username: this.signupUsername,
-      password: this.signupPassword,
-    })
-    .subscribe(
-      data => {
-        this.snack.openFromComponent(GrowlMessagerComponent, {
-          data: {
-            message: 'ユーザ:' + this.signupUsername + 'が作成されました！',
-          },
-          duration: 3000,
-        });
-        form.reset();
-        this.matTabGroup.selectedIndex = 0;
-      },
-      (res: HttpErrorResponse) => {
-        this.snack.openFromComponent(GrowlMessagerComponent, {
-          data: {
-            message: res.error.message,
-          },
-          duration: 3000,
-        });
-      }
-    );
+    this.http
+      .post('/api/user', {
+        username: this.signupUsername,
+        password: this.signupPassword,
+      })
+      .subscribe(
+        data => {
+          this.snack.openFromComponent(GrowlMessagerComponent, {
+            data: {
+              message: 'ユーザ:' + this.signupUsername + 'が作成されました！',
+            },
+            duration: 3000,
+          });
+          form.reset();
+          this.matTabGroup.selectedIndex = 0;
+        },
+        (res: HttpErrorResponse) => {
+          this.snack.openFromComponent(GrowlMessagerComponent, {
+            data: {
+              message: res.error.message,
+            },
+            duration: 3000,
+          });
+        },
+      );
   }
 
   // #endregion
@@ -168,5 +176,4 @@ export class LoginDialogComponent implements OnInit {
   private activeIndex = 0;
 
   // #endregion
-
 }

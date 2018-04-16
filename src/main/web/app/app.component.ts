@@ -8,7 +8,12 @@ import { GrowlMessagerComponent } from './shared/widgets/growl-messager.componen
 import { AuthService } from './core/auth/auth.service';
 import { Subject } from 'rxjs/Subject';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { debounceTime, distinctUntilChanged, takeUntil, merge } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  takeUntil,
+  merge,
+} from 'rxjs/operators';
 import { EventEmitter } from 'events';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { FullSearcherComponent } from './shared/full-searcher/full-searcher.component';
@@ -16,10 +21,9 @@ import { FullSearcherComponent } from './shared/full-searcher/full-searcher.comp
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-
   // #reion インタフェース
 
   // #endregion
@@ -30,7 +34,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private snack: MatSnackBar,
-    private auth: AuthService
+    private auth: AuthService,
   ) {}
 
   ngOnInit() {
@@ -39,8 +43,8 @@ export class AppComponent implements OnInit {
 
     // メニューからの画面遷移が行われた際にメニューを閉じる
     this.router.events
-      .filter((e) => e instanceof NavigationStart)
-      .subscribe((e) => {
+      .filter(e => e instanceof NavigationStart)
+      .subscribe(e => {
         if (this.appMenuVisible) {
           this.appMenuVisible = false;
         }
@@ -49,13 +53,15 @@ export class AppComponent implements OnInit {
       });
 
     // 検索窓の監視（アプリ全体で１つなので破棄処理なし）
-    this.keywordChange$.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      merge(this.searchSubmit$),
-    ).subscribe((keyword: string) => {
-      this.search(keyword);
-    });
+    this.keywordChange$
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        merge(this.searchSubmit$),
+      )
+      .subscribe((keyword: string) => {
+        this.search(keyword);
+      });
   }
 
   // #endregion
@@ -77,7 +83,7 @@ export class AppComponent implements OnInit {
     if (this.isAuthenticated()) {
       return this.auth.getAuthData().username;
     } else {
-      return "ログインしていません";
+      return 'ログインしていません';
     }
   }
 
@@ -112,7 +118,7 @@ export class AppComponent implements OnInit {
   }
 
   showUserDialog(e: MouseEvent) {
-    let dialogRef = this.dialog.open(LoginDialogComponent);
+    const dialogRef = this.dialog.open(LoginDialogComponent);
   }
 
   @HostListener('window:click')
@@ -123,11 +129,11 @@ export class AppComponent implements OnInit {
 
   export() {
     // エクスポートなので後処理なし
-    let dialogRef = this.dialog.open(DataExportDialogComponent);
+    const dialogRef = this.dialog.open(DataExportDialogComponent);
   }
 
   import() {
-    let dialogRef = this.dialog.open(DataImportDialogComponent);
+    const dialogRef = this.dialog.open(DataImportDialogComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         alert('インポートが完了しました。アプリケーションをリロードします。');

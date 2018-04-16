@@ -6,10 +6,9 @@ import 'rxjs/add/observable/throw';
 @Component({
   selector: 'app-data-export-dialog',
   templateUrl: './data-export-dialog.component.html',
-  styleUrls: ['./data-export-dialog.component.scss']
+  styleUrls: ['./data-export-dialog.component.scss'],
 })
 export class DataExportDialogComponent implements OnInit {
-
   // #reion インタフェース
 
   // #endregion
@@ -20,7 +19,7 @@ export class DataExportDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<DataExportDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient,
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.checkGeneratingStatus();
@@ -48,16 +47,17 @@ export class DataExportDialogComponent implements OnInit {
 
   generateExportFile() {
     this.nowGenerating = true;
-    this.http.post('/api/application-migration/export/generate', null)
-    .subscribe(
-      (res: any) => {
-        console.log('trigger start!');
-        this.triggerCycleCheckStatus();
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.http
+      .post('/api/application-migration/export/generate', null)
+      .subscribe(
+        (res: any) => {
+          console.log('trigger start!');
+          this.triggerCycleCheckStatus();
+        },
+        error => {
+          console.log(error);
+        },
+      );
   }
 
   downloadExportFile() {
@@ -68,13 +68,12 @@ export class DataExportDialogComponent implements OnInit {
 
   // #region プライベート
 
-  private nowGenerating: boolean = false;
-  private generated: boolean = false;
+  private nowGenerating = false;
+  private generated = false;
   private latestGeneratedDate: Date;
 
   private checkGeneratingStatus() {
-    this.http.get('/api/application-migration/export/status')
-    .subscribe(
+    this.http.get('/api/application-migration/export/status').subscribe(
       (status: any) => {
         this.nowGenerating = status.nowGenerating;
         this.latestGeneratedDate = status.latestGeneratedDate;
@@ -82,12 +81,12 @@ export class DataExportDialogComponent implements OnInit {
           this.generated = true;
         }
       },
-      (error) => {
+      error => {
         console.log(error);
-      }
+      },
     );
   }
-  
+
   private triggerCycleCheckStatus() {
     console.log('trigger');
     setTimeout(() => {
@@ -100,5 +99,4 @@ export class DataExportDialogComponent implements OnInit {
   }
 
   // #endregion
-
 }
