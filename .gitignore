@@ -80,6 +80,6 @@ src/main/resources/static/*
 /bin/
 /out/
 
-# H2DB永続化ファイル
-*.mv.db
-*.trace.db
+# 各種データファイル
+data
+!data/.gitkeep
