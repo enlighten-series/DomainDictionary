@@ -21,6 +21,7 @@ import {
   DeleteConfirmDialogComponent,
 } from './domain-detail/domain-detail.component';
 import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialog/edit-relation-dialog.component';
+import { DomainListRecentComponent } from './domain-list-recent/domain-list-recent.component';
 
 @NgModule({
   imports: [
@@ -44,6 +45,7 @@ import { EditRelationDialogComponent } from './domain-detail/edit-relation-dialo
     DataImportDialogComponent,
     ImportConfirmDialogComponent,
     LicenseListComponent,
+    DomainListRecentComponent,
   ],
   entryComponents: [
     DeleteConfirmDialogComponent,

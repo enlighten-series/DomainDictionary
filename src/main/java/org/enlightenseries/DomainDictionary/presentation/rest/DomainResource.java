@@ -34,6 +34,11 @@ public class DomainResource {
     return this.domainService.list();
   }
 
+  @GetMapping("/domains/recent")
+  public List<Domain> getRecentDomains() {
+    return this.domainService.listRecent();
+  }
+
   @GetMapping("/domains/{id}")
   public ResponseEntity<DomainDto> getDomain(@PathVariable Long id) {
     DomainDetail domain = this.domainService.findDomainDetailBy(id);

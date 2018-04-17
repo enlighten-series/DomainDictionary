@@ -67,6 +67,7 @@ public class DomainUsecase {
 
     // 全文検索に更新、更新対象がない場合は追加
     try {
+      domainDetail.setId(id); // ここでidをセットしないと、インデックスの基準になるIDがない。なんとかしないと。
       this.luceneService.update(domainDetail);
     } catch (Exception e) {
       this.luceneService.regist(domainDetail);

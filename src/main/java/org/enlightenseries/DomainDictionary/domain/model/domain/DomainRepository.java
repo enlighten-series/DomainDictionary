@@ -10,6 +10,8 @@ import java.util.List;
 public interface DomainRepository {
   List<Domain> list();
 
+  List<Domain> listLatestUpdated(int maxCount);
+
   Domain findBy(Long id);
 
   DomainDetail findDomainDetailBy(Long id);

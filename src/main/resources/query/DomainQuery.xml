@@ -13,6 +13,22 @@
     FROM
       domain
   </select>
+  <select id="selectLatestUpdated" parameterType="int" resultType="org.enlightenseries.DomainDictionary.domain.model.domain.Domain">
+    SELECT
+      id,
+      name,
+      format,
+      description,
+      existential,
+      created,
+      updated
+    FROM
+      domain
+    ORDER BY
+      updated desc
+    LIMIT
+      #{maxCount}
+  </select>
   <select id="select" parameterType="Long" resultType="org.enlightenseries.DomainDictionary.domain.model.domain.Domain">
     SELECT
       id,

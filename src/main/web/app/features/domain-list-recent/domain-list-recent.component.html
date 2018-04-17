@@ -1,0 +1,21 @@
+<mat-card>
+  <h1>最近更新されたドメイン</h1>
+
+  <mat-table #table
+             [dataSource]="domainDataSource">
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>ドメイン名</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <a routerLink="/detail/{{row.id}}">{{row.name}}</a>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef>説明</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.description | slice:0:40 }}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+</mat-card>

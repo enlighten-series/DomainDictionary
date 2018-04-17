@@ -31,6 +31,10 @@ public class DomainService {
     return this.domainRepository.list();
   }
 
+  public List<Domain> listRecent() {
+    return this.domainRepository.listLatestUpdated(10);
+  }
+
   public Domain findBy(Long id) {
     return this.domainRepository.findBy(id);
   }

@@ -5,11 +5,12 @@ import { DomainCreateComponent } from './features/domain-create/domain-create.co
 import { DomainDetailComponent } from './features/domain-detail/domain-detail.component';
 import { LicenseListComponent } from './features/license-list/license-list.component';
 import { ErrorPageComponent } from './shared/error-page/error-page.component';
+import { DomainListRecentComponent } from './features/domain-list-recent/domain-list-recent.component';
 
 export const ROUTES: Route[] = [
   {
     path: '',
-    component: DomainListComponent,
+    component: DomainListRecentComponent,
   },
   {
     path: 'create',

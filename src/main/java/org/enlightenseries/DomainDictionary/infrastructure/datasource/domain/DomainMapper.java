@@ -13,6 +13,8 @@ public interface DomainMapper {
 
   List<Domain> selectAll();
 
+  List<Domain> selectLatestUpdated(int maxCount);
+
   Domain select(Long id);
 
   DomainMetaUser selectMetaUser(Long id);

@@ -38,13 +38,6 @@ export class FullSearcherComponent implements OnInit {
   // #region イベント
 
   public search(keyword: string) {
-    this.snack.openFromComponent(GrowlMessagerComponent, {
-      data: {
-        message: `"${keyword}" で検索します...`,
-      },
-      duration: 1000,
-    });
-
     if (keyword === '') {
       // 結果を空にする
       this.searchResult$.next(this._emptyResult);

@@ -41,6 +41,11 @@ public class DomainDatasource implements DomainRepository {
   }
 
   @Override
+  public List<Domain> listLatestUpdated(int maxCount) {
+    return this.domainMapper.selectLatestUpdated(maxCount);
+  }
+
+  @Override
   public Domain findBy(Long id) {
     return this.domainMapper.select(id);
   }
