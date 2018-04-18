@@ -78,7 +78,7 @@ public class ApplicationMigration {
 
     this.currentMajorVersion = "0";
     this.currentMinorVersion = "4";
-    this.currentPatchVersion = "0";
+    this.currentPatchVersion = "2";
   }
 
   @PostConstruct
@@ -233,6 +233,7 @@ public class ApplicationMigration {
       domainRepository.export(printer);
       relationRepository.export(printer);
       domainToRelationRepository.export(printer);
+      userRepository.export(printer);
 
     } catch (Exception e) {
       throw e;
