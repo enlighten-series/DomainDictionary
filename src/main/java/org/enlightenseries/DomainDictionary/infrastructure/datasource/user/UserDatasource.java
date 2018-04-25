@@ -1,8 +1,13 @@
 package org.enlightenseries.DomainDictionary.infrastructure.datasource.user;
 
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
+import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.user.User;
 import org.enlightenseries.DomainDictionary.domain.model.user.UserRepository;
 import org.springframework.stereotype.Repository;
+
+import java.io.IOException;
 
 @Repository
 public class UserDatasource implements UserRepository {
@@ -38,5 +43,26 @@ public class UserDatasource implements UserRepository {
   @Override
   public void createTable() {
     userMapper.createTable();
+  }
+
+  @Override
+  public void export(CSVPrinter printer) throws Exception {
+
+    printer.printRecord("User start");
+
+    userMapper.exportAll(context -> {
+      User user = context.getResultObject();
+      try {
+        printer.printRecord(
+          user.getId(),
+          user.getUsername(),
+          user.getPassword()
+        );
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    });
+
+    printer.printRecord("User end");
   }
 }

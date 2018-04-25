@@ -50,4 +50,12 @@
       password CHAR(60) NOT NULL
     )
   </insert>
+  <select id="exportAll" resultType="org.enlightenseries.DomainDictionary.domain.model.user.User">
+    SELECT
+      id,
+      username,
+      password
+    FROM
+      user
+  </select>
 </mapper>
