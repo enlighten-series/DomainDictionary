@@ -6,6 +6,10 @@ import org.enlightenseries.DomainDictionary.domain.model.user.User;
 
 public class DomainDetail extends Domain {
 
+  public DomainDetail() {
+    super();
+  }
+
   public DomainDetail(Domain base) {
     super(
       base.getId(),
