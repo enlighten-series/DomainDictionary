@@ -8,7 +8,7 @@ import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
-import org.enlightenseries.DomainDictionary.domain.model.user.User;
+import org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.dao.DomainExport;
 import org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.dao.DomainMetaUser;
 import org.enlightenseries.DomainDictionary.infrastructure.datasource.user.UserMapper;
 import org.springframework.stereotype.Repository;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -117,16 +116,18 @@ public class DomainDatasource implements DomainRepository {
     printer.printRecord("Domain start");
 
     domainMapper.exportAll(context -> {
-      Domain domain = context.getResultObject();
+      DomainExport domain = context.getResultObject();
       try {
         printer.printRecord(
-          domain.getId(),
-          domain.getName(),
-          domain.getFormat(),
-          domain.getDescription(),
-          domain.getExistential(),
-          importExportDateFormat.format(domain.getCreated()),
-          importExportDateFormat.format(domain.getUpdated())
+          domain.getDomain().getId(),
+          domain.getDomain().getName(),
+          domain.getDomain().getFormat(),
+          domain.getDomain().getDescription(),
+          domain.getDomain().getExistential(),
+          importExportDateFormat.format(domain.getDomain().getCreated()),
+          importExportDateFormat.format(domain.getDomain().getUpdated()),
+          domain.getDomainMetaUser().getCreatedBy(),
+          domain.getDomainMetaUser().getUpdatedBy()
         );
       } catch (IOException e) {
         e.printStackTrace();

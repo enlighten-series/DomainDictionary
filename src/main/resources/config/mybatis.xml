@@ -6,6 +6,8 @@
     <setting name="mapUnderscoreToCamelCase" value="true"/>
     <!-- SQL 内で AS によって設定された列名をマップする -->
     <setting name="useColumnLabel" value="true"/>
+    <!-- ネストされたステートメントに対して ResultHandler の使用を許可するかどうかを設定します。 許可する場合は、 false を設定します。 -->
+    <setting name="safeResultHandlerEnabled" value="false"/>
   </settings>
   <typeHandlers>
     <package name="org.enlightenseries.DomainDictionary.infrastructure.datasource.typehandler" />

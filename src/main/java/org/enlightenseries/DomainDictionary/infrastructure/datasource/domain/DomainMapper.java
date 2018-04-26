@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.session.ResultHandler;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
+import org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.dao.DomainExport;
 import org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.dao.DomainMetaUser;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public interface DomainMapper {
 
   void createTableMetaUser();
 
-  void exportAll(ResultHandler<Domain> resultHandler);
+  void exportAll(ResultHandler<DomainExport> resultHandler);
 
   void deleteAllForImport();
 

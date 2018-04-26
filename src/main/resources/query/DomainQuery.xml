@@ -124,17 +124,25 @@
       updated_by BIGINT
     )
   </insert>
-  <select id="exportAll" resultType="org.enlightenseries.DomainDictionary.domain.model.domain.Domain">
+  <select id="exportAll" resultMap="exportResultMap">
     SELECT
-      id,
-      name,
-      format,
-      description,
-      existential,
-      created,
-      updated
+      main.id as id,
+      main.name as name,
+      main.format as format,
+      main.description as description,
+      main.existential as existential,
+      main.created as created,
+      main.updated as updated,
+      meta.created_by as created_by,
+      meta.updated_by as updated_by
     FROM
-      domain
+      domain main
+    LEFT JOIN
+      domain_meta_user meta
+    ON
+      main.id = meta.id
+    ORDER BY
+      main.id
   </select>
   <delete id="deleteAllForImport">
     DELETE FROM
@@ -159,4 +167,22 @@
       #{updated}
     )
   </insert>
+
+  <resultMap id="exportResultMap" type="org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.dao.DomainExport">
+    <id property="id" column="id" />
+    <association property="domain" javaType="org.enlightenseries.DomainDictionary.domain.model.domain.Domain">
+      <id property="id" column="id" />
+      <result property="name" column="name"/>
+      <result property="format" column="format"/>
+      <result property="description" column="description"/>
+      <result property="existential" column="existential"/>
+      <result property="created" column="created"/>
+      <result property="updated" column="updated"/>
+    </association>
+    <association property="domainMetaUser" javaType="org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.dao.DomainMetaUser">
+      <id property="id" column="id" />
+      <result property="createdBy" column="created_by"/>
+      <result property="updatedBy" column="updated_by"/>
+    </association>
+  </resultMap>
 </mapper>
