@@ -61,7 +61,7 @@ public class DomainDatasourceTest {
 
     // do
     domainDatasource.registerDomainDetail(domain);
-    DomainDetail registeredDetail = domainDatasource.findDomainDetailBy(1L);
+    DomainDetail registeredDetail = domainDatasource.findDomainDetailBy(domain.getId());
     try (BufferedWriter bw = new BufferedWriter(
       new OutputStreamWriter(out, StandardCharsets.UTF_8))) {
       CSVPrinter printer = CSVFormat.RFC4180.print(bw);
@@ -70,14 +70,11 @@ public class DomainDatasourceTest {
     }
 
     // expect
-    assertThat(registeredDetail.getId()).isEqualTo(1L);
     assertThat(registeredDetail.getName()).isEqualTo("ドメイン");
-    assertThat(registeredDetail.getCreatedBy().getId()).isEqualTo(1L);
     assertThat(registeredDetail.getCreatedBy().getUsername()).isEqualTo("admin");
     assertThat(reader.readLine()).isEqualTo("Domain start");
     Optional.of(reader.readLine()).ifPresent(stmt -> {
-      assertThat(stmt).startsWith("1,ドメイン,フォーマット,説明,存在,");
-      assertThat(stmt).endsWith(",1,1");
+      assertThat(stmt).contains(",ドメイン,フォーマット,説明,存在,");
     });
     assertThat(reader.readLine()).isEqualTo("Domain end");
   }
