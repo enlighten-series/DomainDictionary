@@ -1,8 +1,7 @@
 package org.enlightenseries.DomainDictionary.application.usecase;
 
-import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.application.service.DomainService;
-import org.enlightenseries.DomainDictionary.application.service.LuceneService;
+import org.enlightenseries.DomainDictionary.application.service.SearchService;
 import org.enlightenseries.DomainDictionary.application.service.UserService;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
@@ -21,18 +20,18 @@ public class DomainUsecase {
   private UserService userService;
   private DomainService domainService;
   private DomainRepository domainRepository;
-  private LuceneService luceneService;
+  private SearchService searchService;
 
   public DomainUsecase(
     UserService _userService,
     DomainService _domainService,
     DomainRepository _domainRepository,
-    LuceneService _luceneService
+    SearchService _searchService
   ) {
     this.userService = _userService;
     this.domainService = _domainService;
     this.domainRepository = _domainRepository;
-    this.luceneService = _luceneService;
+    this.searchService = _searchService;
   }
 
   public DomainDetail register(Domain domain) throws Exception {
@@ -49,7 +48,7 @@ public class DomainUsecase {
     this.domainRepository.registerDomainDetail(domainDetail);
 
     // ドメインIDが付与されたあと、全文検索に追加
-    this.luceneService.regist(domainDetail);
+    this.searchService.regist(domainDetail);
 
     return domainDetail;
   }
@@ -68,9 +67,9 @@ public class DomainUsecase {
     // 全文検索に更新、更新対象がない場合は追加
     try {
       domainDetail.setId(id); // ここでidをセットしないと、インデックスの基準になるIDがない。なんとかしないと。
-      this.luceneService.update(domainDetail);
+      this.searchService.update(domainDetail);
     } catch (Exception e) {
-      this.luceneService.regist(domainDetail);
+      this.searchService.regist(domainDetail);
     }
 
   }
@@ -79,13 +78,13 @@ public class DomainUsecase {
     this.domainService.delete(id);
 
     // 全文検索から削除
-    this.luceneService.delete(id);
+    this.searchService.delete(id);
   }
 
   public List<DomainSummary> keywordSearch(String keyword) throws Exception {
     List<DomainSummary> result = new ArrayList<>();
 
-    List<Long> searchedIds = luceneService.search(keyword);
+    List<Long> searchedIds = searchService.search(keyword);
 
     searchedIds.forEach(id -> {
       result.add(domainRepository.findDomainSummaryBy(id));

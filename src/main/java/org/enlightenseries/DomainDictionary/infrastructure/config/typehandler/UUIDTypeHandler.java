@@ -1,4 +1,4 @@
-package org.enlightenseries.DomainDictionary.infrastructure.datasource.typehandler;
+package org.enlightenseries.DomainDictionary.infrastructure.config.typehandler;
 
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;

@@ -10,6 +10,6 @@
     <setting name="safeResultHandlerEnabled" value="false"/>
   </settings>
   <typeHandlers>
-    <package name="org.enlightenseries.DomainDictionary.infrastructure.datasource.typehandler" />
+    <package name="org.enlightenseries.DomainDictionary.infrastructure.config.typehandler" />
   </typeHandlers>
 </configuration>

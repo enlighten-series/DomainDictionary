@@ -1,4 +1,4 @@
-package org.enlightenseries.DomainDictionary.application.config;
+package org.enlightenseries.DomainDictionary.infrastructure.config;
 
 import lombok.Getter;
 import lombok.Setter;

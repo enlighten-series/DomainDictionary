@@ -6,7 +6,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.enlightenseries.DomainDictionary.application.config.ApplicationDemoProperties;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
-import org.enlightenseries.DomainDictionary.application.service.LuceneService;
+import org.enlightenseries.DomainDictionary.infrastructure.datasource.LuceneRepository;
 import org.enlightenseries.DomainDictionary.application.service.UserService;
 import org.enlightenseries.DomainDictionary.application.singleton.ApplicationMigrationStatus;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
@@ -21,12 +21,9 @@ import org.enlightenseries.DomainDictionary.domain.model.relation.RelationReposi
 import org.enlightenseries.DomainDictionary.domain.model.user.User;
 import org.enlightenseries.DomainDictionary.domain.model.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
@@ -46,7 +43,7 @@ public class ApplicationMigration {
   private final String exportDomainFileName = "export.csv";
 
   private UserService userService;
-  private LuceneService luceneService;
+  private LuceneRepository luceneService;
 
   private MetadataRepository metadataRepository;
   private UserRepository userRepository;
@@ -62,7 +59,7 @@ public class ApplicationMigration {
 
   public ApplicationMigration(
     UserService _userService,
-    LuceneService _luceneService,
+    LuceneRepository _luceneService,
     MetadataRepository _metadataRepository,
     UserRepository _userRepository,
     DomainRepository _domainRepository,
@@ -81,8 +78,8 @@ public class ApplicationMigration {
     this.applicationMigrationStatus = _applicationMigrationStatus;
 
     this.currentMajorVersion = "0";
-    this.currentMinorVersion = "4";
-    this.currentPatchVersion = "2";
+    this.currentMinorVersion = "5";
+    this.currentPatchVersion = "0";
   }
 
   @PostConstruct
@@ -325,6 +322,13 @@ public class ApplicationMigration {
         return;
       }
 
+      if (majorVersion.equals("0")
+        && minorVersion.equals("4")
+        && patchVersion.equals("2")) {
+        import_0_4_X(parser);
+        return;
+      }
+
       throw new ApplicationException("バージョン " +
         majorVersion + "." +
         minorVersion + "." +
@@ -342,6 +346,13 @@ public class ApplicationMigration {
   }
 
   private void import_0_3_X(CSVParser parser) throws Exception {
+    domainRepository.import_0_3_X(parser);
+    relationRepository.import_0_3_X(parser);
+    domainToRelationRepository.import_0_3_X(parser);
+  }
+
+  private void import_0_4_X(CSVParser parser) throws Exception {
+    // TODO:
     domainRepository.import_0_3_X(parser);
     relationRepository.import_0_3_X(parser);
     domainToRelationRepository.import_0_3_X(parser);

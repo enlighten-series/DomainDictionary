@@ -1,7 +1,7 @@
 package org.enlightenseries.DomainDictionary.application.usecase;
 
 import org.enlightenseries.DomainDictionary.application.service.DomainService;
-import org.enlightenseries.DomainDictionary.application.service.LuceneService;
+import org.enlightenseries.DomainDictionary.application.service.SearchService;
 import org.enlightenseries.DomainDictionary.application.service.UserService;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
@@ -10,7 +10,6 @@ import org.enlightenseries.DomainDictionary.domain.model.user.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -39,7 +38,7 @@ public class DomainUsecaseTest {
   private DomainRepository domainRepositoryMock;
 
   @MockBean
-  private LuceneService luceneServiceMock;
+  private SearchService searchServiceMock;
 
   @Before
   public void setup() {
@@ -47,7 +46,7 @@ public class DomainUsecaseTest {
       userServiceMock,
       domainServiceMock,
       domainRepositoryMock,
-      luceneServiceMock
+      searchServiceMock
     ));
   }
 
@@ -72,7 +71,7 @@ public class DomainUsecaseTest {
     verify(userServiceMock, times(1)).findByUsername(any());
     verify(domainServiceMock, times(0)).register(any());
     verify(domainRepositoryMock, times(1)).registerDomainDetail(any());
-    verify(luceneServiceMock, times(1)).regist(any()); // TODO: 値スパイしないとテストの意味が・・・
+    verify(searchServiceMock, times(1)).regist(any()); // TODO: 値スパイしないとテストの意味が・・・
   }
 
   @Test
@@ -103,11 +102,11 @@ public class DomainUsecaseTest {
     // expect
     verify(userServiceMock, times(1)).findByUsername(registuser.getUsername());
     verify(domainRepositoryMock, times(1)).registerDomainDetail(any());
-    verify(luceneServiceMock, times(1)).regist(any());    // TODO: 値スパイしないとテストの意味が・・・
+    verify(searchServiceMock, times(1)).regist(any());    // TODO: 値スパイしないとテストの意味が・・・
 
     verify(userServiceMock, times(1)).findByUsername(updateuser.getUsername());
     verify(domainRepositoryMock, times(1)).updateDomainDetail(any(), any());
-    verify(luceneServiceMock, times(1)).update(any());    // TODO: 値スパイしないとテストの意味が・・・
+    verify(searchServiceMock, times(1)).update(any());    // TODO: 値スパイしないとテストの意味が・・・
   }
 
   @Test
@@ -120,7 +119,7 @@ public class DomainUsecaseTest {
 
     // expect
     verify(domainServiceMock, times(1)).delete(1L);
-    verify(luceneServiceMock, times(1)).delete(1L);
+    verify(searchServiceMock, times(1)).delete(1L);
   }
 
   @Test
@@ -130,7 +129,7 @@ public class DomainUsecaseTest {
     List<Long> searchedIds = new ArrayList<>();
     searchedIds.add(1L);
     searchedIds.add(2L);
-    when(luceneServiceMock.search(keyword)).thenReturn(searchedIds);
+    when(searchServiceMock.search(keyword)).thenReturn(searchedIds);
 
     DomainSummary summary1 = new DomainSummary(1L, "ドメイン１");
     DomainSummary summary2 = new DomainSummary(2L, "ドメイン２");
@@ -141,7 +140,7 @@ public class DomainUsecaseTest {
     List<DomainSummary> subject = domainUsecase.keywordSearch(keyword);
 
     // expect method call
-    verify(luceneServiceMock, times(1)).search(keyword);
+    verify(searchServiceMock, times(1)).search(keyword);
     verify(domainRepositoryMock, times(1)).findDomainSummaryBy(summary1.getId());
     verify(domainRepositoryMock, times(1)).findDomainSummaryBy(summary2.getId());
 

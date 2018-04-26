@@ -3,10 +3,11 @@ package org.enlightenseries.DomainDictionary.application.service;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.ja.JapaneseAnalyzer;
 import org.apache.lucene.store.*;
-import org.enlightenseries.DomainDictionary.application.config.LuceneProperties;
+import org.enlightenseries.DomainDictionary.infrastructure.config.LuceneProperties;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
+import org.enlightenseries.DomainDictionary.infrastructure.datasource.LuceneRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,9 +23,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class LuceneServiceTest {
+public class LuceneRepositoryTest {
 
-  private LuceneService luceneService;
+  private LuceneRepository luceneRepository;
 
   @Autowired
   private LuceneProperties luceneProperties;
@@ -34,7 +35,7 @@ public class LuceneServiceTest {
     Directory directory = new RAMDirectory();
     Analyzer analyzer = new JapaneseAnalyzer();
 
-    luceneService = new LuceneService(directory, analyzer, luceneProperties);
+    luceneRepository = new LuceneRepository(directory, analyzer, luceneProperties);
   }
 
   @Test
@@ -51,7 +52,7 @@ public class LuceneServiceTest {
     );
 
     // do
-    luceneService.regist(domain);
+    luceneRepository.regist(domain);
 
     // expect
     // no-op
@@ -72,10 +73,10 @@ public class LuceneServiceTest {
     DomainDetail domainDetail = new DomainDetail(domain);
 
     // do
-    luceneService.regist(domain);
+    luceneRepository.regist(domain);
     Exception occured = null;
     try {
-      luceneService.regist(domainDetail);
+      luceneRepository.regist(domainDetail);
     } catch (Exception e) {
       occured = e;
     }
@@ -100,12 +101,12 @@ public class LuceneServiceTest {
     );
 
     // do
-    luceneService.regist(domain);
-    List<Long> nameResult = luceneService.search("ドメイン");
-    List<Long> descriptionResult = luceneService.search("フォーマット");
-    List<Long> existentialResult = luceneService.search("説明");
-    List<Long> formatResult = luceneService.search("理由");
-    List<Long> nohitResult = luceneService.search("マット");
+    luceneRepository.regist(domain);
+    List<Long> nameResult = luceneRepository.search("ドメイン");
+    List<Long> descriptionResult = luceneRepository.search("フォーマット");
+    List<Long> existentialResult = luceneRepository.search("説明");
+    List<Long> formatResult = luceneRepository.search("理由");
+    List<Long> nohitResult = luceneRepository.search("マット");
 
     // expect
     assertThat(nameResult.get(0)).isEqualTo(1L);
@@ -121,7 +122,7 @@ public class LuceneServiceTest {
     // no-op
 
     // do
-    boolean first = luceneService.existDomain(1L);
+    boolean first = luceneRepository.existDomain(1L);
 
     // expect
     assertThat(first).isFalse();
@@ -141,10 +142,10 @@ public class LuceneServiceTest {
     );
 
     // do
-    boolean before = luceneService.existDomain(domain.getId());
-    luceneService.regist(domain);
-    List<Long> nameResult = luceneService.search("ドメイン");
-    boolean after = luceneService.existDomain(domain.getId());
+    boolean before = luceneRepository.existDomain(domain.getId());
+    luceneRepository.regist(domain);
+    List<Long> nameResult = luceneRepository.search("ドメイン");
+    boolean after = luceneRepository.existDomain(domain.getId());
 
     // expect
     assertThat(before).isFalse();
@@ -164,20 +165,20 @@ public class LuceneServiceTest {
       new Date(),
       new Date()
     );
-    luceneService.regist(domain);
+    luceneRepository.regist(domain);
 
     // do
     domain.setName("新しいドメイン");
     domain.setFormat("新しいフォーマット");
     domain.setDescription("新しい説明");
     domain.setExistential("新しい理由");
-    luceneService.update(domain);
-    List<Long> newResult = luceneService.search("新しい");
-    List<Long> nameResult = luceneService.search("ドメイン");
-    List<Long> descriptionResult = luceneService.search("フォーマット");
-    List<Long> existentialResult = luceneService.search("説明");
-    List<Long> formatResult = luceneService.search("理由");
-    List<Long> nohitResult = luceneService.search("マット");
+    luceneRepository.update(domain);
+    List<Long> newResult = luceneRepository.search("新しい");
+    List<Long> nameResult = luceneRepository.search("ドメイン");
+    List<Long> descriptionResult = luceneRepository.search("フォーマット");
+    List<Long> existentialResult = luceneRepository.search("説明");
+    List<Long> formatResult = luceneRepository.search("理由");
+    List<Long> nohitResult = luceneRepository.search("マット");
 
     // expect
     assertThat(newResult.get(0)).isEqualTo(1L);
@@ -200,12 +201,12 @@ public class LuceneServiceTest {
       new Date(),
       new Date()
     );
-    luceneService.regist(domain);
+    luceneRepository.regist(domain);
 
     // do
-    List<Long> beforeResult = luceneService.search("ドメイン");
-    luceneService.delete(1L);
-    List<Long> afterResult = luceneService.search("ドメイン");
+    List<Long> beforeResult = luceneRepository.search("ドメイン");
+    luceneRepository.delete(1L);
+    List<Long> afterResult = luceneRepository.search("ドメイン");
 
     // expect
     assertThat(beforeResult.get(0)).isEqualTo(1L);

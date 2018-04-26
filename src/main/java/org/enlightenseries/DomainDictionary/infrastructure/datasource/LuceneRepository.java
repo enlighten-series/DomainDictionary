@@ -1,4 +1,4 @@
-package org.enlightenseries.DomainDictionary.application.service;
+package org.enlightenseries.DomainDictionary.infrastructure.datasource;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.*;
@@ -7,23 +7,24 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
-import org.enlightenseries.DomainDictionary.application.config.LuceneProperties;
+import org.enlightenseries.DomainDictionary.infrastructure.config.LuceneProperties;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class LuceneService {
+@Repository
+public class LuceneRepository {
 
   private Directory directory;
   private Analyzer analyzer;
   private LuceneProperties luceneProperties;
 
-  public LuceneService(
+  public LuceneRepository(
     Directory directory,
     Analyzer analyzer,
     LuceneProperties luceneProperties
