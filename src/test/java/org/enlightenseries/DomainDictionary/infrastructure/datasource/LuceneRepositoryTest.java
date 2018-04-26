@@ -1,4 +1,4 @@
-package org.enlightenseries.DomainDictionary.application.service;
+package org.enlightenseries.DomainDictionary.infrastructure.datasource;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.ja.JapaneseAnalyzer;

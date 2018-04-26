@@ -147,7 +147,8 @@ public class DomainDatasource implements DomainRepository {
 
   @Override
   public void import_0_2_X(CSVParser parser) throws ApplicationException, ParseException {
-    domainMapper.deleteAllForImport();
+    domainMapper.deleteAllDomain();
+    domainMapper.deleteAllDomainMetaUser();
 
     boolean proceed = false;
     for(CSVRecord record : parser) {
@@ -179,7 +180,8 @@ public class DomainDatasource implements DomainRepository {
 
   @Override
   public void import_0_3_X(CSVParser parser) throws ApplicationException, ParseException {
-    domainMapper.deleteAllForImport();
+    domainMapper.deleteAllDomain();
+    domainMapper.deleteAllDomainMetaUser();
 
     boolean proceed = false;
     for(CSVRecord record : parser) {

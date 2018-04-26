@@ -160,9 +160,13 @@
     ORDER BY
       main.id
   </select>
-  <delete id="deleteAllForImport">
+  <delete id="deleteAllDomain">
     DELETE FROM
       domain
+  </delete>
+  <delete id="deleteAllDomainMetaUser">
+    DELETE FROM
+      domain_meta_user
   </delete>
   <insert id="insertForImport" parameterType="org.enlightenseries.DomainDictionary.domain.model.domain.Domain">
     INSERT INTO domain (

@@ -6,6 +6,7 @@ import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
 import org.enlightenseries.DomainDictionary.domain.model.user.User;
 import org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.dao.DomainMetaUser;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,15 @@ public class DomainDatasourceTest {
 
   @Autowired
   private DomainDatasource domainDatasource;
+
+  @Autowired
+  private DomainMapper domainMapper;
+
+  @Before
+  public void setup() {
+    domainMapper.deleteAllDomain();
+    domainMapper.deleteAllDomainMetaUser();
+  }
 
   @Test
   public void export() throws IOException {
@@ -51,7 +61,6 @@ public class DomainDatasourceTest {
 
     // do
     domainDatasource.registerDomainDetail(domain);
-    Domain registered = domainDatasource.findBy(1L);
     DomainDetail registeredDetail = domainDatasource.findDomainDetailBy(1L);
     try (BufferedWriter bw = new BufferedWriter(
       new OutputStreamWriter(out, StandardCharsets.UTF_8))) {
@@ -61,9 +70,8 @@ public class DomainDatasourceTest {
     }
 
     // expect
-    assertThat(registered.getId()).isEqualTo(1L);
-    assertThat(registered.getName()).isEqualTo("ドメイン");
     assertThat(registeredDetail.getId()).isEqualTo(1L);
+    assertThat(registeredDetail.getName()).isEqualTo("ドメイン");
     assertThat(registeredDetail.getCreatedBy().getId()).isEqualTo(1L);
     assertThat(registeredDetail.getCreatedBy().getUsername()).isEqualTo("admin");
     assertThat(reader.readLine()).isEqualTo("Domain start");

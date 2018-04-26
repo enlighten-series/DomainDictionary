@@ -40,7 +40,9 @@ public interface DomainMapper {
 
   void exportAll(ResultHandler<DomainExport> resultHandler);
 
-  void deleteAllForImport();
+  void deleteAllDomain();
+
+  void deleteAllDomainMetaUser();
 
   void insertForImport(Domain domain);
 }
