@@ -18,13 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class LuceneRepository {
+public class LuceneDatasource {
 
-  private Directory directory;
-  private Analyzer analyzer;
-  private LuceneProperties luceneProperties;
+  private final Directory directory;
+  private final Analyzer analyzer;
+  private final LuceneProperties luceneProperties;
 
-  public LuceneRepository(
+  public LuceneDatasource(
     Directory directory,
     Analyzer analyzer,
     LuceneProperties luceneProperties
@@ -193,6 +193,17 @@ public class LuceneRepository {
       IndexWriter iwriter = new IndexWriter(directory, new IndexWriterConfig(analyzer));
       iwriter.deleteDocuments(target);
 
+      iwriter.close();
+    } catch (IOException e) {
+      throw e;
+    }
+  }
+
+  public void deleteAll() throws Exception {
+    try {
+      IndexWriterConfig configForClear = new IndexWriterConfig(analyzer);
+      configForClear.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+      IndexWriter iwriter = new IndexWriter(directory, configForClear);
       iwriter.close();
     } catch (IOException e) {
       throw e;

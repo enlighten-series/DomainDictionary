@@ -7,6 +7,7 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,26 +20,42 @@ import java.nio.file.FileSystems;
 public class LuceneConfiguration {
 
   /**
-   * TODO: Directoryはストレージと考えられるため、インフラ層のほうが適しているかもしれない
+   * ファイルにインデックスを作成するDictionaryを返す。
+   * 本番モードで使用する。
+   *
    * @return
    * @throws IOException
    */
   @Bean(name="directory")
-  @ConditionalOnProperty(name="spring.profiles.active", havingValue = "prod", matchIfMissing=false)
+  @ConditionalOnProperty(name="spring.profiles.active", havingValue = "prod")
   public Directory useFileSystemDirectory() throws IOException {
     return FSDirectory.open(FileSystems.getDefault().getPath("data", "lucene-index"));
   }
 
   /**
-   * TODO: Directoryはストレージと考えられるため、インフラ層のほうが適しているかもしれない
+   * インメモリでインデックスを作成するDictionaryを返す。
+   * 開発モードで使用する。
+   *
    * @return
    */
   @Bean(name="directory")
-  @ConditionalOnProperty(name="spring.profiles.active", havingValue = "dev", matchIfMissing=true)
+  @ConditionalOnProperty(name="spring.profiles.active", havingValue = "dev")
   public Directory useInMemoryDirectory() {
     return new RAMDirectory();
   }
 
+  @Bean(name="directory")
+  @ConditionalOnMissingBean(name="directory")
+  public Directory fallbackDirectory() {
+    return new RAMDirectory();
+  }
+
+  /**
+   * Luceneのアナライザを返す。
+   * 日本語アナライザを使用する。
+   *
+   * @return
+   */
   @Bean
   public Analyzer analyzer() {
     return new JapaneseAnalyzer();

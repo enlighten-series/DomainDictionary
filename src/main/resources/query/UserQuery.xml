@@ -58,4 +58,19 @@
     FROM
       user
   </select>
+  <delete id="deleteAllForImport" parameterType="Long">
+    DELETE FROM
+      user
+  </delete>
+  <insert id="insertForImport" parameterType="org.enlightenseries.DomainDictionary.domain.model.user.User">
+    INSERT INTO user (
+      id,
+      username,
+      password
+    ) values (
+      #{id},
+      #{username},
+      #{password}
+    )
+  </insert>
 </mapper>

@@ -20,4 +20,6 @@ public interface RelationRepository {
   void import_0_2_X(CSVParser parser) throws Exception;
 
   void import_0_3_X(CSVParser parser) throws Exception;
+
+  void import_0_4_X(CSVParser parser) throws Exception;
 }

@@ -87,4 +87,9 @@ public class RelationDatasource implements RelationRepository {
 
     throw new ApplicationException("Relationの終了位置が見つかりませんでした。");
   }
+
+  @Override
+  public void import_0_4_X(CSVParser parser) throws Exception {
+    import_0_3_X(parser);
+  }
 }

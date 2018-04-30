@@ -1,7 +1,7 @@
 package org.enlightenseries.DomainDictionary.application.service;
 
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
-import org.enlightenseries.DomainDictionary.infrastructure.datasource.LuceneRepository;
+import org.enlightenseries.DomainDictionary.infrastructure.datasource.LuceneDatasource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,22 +11,22 @@ import java.util.List;
 public class SearchService {
 
   @Autowired
-  private LuceneRepository luceneRepository;
+  private LuceneDatasource luceneDatasource;
 
   public List<Long> search(String keyword) throws Exception {
-    return luceneRepository.search(keyword);
+    return luceneDatasource.search(keyword);
   }
 
   public void regist(Domain newdata) throws Exception {
-    luceneRepository.regist(newdata);
+    luceneDatasource.regist(newdata);
   }
 
   public void update(Domain newdata) throws Exception {
-    luceneRepository.update(newdata);
+    luceneDatasource.update(newdata);
   }
 
   public void delete(Long id) throws Exception {
-    luceneRepository.delete(id);
+    luceneDatasource.delete(id);
   }
 
 }

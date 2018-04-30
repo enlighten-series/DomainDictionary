@@ -6,7 +6,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.enlightenseries.DomainDictionary.application.config.ApplicationDemoProperties;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
-import org.enlightenseries.DomainDictionary.infrastructure.datasource.LuceneRepository;
+import org.enlightenseries.DomainDictionary.infrastructure.datasource.LuceneDatasource;
 import org.enlightenseries.DomainDictionary.application.service.UserService;
 import org.enlightenseries.DomainDictionary.application.singleton.ApplicationMigrationStatus;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
@@ -43,7 +43,7 @@ public class ApplicationMigration {
   private final String exportDomainFileName = "export.csv";
 
   private UserService userService;
-  private LuceneRepository luceneService;
+  private LuceneDatasource luceneService;
 
   private MetadataRepository metadataRepository;
   private UserRepository userRepository;
@@ -59,7 +59,7 @@ public class ApplicationMigration {
 
   public ApplicationMigration(
     UserService _userService,
-    LuceneRepository _luceneService,
+    LuceneDatasource _luceneService,
     MetadataRepository _metadataRepository,
     UserRepository _userRepository,
     DomainRepository _domainRepository,
@@ -353,9 +353,10 @@ public class ApplicationMigration {
 
   private void import_0_4_X(CSVParser parser) throws Exception {
     // TODO:
-    domainRepository.import_0_3_X(parser);
-    relationRepository.import_0_3_X(parser);
-    domainToRelationRepository.import_0_3_X(parser);
+    domainRepository.import_0_4_X(parser);
+    relationRepository.import_0_4_X(parser);
+    domainToRelationRepository.import_0_4_X(parser);
+    userRepository.import_0_4_X(parser);
   }
 
 }

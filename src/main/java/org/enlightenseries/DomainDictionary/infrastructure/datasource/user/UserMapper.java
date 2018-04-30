@@ -20,4 +20,8 @@ public interface UserMapper {
   void createTable();
 
   void exportAll(ResultHandler<User> resultHandler);
+
+  void deleteAllForImport();
+
+  void insertForImport(User user);
 }

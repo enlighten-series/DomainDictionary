@@ -8,6 +8,7 @@ import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
+import org.enlightenseries.DomainDictionary.infrastructure.datasource.LuceneDatasource;
 import org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.dao.DomainExport;
 import org.enlightenseries.DomainDictionary.infrastructure.datasource.domain.dao.DomainMetaUser;
 import org.enlightenseries.DomainDictionary.infrastructure.datasource.user.UserMapper;
@@ -24,14 +25,18 @@ public class DomainDatasource implements DomainRepository {
   private DomainMapper domainMapper;
   private UserMapper userMapper;
 
+  private LuceneDatasource luceneDatasource;
+
   private final SimpleDateFormat importExportDateFormat = new SimpleDateFormat("yy/MM/dd hh:mm:ss");
 
   public DomainDatasource(
     DomainMapper _domainMapper,
-    UserMapper _userMapper
+    UserMapper _userMapper,
+    LuceneDatasource _luceneDatasource
   ) {
     this.domainMapper = _domainMapper;
     this.userMapper = _userMapper;
+    this.luceneDatasource = _luceneDatasource;
   }
 
   @Override
@@ -206,6 +211,42 @@ public class DomainDatasource implements DomainRepository {
         importExportDateFormat.parse(record.get(6))
       );
       domainMapper.insertForImport(_new);
+    }
+
+    throw new ApplicationException("Domainの終了位置が見つかりませんでした。");
+  }
+
+  @Override
+  public void import_0_4_X(CSVParser parser) throws Exception {
+    domainMapper.deleteAllDomain();
+    domainMapper.deleteAllDomainMetaUser();
+    luceneDatasource.deleteAll();
+
+    boolean proceed = false;
+    for(CSVRecord record : parser) {
+      if (!proceed) {
+        if (record.get(0).equals("Domain start")) {
+          proceed = true;
+          continue;
+        }
+        throw new ApplicationException("Domainの開始位置が見つかりませんでした。");
+      }
+      if (record.get(0).equals("Domain end")) {
+        return;
+      }
+
+      Domain _new = new Domain(
+        Long.valueOf(record.get(0)),
+        record.get(1),
+        record.get(2),
+        record.get(3),
+        record.get(4),
+        importExportDateFormat.parse(record.get(5)),
+        importExportDateFormat.parse(record.get(6))
+      );
+      domainMapper.insertForImport(_new);
+
+      luceneDatasource.regist(_new);
     }
 
     throw new ApplicationException("Domainの終了位置が見つかりませんでした。");
