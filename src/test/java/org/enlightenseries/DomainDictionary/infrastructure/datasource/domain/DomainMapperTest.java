@@ -42,7 +42,7 @@ public class DomainMapperTest {
 
   @Test
   public void selectOne() throws Exception {
-    Domain subject = this.domainMapper.select(1L);
+    Domain subject = this.domainMapper.select(assertData.getId());
 
     assertThat(subject.getId()).isEqualTo(assertData.getId());
     assertThat(subject.getName()).isEqualTo(assertData.getName());
