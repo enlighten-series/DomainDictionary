@@ -13,6 +13,10 @@ export const ROUTES: Route[] = [
     component: DomainListRecentComponent,
   },
   {
+    path: 'all',
+    component: DomainListComponent,
+  },
+  {
     path: 'create',
     component: DomainCreateComponent,
   },

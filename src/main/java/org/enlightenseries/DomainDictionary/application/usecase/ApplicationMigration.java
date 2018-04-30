@@ -352,7 +352,6 @@ public class ApplicationMigration {
   }
 
   private void import_0_4_X(CSVParser parser) throws Exception {
-    // TODO:
     domainRepository.import_0_4_X(parser);
     relationRepository.import_0_4_X(parser);
     domainToRelationRepository.import_0_4_X(parser);

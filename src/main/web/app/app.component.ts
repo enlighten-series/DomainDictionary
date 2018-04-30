@@ -127,6 +127,10 @@ export class AppComponent implements OnInit {
     this.userMenuVisible = false;
   }
 
+  list() {
+    this.router.navigate(['/all']);
+  }
+
   export() {
     // エクスポートなので後処理なし
     const dialogRef = this.dialog.open(DataExportDialogComponent);
