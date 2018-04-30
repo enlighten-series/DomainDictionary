@@ -4,7 +4,7 @@ before_install:
 - chmod +x ./gradlew
 
 script:
-- ./gradlew test
+- ./gradlew test -Pargs="--spring.profile.active=dev"
 
 notifications:
   email: false
