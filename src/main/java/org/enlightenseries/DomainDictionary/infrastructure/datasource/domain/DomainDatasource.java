@@ -235,7 +235,8 @@ public class DomainDatasource implements DomainRepository {
         return;
       }
 
-      Domain _new = new Domain(
+      // 1行分のデータ登録
+      Domain domain = new Domain(
         Long.valueOf(record.get(0)),
         record.get(1),
         record.get(2),
@@ -244,9 +245,16 @@ public class DomainDatasource implements DomainRepository {
         importExportDateFormat.parse(record.get(5)),
         importExportDateFormat.parse(record.get(6))
       );
-      domainMapper.insertForImport(_new);
+      domainMapper.insertForImport(domain);
 
-      luceneDatasource.regist(_new);
+      DomainMetaUser domainMetaUser = new DomainMetaUser(
+        domain.getId(),
+        Long.valueOf(record.get(7)),
+        Long.valueOf(record.get(8))
+      );
+      domainMapper.insertMetaUser(domainMetaUser);
+
+      luceneDatasource.regist(domain);
     }
 
     throw new ApplicationException("Domainの終了位置が見つかりませんでした。");
