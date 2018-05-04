@@ -73,7 +73,7 @@ public class DomainResource {
   public ResponseEntity<Domain> deleteDomain(@PathVariable Long id) throws Exception {
     Domain domain = this.domainService.findBy(id);
 
-    this.domainService.delete(id);
+    this.domainUsecase.delete(id);
 
     return ResponseEntity.ok()
       .body(domain);

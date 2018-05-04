@@ -87,7 +87,10 @@ public class DomainUsecase {
     List<Long> searchedIds = searchService.search(keyword);
 
     searchedIds.forEach(id -> {
-      result.add(domainRepository.findDomainSummaryBy(id));
+      DomainSummary one = domainRepository.findDomainSummaryBy(id);
+      if (one != null) {
+        result.add(one);
+      }
     });
 
     return result;

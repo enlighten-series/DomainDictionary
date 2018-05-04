@@ -11,7 +11,6 @@ import org.enlightenseries.DomainDictionary.infrastructure.config.LuceneProperti
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,6 +56,7 @@ public class LuceneDatasource {
     doc.add(new Field(DOC_FIELD_EXISTENTIAL, newdata.getExistential(), TextField.TYPE_STORED));
     doc.add(new Field(DOC_FIELD_FORMAT, newdata.getFormat(), TextField.TYPE_STORED));
     iwriter.addDocument(doc);
+    iwriter.commit();
 
     iwriter.close();
   }
@@ -177,6 +177,7 @@ public class LuceneDatasource {
       subject.add(new Field(DOC_FIELD_FORMAT, newdata.getFormat(), TextField.TYPE_STORED));
 
       iwriter.updateDocument(target, subject);
+      iwriter.commit();
 
       iwriter.close();
     } catch (IOException e) {
@@ -187,26 +188,38 @@ public class LuceneDatasource {
   }
 
   public void delete(Long id) throws Exception {
+
+    IndexWriter iwriter = null;
     try {
       Term target = new Term(DOC_FIELD_ID, id.toString());
 
-      IndexWriter iwriter = new IndexWriter(directory, new IndexWriterConfig(analyzer));
+      iwriter = new IndexWriter(directory, new IndexWriterConfig(analyzer));
       iwriter.deleteDocuments(target);
-
-      iwriter.close();
+      iwriter.commit();
     } catch (IOException e) {
       throw e;
+    } finally {
+      if (iwriter != null) {
+        iwriter.close();
+      }
     }
   }
 
   public void deleteAll() throws Exception {
+    IndexWriter iwriter = null;
     try {
+      // 新規作成モードでConfigを作成する
       IndexWriterConfig configForClear = new IndexWriterConfig(analyzer);
       configForClear.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
-      IndexWriter iwriter = new IndexWriter(directory, configForClear);
-      iwriter.close();
+
+      iwriter = new IndexWriter(directory, configForClear);
+      iwriter.commit();
     } catch (IOException e) {
       throw e;
+    } finally {
+      if (iwriter != null) {
+        iwriter.close();
+      }
     }
   }
 
