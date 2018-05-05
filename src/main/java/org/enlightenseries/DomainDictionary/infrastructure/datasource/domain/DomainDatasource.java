@@ -220,7 +220,7 @@ public class DomainDatasource implements DomainRepository {
   public void import_0_4_X(CSVParser parser) throws Exception {
     domainMapper.deleteAllDomain();
     domainMapper.deleteAllDomainMetaUser();
-    luceneDatasource.deleteAll2();
+    luceneDatasource.deleteAll();
 
     boolean proceed = false;
     for(CSVRecord record : parser) {
