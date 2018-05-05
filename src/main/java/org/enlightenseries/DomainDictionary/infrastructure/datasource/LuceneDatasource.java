@@ -7,6 +7,7 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
+import org.enlightenseries.DomainDictionary.infrastructure.config.LuceneDirectoryFactory;
 import org.enlightenseries.DomainDictionary.infrastructure.config.LuceneProperties;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
@@ -19,16 +20,16 @@ import java.util.List;
 @Repository
 public class LuceneDatasource {
 
-  private final Directory directory;
+//  private final Directory directory;
   private final Analyzer analyzer;
   private final LuceneProperties luceneProperties;
 
   public LuceneDatasource(
-    Directory directory,
+//    Directory directory,
     Analyzer analyzer,
     LuceneProperties luceneProperties
   ) {
-    this.directory = directory;
+//    this.directory = directory;
     this.analyzer = analyzer;
     this.luceneProperties = luceneProperties;
   }
@@ -47,6 +48,7 @@ public class LuceneDatasource {
   }
 
   private void registOne(Domain newdata) throws IOException {
+    Directory directory = LuceneDirectoryFactory.getOpenedInstance();
     IndexWriter iwriter = new IndexWriter(directory, new IndexWriterConfig(analyzer));
 
     Document doc = new Document();
@@ -59,9 +61,11 @@ public class LuceneDatasource {
     iwriter.commit();
 
     iwriter.close();
+    directory.close();
   }
 
   public List<Long> search(String keyword) throws Exception {
+    Directory directory = LuceneDirectoryFactory.getOpenedInstance();
 
     DirectoryReader ireader;
     try {
@@ -89,6 +93,7 @@ public class LuceneDatasource {
     }
 
     ireader.close();
+    directory.close();
 
     return domainIds;
   }
@@ -131,6 +136,7 @@ public class LuceneDatasource {
   }
 
   public boolean existDomain(Long id) throws Exception {
+    Directory directory = LuceneDirectoryFactory.getOpenedInstance();
     DirectoryReader ireader;
     try {
       ireader = DirectoryReader.open(directory);
@@ -144,11 +150,16 @@ public class LuceneDatasource {
     // クエリの組み立て
     Query query = new TermQuery(new Term(DOC_FIELD_ID, id.toString()));
 
+    int result = isearcher.count(query);
+
+    directory.close();
+
     // 検索実行
-    return isearcher.count(query) > 0;
+    return result > 0;
   }
 
   public void update(Domain newdata) throws Exception {
+    Directory directory = LuceneDirectoryFactory.getOpenedInstance();
 
     DirectoryReader ireader;
     try {
@@ -184,10 +195,12 @@ public class LuceneDatasource {
       throw e;
     } finally {
       ireader.close();
+      directory.close();
     }
   }
 
   public void delete(Long id) throws Exception {
+    Directory directory = LuceneDirectoryFactory.getOpenedInstance();
 
     IndexWriter iwriter = null;
     try {
@@ -201,11 +214,13 @@ public class LuceneDatasource {
     } finally {
       if (iwriter != null) {
         iwriter.close();
+        directory.close();
       }
     }
   }
 
   public void deleteAll() throws Exception {
+    Directory directory = LuceneDirectoryFactory.getOpenedInstance();
     IndexWriter iwriter = null;
     try {
       // 新規作成モードでConfigを作成する
@@ -219,6 +234,7 @@ public class LuceneDatasource {
     } finally {
       if (iwriter != null) {
         iwriter.close();
+        directory.close();
       }
     }
   }

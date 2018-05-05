@@ -26,8 +26,8 @@ public class LuceneConfiguration {
    * @return
    * @throws IOException
    */
-  @Bean(name="directory")
-  @ConditionalOnProperty(name="spring.profiles.active", havingValue = "prod")
+//  @Bean(name="directory")
+//  @ConditionalOnProperty(name="spring.profiles.active", havingValue = "prod")
   public Directory useFileSystemDirectory() throws IOException {
     return FSDirectory.open(FileSystems.getDefault().getPath("data", "lucene-index"));
   }
@@ -38,14 +38,14 @@ public class LuceneConfiguration {
    *
    * @return
    */
-  @Bean(name="directory")
-  @ConditionalOnProperty(name="spring.profiles.active", havingValue = "dev")
+//  @Bean(name="directory")
+//  @ConditionalOnProperty(name="spring.profiles.active", havingValue = "dev")
   public Directory useInMemoryDirectory() {
     return new RAMDirectory();
   }
 
-  @Bean(name="directory")
-  @ConditionalOnMissingBean(name="directory")
+//  @Bean(name="directory")
+//  @ConditionalOnMissingBean(name="directory")
   public Directory fallbackDirectory() {
     return new RAMDirectory();
   }
