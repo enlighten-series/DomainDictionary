@@ -249,8 +249,8 @@ public class DomainDatasource implements DomainRepository {
 
       DomainMetaUser domainMetaUser = new DomainMetaUser(
         domain.getId(),
-        Long.valueOf(record.get(7)),
-        Long.valueOf(record.get(8))
+        record.get(7).isEmpty() ? null : Long.valueOf(record.get(7)),
+        record.get(8).isEmpty() ? null : Long.valueOf(record.get(8))
       );
       domainMapper.insertMetaUser(domainMetaUser);
 
