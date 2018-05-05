@@ -226,4 +226,17 @@ public class LuceneDatasource {
     }
   }
 
+  public IndexWriter getWriterForImport() throws IOException {
+    return new IndexWriter(LuceneDirectoryFactory.getInstance(), new IndexWriterConfig(analyzer));
+  }
+  public void registOneForImprot(IndexWriter iwriter, Domain newdata) throws IOException {
+    Document doc = new Document();
+    doc.add(new Field(DOC_FIELD_ID, newdata.getId().toString(), StringField.TYPE_STORED));
+    doc.add(new Field(DOC_FIELD_NAME, newdata.getName(), TextField.TYPE_STORED));
+    doc.add(new Field(DOC_FIELD_DESCRIPTION, newdata.getDescription(), TextField.TYPE_STORED));
+    doc.add(new Field(DOC_FIELD_EXISTENTIAL, newdata.getExistential(), TextField.TYPE_STORED));
+    doc.add(new Field(DOC_FIELD_FORMAT, newdata.getFormat(), TextField.TYPE_STORED));
+    iwriter.addDocument(doc);
+  }
+
 }

@@ -3,6 +3,7 @@ package org.enlightenseries.DomainDictionary.infrastructure.datasource.domain;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.lucene.index.IndexWriter;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
@@ -222,41 +223,50 @@ public class DomainDatasource implements DomainRepository {
     domainMapper.deleteAllDomainMetaUser();
     luceneDatasource.deleteAll();
 
-    boolean proceed = false;
-    for(CSVRecord record : parser) {
-      if (!proceed) {
-        if (record.get(0).equals("Domain start")) {
-          proceed = true;
-          continue;
+    IndexWriter importWriter = luceneDatasource.getWriterForImport();
+    try {
+
+      boolean proceed = false;
+      for (CSVRecord record : parser) {
+        if (!proceed) {
+          if (record.get(0).equals("Domain start")) {
+            proceed = true;
+            continue;
+          }
+          throw new ApplicationException("Domainの開始位置が見つかりませんでした。");
         }
-        throw new ApplicationException("Domainの開始位置が見つかりませんでした。");
+        if (record.get(0).equals("Domain end")) {
+          return;
+        }
+
+        // 1行分のデータ登録
+        Domain domain = new Domain(
+          Long.valueOf(record.get(0)),
+          record.get(1),
+          record.get(2),
+          record.get(3),
+          record.get(4),
+          importExportDateFormat.parse(record.get(5)),
+          importExportDateFormat.parse(record.get(6))
+        );
+        domainMapper.insertForImport(domain);
+
+        DomainMetaUser domainMetaUser = new DomainMetaUser(
+          domain.getId(),
+          record.get(7).isEmpty() ? null : Long.valueOf(record.get(7)),
+          record.get(8).isEmpty() ? null : Long.valueOf(record.get(8))
+        );
+        domainMapper.insertMetaUser(domainMetaUser);
+
+        luceneDatasource.registOneForImprot(importWriter, domain);
       }
-      if (record.get(0).equals("Domain end")) {
-        return;
+
+      throw new ApplicationException("Domainの終了位置が見つかりませんでした。");
+    } finally {
+      if (importWriter != null) {
+        importWriter.commit();
+        importWriter.close();
       }
-
-      // 1行分のデータ登録
-      Domain domain = new Domain(
-        Long.valueOf(record.get(0)),
-        record.get(1),
-        record.get(2),
-        record.get(3),
-        record.get(4),
-        importExportDateFormat.parse(record.get(5)),
-        importExportDateFormat.parse(record.get(6))
-      );
-      domainMapper.insertForImport(domain);
-
-      DomainMetaUser domainMetaUser = new DomainMetaUser(
-        domain.getId(),
-        record.get(7).isEmpty() ? null : Long.valueOf(record.get(7)),
-        record.get(8).isEmpty() ? null : Long.valueOf(record.get(8))
-      );
-      domainMapper.insertMetaUser(domainMetaUser);
-
-      luceneDatasource.regist(domain);
     }
-
-    throw new ApplicationException("Domainの終了位置が見つかりませんでした。");
   }
 }
