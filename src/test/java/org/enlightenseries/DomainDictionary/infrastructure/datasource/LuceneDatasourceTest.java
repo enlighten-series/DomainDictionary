@@ -2,7 +2,6 @@ package org.enlightenseries.DomainDictionary.infrastructure.datasource;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.ja.JapaneseAnalyzer;
-import org.apache.lucene.store.*;
 import org.enlightenseries.DomainDictionary.infrastructure.config.LuceneProperties;
 import org.enlightenseries.DomainDictionary.application.exception.ApplicationException;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
@@ -24,18 +23,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class LuceneDatasourceTest {
 
-
+  @Autowired
   private LuceneDatasource luceneDatasource;
 
   @Autowired
   private LuceneProperties luceneProperties;
 
   @Before
-  public void setup() throws IOException {
-    Directory directory = new RAMDirectory();
-    Analyzer analyzer = new JapaneseAnalyzer();
-
-    luceneDatasource = new LuceneDatasource(directory, analyzer, luceneProperties);
+  public void setup() throws Exception {
+    luceneDatasource.deleteAll();
   }
 
   @Test
