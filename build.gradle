@@ -54,7 +54,7 @@ dependencies {
 
 node
 {
-  version = "8.5.0"
+  version = "8.11.1"
   download = true
   nodeModulesDir = file("./")
 }
