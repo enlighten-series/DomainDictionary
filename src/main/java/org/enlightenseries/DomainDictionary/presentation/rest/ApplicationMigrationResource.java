@@ -1,7 +1,6 @@
 package org.enlightenseries.DomainDictionary.presentation.rest;
 
 import org.enlightenseries.DomainDictionary.application.usecase.ApplicationMigration;
-import org.enlightenseries.DomainDictionary.presentation.rest.dto.EmptyDto;
 import org.enlightenseries.DomainDictionary.presentation.rest.dto.ExportFileGeneratingStatus;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -40,10 +38,10 @@ public class ApplicationMigrationResource {
   }
 
   @PostMapping("/application-migration/export/generate")
-  public ResponseEntity<EmptyDto> startGeneratingExportFile() throws Exception {
+  public ResponseEntity startGeneratingExportFile() throws Exception {
     applicationMigrationUsecase.generatingExportFile();
 
-    return ResponseEntity.ok().body(new EmptyDto());
+    return ResponseEntity.noContent().build();
   }
 
   @GetMapping("/application-migration/export/download")
@@ -63,9 +61,9 @@ public class ApplicationMigrationResource {
   }
 
   @PostMapping("/application-migration/import")
-  public ResponseEntity<EmptyDto> uploadSingleFile(@RequestPart("importFile") MultipartFile importFile) throws Exception {
+  public ResponseEntity uploadSingleFile(@RequestPart("importFile") MultipartFile importFile) throws Exception {
     applicationMigrationUsecase.startImport(importFile);
 
-    return ResponseEntity.ok().body(new EmptyDto());
+    return ResponseEntity.noContent().build();
   }
 }
