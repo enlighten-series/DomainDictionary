@@ -12,17 +12,11 @@ public interface DomainRepository {
 
   List<Domain> listLatestUpdated(int maxCount);
 
-  Domain findBy(Long id);
-
   DomainDetail findDomainDetailBy(Long id);
 
   DomainSummary findDomainSummaryBy(Long id);
 
-  void register(Domain domain);
-
   void registerDomainDetail(DomainDetail domainDetail);
-
-  void update(Long id, Domain domain);
 
   void updateDomainDetail(Long id, DomainDetail domainDetail);
 

@@ -70,13 +70,13 @@ public class DomainResource {
   }
 
   @DeleteMapping("/domains/{id}")
-  public ResponseEntity<Domain> deleteDomain(@PathVariable Long id) throws Exception {
-    Domain domain = this.domainService.findBy(id);
+  public ResponseEntity<DomainSummary> deleteDomain(@PathVariable Long id) throws Exception {
+    DomainSummary subject = this.domainService.findDomainSummaryBy(id);
 
     this.domainUsecase.delete(id);
 
     return ResponseEntity.ok()
-      .body(domain);
+      .body(subject);
   }
 
   @GetMapping("/domains/_search")

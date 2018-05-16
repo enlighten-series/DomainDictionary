@@ -12,11 +12,11 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -132,11 +132,13 @@ public class DomainResourceTest {
 
   @Test
   public void getOneDomainNotFound() throws Exception {
-    when(domainService.findBy(1L)).thenReturn(assertDomain);
-    when(domainService.findRelatedDomains(1L)).thenReturn(assertRelatedDomains);
+    when(domainService.findRelatedDomains(anyLong())).thenReturn(assertRelatedDomains);
 
     domainResourceMockMvc.perform(get("/api/domains/2"))
       .andExpect(status().isNotFound());
+
+    ArgumentCaptor<Long> idCaptor = ArgumentCaptor.forClass(Long.class);
+    verify(domainService, times(0)).findRelatedDomains(idCaptor.capture());
   }
 
   @Test

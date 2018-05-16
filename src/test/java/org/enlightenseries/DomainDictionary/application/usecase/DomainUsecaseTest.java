@@ -4,12 +4,14 @@ import org.enlightenseries.DomainDictionary.application.service.DomainService;
 import org.enlightenseries.DomainDictionary.application.service.SearchService;
 import org.enlightenseries.DomainDictionary.application.service.UserService;
 import org.enlightenseries.DomainDictionary.domain.model.domain.Domain;
+import org.enlightenseries.DomainDictionary.domain.model.domain.DomainDetail;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainRepository;
 import org.enlightenseries.DomainDictionary.domain.model.domain.DomainSummary;
 import org.enlightenseries.DomainDictionary.domain.model.user.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -55,7 +57,7 @@ public class DomainUsecaseTest {
     // then
     User loginuser = new User(1L, "tarou", "password");
     when(userServiceMock.findByUsername(any())).thenReturn(loginuser);
-    Domain subject = new Domain(
+    Domain base = new Domain(
       1L,
       "ドメイン",
       "フォーマット",
@@ -63,15 +65,19 @@ public class DomainUsecaseTest {
       "存在",
       new Date(),
       new Date());
+    DomainDetail subject = new DomainDetail(base);
 
     // do
     domainUsecase.register(subject);
 
     // expect
     verify(userServiceMock, times(1)).findByUsername(any());
-    verify(domainServiceMock, times(0)).register(any());
     verify(domainRepositoryMock, times(1)).registerDomainDetail(any());
-    verify(searchServiceMock, times(1)).regist(any()); // TODO: 値スパイしないとテストの意味が・・・
+
+    // expect lucene
+    ArgumentCaptor<Domain> searcherRegistCaptor = ArgumentCaptor.forClass(Domain.class);
+    verify(searchServiceMock, times(1)).regist(searcherRegistCaptor.capture());
+    assertThat(searcherRegistCaptor.getValue().getName()).isEqualTo("ドメイン");
   }
 
   @Test

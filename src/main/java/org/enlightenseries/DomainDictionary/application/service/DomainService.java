@@ -35,10 +35,6 @@ public class DomainService {
     return this.domainRepository.listLatestUpdated(10);
   }
 
-  public Domain findBy(Long id) {
-    return this.domainRepository.findBy(id);
-  }
-
   public DomainDetail findDomainDetailBy(Long id) {
     return this.domainRepository.findDomainDetailBy(id);
   }
@@ -63,25 +59,6 @@ public class DomainService {
 
   public DomainSummary findDomainSummaryBy(Long id) {
     return this.domainRepository.findDomainSummaryBy(id);
-  }
-
-  /**
-   * @deprecated Detail作成したので不要
-   *
-   * @param domain
-   */
-  public void register(Domain domain) {
-    this.domainRepository.register(domain);
-  }
-
-  /**
-   * @deprecated Detail作成したので不要
-   *
-   * @param id
-   * @param domain
-   */
-  public void update(Long id, Domain domain) {
-    this.domainRepository.update(id, domain);
   }
 
   @Transactional(rollbackFor = Exception.class)

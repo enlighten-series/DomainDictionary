@@ -51,13 +51,8 @@ public class DomainDatasource implements DomainRepository {
   }
 
   @Override
-  public Domain findBy(Long id) {
-    return this.domainMapper.select(id);
-  }
-
-  @Override
   public DomainDetail findDomainDetailBy(Long id) {
-    Domain base = findBy(id);
+    Domain base = this.domainMapper.select(id);
     if (base == null) {
       return null;
     }
@@ -77,13 +72,8 @@ public class DomainDatasource implements DomainRepository {
   }
 
   @Override
-  public void register(Domain domain) {
-    this.domainMapper.insert(domain);
-  }
-
-  @Override
   public void registerDomainDetail(DomainDetail domainDetail) {
-    this.register(domainDetail);
+    this.domainMapper.insert(domainDetail);
 
     DomainMetaUser domainMetaUser = new DomainMetaUser();
     domainMetaUser.setId(domainDetail.getId());
@@ -97,13 +87,8 @@ public class DomainDatasource implements DomainRepository {
   }
 
   @Override
-  public void update(Long id, Domain domain) {
-    this.domainMapper.update(id, domain);
-  }
-
-  @Override
   public void updateDomainDetail(Long id, DomainDetail domainDetail) {
-    this.update(id, domainDetail);
+    this.domainMapper.update(id, domainDetail);
 
     DomainMetaUser domainMetaUser = new DomainMetaUser();
     domainMetaUser.setId(domainDetail.getId());

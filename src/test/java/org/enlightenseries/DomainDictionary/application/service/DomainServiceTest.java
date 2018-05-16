@@ -31,35 +31,12 @@ public class DomainServiceTest {
 
   private Domain assertData;
 
-  @Before
-  public void setup() {
-    assertData = new Domain();
-    assertData.setName("ドメイン名");
-    assertData.setFormat("フォーマット");
-    assertData.setDescription("説明書きです");
-    assertData.setExistential(
-      "# こんにちは¥r¥n" +
-        "¥r" +
-        "- 世界" +
-        "`こーど`"
-    );
-    assertData.setCreated(new Date("2016/2/29 23:59:59"));
-    assertData.setUpdated(new Date("2017/12/31 12:34:56"));
-  }
-
+  /**
+   * TODO: テスト
+   */
   @Test
-  public void findOneDomain() throws Exception {
-    when(domainRepository.findBy(1L)).thenReturn(assertData);
+  public void testAll() {
 
-    Domain subject = this.domainService.findBy(1L);
-
-    assertThat(subject.getId()).isEqualTo(assertData.getId());
-    assertThat(subject.getName()).isEqualTo(assertData.getName());
-    assertThat(subject.getFormat()).isEqualTo(assertData.getFormat());
-    assertThat(subject.getDescription()).isEqualTo(assertData.getDescription());
-    assertThat(subject.getExistential()).isEqualTo(assertData.getExistential());
-    assertThat(subject.getCreated()).isEqualTo(assertData.getCreated());
-    assertThat(subject.getUpdated()).isEqualTo(assertData.getUpdated());
   }
 
 }
